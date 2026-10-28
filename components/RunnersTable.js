@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 const FIRST = 20;
 import Link from 'next/link';
@@ -32,6 +32,11 @@ export default function RunnersTable({ runners: base, themes }) {
   const [theme, setTheme] = useState('all');
   const [sort, setSort] = useState({ key: 'marketCap', dir: 'desc' });
   const [all, setAll] = useState(false);
+  const top = useRef(null);
+  const showLess = () => {
+    setAll(false);
+    top.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
   const themeMap = useMemo(() => new Map(themes.map((t) => [t.id, t])), [themes]);
 
   const cols = useMemo(() => (runners.some((r) => r.top10 != null) ? COLS : COLS.filter((c) => c.key !== 'top10')), [runners]);
@@ -45,7 +50,7 @@ export default function RunnersTable({ runners: base, themes }) {
     setSort((s) => (s.key === c.key ? { key: c.key, dir: s.dir === 'asc' ? 'desc' : 'asc' } : { key: c.key, dir: c.firstDir || 'desc' }));
 
   return (
-    <div>
+    <div ref={top} style={{ scrollMarginTop: 80 }}>
       <div className="chips chips-scroll" role="group" aria-label="Filter by theme">
         <button type="button" className="chip" aria-pressed={theme === 'all'} onClick={() => setTheme('all')}>
           All <span className="num">{runners.length}</span>
@@ -92,7 +97,7 @@ export default function RunnersTable({ runners: base, themes }) {
                   </td>
                   <td className="c-num num"><LiveNumber value={r.marketCap} format={usd} /></td>
                   <td className={`c-num num ${r.change.h24 >= 0 ? 'up' : 'down'}`}><LiveNumber value={r.change.h24} format={gain} /></td>
-                  <td className="c-num num">{age(r.ageHours)}</td>
+                  <td className="c-num num hide-sm">{age(r.ageHours)}</td>
                   <td className="c-num num hide-sm">{usd(r.volume24h)}</td>
                   {cols.length > COLS.length - 1 && <td className="c-num num hide-sm">{r.top10 == null ? '–' : `${Math.round(r.top10 * 100)}%`}</td>}
                   <td className="hide-md muted">{r.launchpad}</td>
@@ -108,9 +113,11 @@ export default function RunnersTable({ runners: base, themes }) {
             })}
           </tbody>
         </table>
-        {!all && rows.length > FIRST && (
+        {rows.length > FIRST && (
           <div className="table-more">
-            <button type="button" className="btn btn-quiet" onClick={() => setAll(true)}>Show all {rows.length}</button>
+            {all
+              ? <button type="button" className="btn btn-quiet" onClick={showLess}>Show less</button>
+              : <button type="button" className="btn btn-quiet" onClick={() => setAll(true)}>Show all {rows.length}</button>}
           </div>
         )}
       </div>
