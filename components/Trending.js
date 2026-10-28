@@ -1,13 +1,37 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import CoinImg from './CoinImg';
 import LiveNumber from './LiveNumber';
 import TypeBadge, { TypeKey } from './TypeBadge';
 import useLive from './useLive';
-import { usd, pct } from '@/lib/format';
+import { usd, gain } from '@/lib/format';
 
 const LIVE_WINDOWS = new Set(['h1', 'h6', 'h24']); // the ones DexScreener updates live
+
+// Slides rows from their old spot to their new one when the order changes.
+function useFlip(listRef, key) {
+  const last = useRef(new Map());
+  useLayoutEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const now = new Map();
+    el.querySelectorAll('[data-k]').forEach((node) => {
+      const k = node.getAttribute('data-k');
+      const box = node.getBoundingClientRect();
+      now.set(k, box.top);
+      const prev = last.current.get(k);
+      if (reduce) return;
+      if (prev == null) {
+        node.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' });
+      } else if (Math.abs(prev - box.top) > 1) {
+        node.animate([{ transform: `translateY(${prev - box.top}px)` }, { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      }
+    });
+    last.current = now;
+  }, [listRef, key]);
+}
 
 export default function Trending({ windows, trending, runners, typeCounts }) {
   const [win, setWin] = useState('h1');
@@ -16,14 +40,16 @@ export default function Trending({ windows, trending, runners, typeCounts }) {
   const live = useLive(base.map((r) => r.address));
 
   const value = (r) => (LIVE_WINDOWS.has(win) ? live[r.address]?.change?.[win] ?? r.change[win] : r.change[win]);
-  // keep the ranking true to the live numbers
-  const list = [...base].sort((a, b) => (value(b) ?? -Infinity) - (value(a) ?? -Infinity));
-  const max = Math.max(1, ...list.map((r) => Math.abs(value(r) || 0)));
+  const list = [...base].sort((a, b) => (value(b) ?? -Infinity) - (value(a) ?? -Infinity)).slice(0, 10);
+  const max = Math.max(1, ...list.map((r) => Math.log10(Math.max(1.0001, 1 + (value(r) || 0) / 100))));
   const label = windows.find((w) => w.id === win)?.label;
 
+  const listRef = useRef(null);
+  useFlip(listRef, `${win}:${list.map((r) => r.address).join(',')}`);
+
   return (
-    <div className="trend">
-      <div className="trend-bar">
+    <div className="mv">
+      <div className="mv-bar">
         <div className="seg" role="tablist" aria-label="Time window">
           {windows.map((w) => (
             <button key={w.id} type="button" role="tab" aria-selected={win === w.id} className="seg-btn" onClick={() => setWin(w.id)} disabled={!trending[w.id]?.length}>
@@ -35,32 +61,31 @@ export default function Trending({ windows, trending, runners, typeCounts }) {
       </div>
 
       {list.length === 0 ? (
-        <p className="trend-empty muted">No {label} numbers yet. They fill in within a few minutes.</p>
+        <p className="mv-empty muted">No {label} numbers yet. They fill in within a few minutes.</p>
       ) : (
-        <ol className="trend-list" style={{ '--rows': Math.ceil(list.length / 2) }} role="tabpanel" aria-label={`Biggest gains in the last ${label}`}>
+        <ol className="mv-list" ref={listRef} role="tabpanel" aria-label={`Biggest gains in the last ${label}`}>
           {list.map((r, i) => {
             const v = value(r);
             const cap = live[r.address]?.marketCap ?? r.marketCap;
             const vol = r.volume?.[win];
+            const w = v > 0 ? Math.max(2, (Math.log10(1 + v / 100) / max) * 100) : 2;
             return (
-              <li key={r.address}>
-                <a href={r.url} target="_blank" rel="noopener noreferrer" className="trend-row">
-                  <span className="trend-rank num muted">{i + 1}</span>
-                  <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={36} />
-                  <span className="trend-id">
+              <li key={r.address} data-k={r.address}>
+                <a href={r.url} target="_blank" rel="noopener noreferrer" className="mv-row">
+                  <span className="mv-rank">{i + 1}</span>
+                  <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={32} />
+                  <span className="mv-id">
                     <strong>{r.name}</strong>
-                    <span className="trend-sub">
+                    <span className="mv-sub">
                       <TypeBadge id={r.type} />
-                      <span className="muted">${r.symbol}</span>
-                      <span className="muted num"><LiveNumber value={cap} format={usd} /></span>
+                      <span>${r.symbol}</span>
+                      <span><LiveNumber value={cap} format={usd} /></span>
                     </span>
                   </span>
-                  <span className="trend-meter" aria-hidden="true">
-                    <span className={v >= 0 ? 'fill-up' : 'fill-down'} style={{ width: `${Math.max(3, (Math.abs(v || 0) / max) * 100)}%` }} />
-                  </span>
-                  <span className="trend-val">
-                    <LiveNumber value={v} format={(x) => pct(x)} className={`num ${v >= 0 ? 'up' : 'down'}`} />
-                    {vol != null && <span className="small muted num">{usd(vol)} vol</span>}
+                  <span className="mv-meter" aria-hidden="true"><span className={v >= 0 ? 'fill-up' : 'fill-down'} style={{ width: `${w}%` }} /></span>
+                  <span className="mv-val">
+                    <LiveNumber value={v} format={gain} className={v >= 0 ? 'up' : 'down'} />
+                    {vol != null && <span className="mv-vol">{usd(vol)} traded</span>}
                   </span>
                 </a>
               </li>

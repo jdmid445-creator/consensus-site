@@ -6,7 +6,7 @@ const FIRST = 20;
 import CoinImg from './CoinImg';
 import TypeBadge from './TypeBadge';
 import { Sort, Out, XLogo } from './Icons';
-import { usd, pct, age } from '@/lib/format';
+import { usd, gain, age } from '@/lib/format';
 
 const COLS = [
   { key: 'marketCap', label: 'Market cap', get: (r) => r.marketCap },
@@ -79,7 +79,7 @@ export default function RunnersTable({ runners, themes }) {
                     </a>
                   </td>
                   <td className="c-num num">{usd(r.marketCap)}</td>
-                  <td className={`c-num num ${r.change.h24 >= 0 ? 'up' : 'down'}`}>{pct(r.change.h24)}</td>
+                  <td className={`c-num num ${r.change.h24 >= 0 ? 'up' : 'down'}`}>{gain(r.change.h24)}</td>
                   <td className="c-num num">{age(r.ageHours)}</td>
                   <td className="c-num num hide-sm">{usd(r.volume24h)}</td>
                   {cols.length > COLS.length - 1 && <td className="c-num num hide-sm">{r.top10 == null ? '–' : `${Math.round(r.top10 * 100)}%`}</td>}

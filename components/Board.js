@@ -1,38 +1,33 @@
 import CoinImg from './CoinImg';
-import { usd, pct } from '@/lib/format';
-import { themeById } from '@/lib/themes';
+import { usd, gain } from '@/lib/format';
 
-// The 50 runners as one wall of their own logos, grouped by theme so the meta reads at a glance.
+// The field: every runner's logo, grouped by theme (biggest theme first), with its 24h move.
 export default function Board({ runners, themes }) {
   const order = new Map(themes.map((t, i) => [t.id, i]));
+  const tMap = new Map(themes.map((t) => [t.id, t]));
   const sorted = [...runners].sort((a, b) => (order.get(a.theme) ?? 99) - (order.get(b.theme) ?? 99) || a.rank - b.rank);
   return (
-    <div className="board-wrap">
-      <ol className="board" aria-label="The runners, grouped by theme">
-        {sorted.map((r) => {
-          const t = themeById(r.theme);
+    <div className="field-grid">
+      <ol className="board" aria-label="Every runner, grouped by theme">
+        {sorted.map((r, i) => {
+          const t = tMap.get(r.theme);
+          const v = r.change.h24;
           return (
-            <li key={r.address} style={{ '--c': t.color }}>
-              <a className="tile" href={r.url} target="_blank" rel="noopener noreferrer" aria-label={`${r.name} ($${r.symbol}), ${usd(r.marketCap)}, ${t.name}`}>
-                <CoinImg src={r.image} name={r.name} symbol={r.symbol} color={t.color} size={56} className="tile-img" />
+            <li key={r.address} style={{ '--i': i, '--c': t?.color }}>
+              <a className="tile" href={r.url} target="_blank" rel="noopener noreferrer" aria-label={`${r.name} ($${r.symbol}), ${usd(r.marketCap)}, ${gain(v)} in 24 hours, ${t?.name}`}>
+                <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={56} className="tile-img" />
+                <span className="tile-sym">${r.symbol}</span>
+                <span className={`tile-gain ${v >= 0 ? 'up' : 'down'}`}>{gain(v)}</span>
                 <span className="tile-card" aria-hidden="true">
                   <strong>{r.name}</strong>
-                  <span className="muted">${r.symbol}</span>
-                  <span className="num">{usd(r.marketCap)} <span className={r.change.h24 >= 0 ? 'up' : 'down'}>{pct(r.change.h24)}</span></span>
+                  <span>{usd(r.marketCap)} market cap</span>
+                  <span>{t?.name}</span>
                 </span>
               </a>
             </li>
           );
         })}
       </ol>
-      <ul className="legend">
-        {themes.map((t) => (
-          <li key={t.id} style={{ '--c': t.color }}>
-            <span className="sw" aria-hidden="true" />
-            {t.name} <span className="muted num">{t.count}</span>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
