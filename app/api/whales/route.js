@@ -33,7 +33,7 @@ export async function GET(req) {
   const pnl = await getPnl(a, list.map((w) => w.owner));
   const wallets = list.map((w) => ({ ...w, ...(pnl?.[w.owner] || {}) }));
   return NextResponse.json(
-    { wallets, supply: on.supply, whales: on.whales, pnl: pnlEnabled() ? (pnl ? 'ok' : 'error') : 'off', pnlError: pnl ? '' : pnlLastError(), at: Date.now() },
+    { wallets, excluded: on.excluded || 0, supply: on.supply, whales: on.whales, pnl: pnlEnabled() ? (pnl ? 'ok' : 'error') : 'off', pnlError: pnl ? '' : pnlLastError(), at: Date.now() },
     { headers: { 'cache-control': 'public, s-maxage=15' } },
   );
 }

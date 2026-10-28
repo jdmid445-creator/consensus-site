@@ -151,7 +151,7 @@ export default function WhalesTab({ address, active }) {
       </div>
       {d.pnl === 'off' && <p className="note">Profit and loss columns turn on once a Solana Tracker key is added to the site.</p>}
       {d.pnl === 'error' && <p className="note">Profit and loss couldn’t be read just now. Holdings are still live.</p>}
-      <p className="note">Top 20 wallets by holdings, liquidity pool excluded. Holdings from Solana through Helius{pnlOn ? '; PnL from Solana Tracker, in USD, including what’s still held' : ''}. Tap a wallet to open it on GMGN.</p>
+      <p className="note">The biggest wallets by how much of the coin they hold, biggest first. Pools, bonding curves and other program accounts are left out{d.excluded ? ` (${d.excluded} here)` : ''}, so every row is a real wallet. Holdings from Solana through Helius{pnlOn ? '; PnL from Solana Tracker, in USD, including what’s still held' : ''}. Tap a wallet to open it on GMGN.</p>
     </div>
   );
 }
