@@ -13,18 +13,32 @@ const SOURCE_TEXT = {
 export default function CoinStory({ address, enabled, why }) {
   const [state, setState] = useState({ status: enabled ? 'loading' : 'off' });
 
+  const [tries, setTries] = useState(0);
+
   useEffect(() => {
     if (!enabled) return;
     let stop = false;
-    fetch(`/api/brief?a=${address}`)
-      .then(async (res) => {
-        const data = await res.json();
-        if (stop) return;
-        setState(res.ok && !data.error ? { status: 'done', b: data } : { status: 'error', error: data.error });
-      })
-      .catch(() => !stop && setState({ status: 'error', error: 'Couldn’t reach the desk. Reload to try again.' }));
-    return () => { stop = true; };
-  }, [address, enabled]);
+    let timer;
+    const load = (n) => {
+      fetch(`/api/brief?a=${address}`)
+        .then(async (res) => {
+          const data = await res.json().catch(() => ({}));
+          if (stop) return;
+          if (res.ok && !data.error) return setState({ status: 'done', b: data });
+          // Try again on its own a couple of times before showing a message.
+          if (n < 2 && res.status !== 404 && res.status !== 503) timer = setTimeout(() => load(n + 1), n === 0 ? 4000 : 10000);
+          else setState({ status: 'error', error: data.error || 'The story couldn’t be written just now.' });
+        })
+        .catch(() => {
+          if (stop) return;
+          if (n < 2) timer = setTimeout(() => load(n + 1), 5000);
+          else setState({ status: 'error', error: 'Couldn’t reach the desk.' });
+        });
+    };
+    setState({ status: 'loading' });
+    load(0);
+    return () => { stop = true; clearTimeout(timer); };
+  }, [address, enabled, tries]);
 
   if (state.status === 'off') {
     return why ? <p className="story-why">{why}</p> : null;
@@ -44,7 +58,10 @@ export default function CoinStory({ address, enabled, why }) {
     return (
       <div className="cs">
         {why && <p className="story-why">{why}</p>}
-        <p className="note">{state.error}</p>
+        <p className="note">
+          {state.error}{' '}
+          <button type="button" className="linkish" onClick={() => setTries((t) => t + 1)}>Try again</button>
+        </p>
       </div>
     );
   }

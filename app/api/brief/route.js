@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getMeta } from '@/lib/meta';
 import { getBrief } from '@/lib/brief';
-import { aiEnabled } from '@/lib/ai';
+import { aiEnabled, aiLastError } from '@/lib/ai';
 import { rateLimit } from '@/lib/ratelimit';
 
 // GET /api/brief?a=<mint>: the story for one of today's runners (cached 2h per coin).
@@ -18,6 +18,6 @@ export async function GET(req) {
   if (!rateLimit(req, { key: 'brief', limit: 20, windowMs: 60_000 })) return NextResponse.json({ error: 'Too many requests. Try again in a minute.' }, { status: 429 });
   const narratives = (meta.summary?.themes || []).filter((t) => t.addresses.includes(a));
   const brief = await getBrief(r, { narratives });
-  if (!brief) return NextResponse.json({ error: 'The story couldn’t be written just now. Reload in a minute.' }, { status: 502 });
+  if (!brief) return NextResponse.json({ error: 'The story couldn’t be written just now.', detail: aiLastError() }, { status: 502 });
   return NextResponse.json(brief, { headers: { 'cache-control': 'public, s-maxage=600, stale-while-revalidate=3600' } });
 }
