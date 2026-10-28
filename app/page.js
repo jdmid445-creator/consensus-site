@@ -221,7 +221,7 @@ export default async function Home() {
         <div className="sec-head">
           <h2 className="h2">What&apos;s working</h2>
         </div>
-        <div className="working">
+        <div className={summary ? 'working' : 'working solo'}>
           <div className="numbers">
             <h3>By the numbers</h3>
             <ul>

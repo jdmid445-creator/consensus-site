@@ -306,6 +306,13 @@ p, h1, h2, h3, h4 { margin: 0; }
 .numbers li { padding: 10px 0; border-top: 1px solid var(--line); color: var(--ink-2); font-size: 15px; }
 .numbers li:first-child { border-top: 0; }
 .numbers b { color: var(--ink); font-weight: 700; }
+/* No AI read: the numbers fill the row as a grid instead of one narrow card. */
+.working.solo { grid-template-columns: 1fr; }
+.solo .numbers ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 32px; }
+.solo .numbers li, .solo .numbers li:first-child { border-top: 1px solid var(--line); padding: 14px 0; }
+.solo .numbers li:nth-child(-n+3) { border-top: 0; }
+@media (max-width: 900px) { .solo .numbers ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } .solo .numbers li:nth-child(3) { border-top: 1px solid var(--line); } }
+@media (max-width: 560px) { .solo .numbers ul { grid-template-columns: 1fr; } .solo .numbers li:nth-child(2) { border-top: 1px solid var(--line); } }
 .calls { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-content: start; }
 .ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .ticks li { position: relative; padding-left: 20px; color: var(--ink-2); }
