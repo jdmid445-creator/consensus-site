@@ -30,7 +30,7 @@ function Spark({ points, up }) {
         <path className="lc-area" d={`${line}L${W},${H}L0,${H}Z`} fill="url(#lc-fill)" />
         <path className="lc-line" d={line} pathLength="1" fill="none" stroke={color} strokeWidth="2" vectorEffect="non-scaling-stroke" />
       </svg>
-      <figcaption>Price, last 24 hours</figcaption>
+      <figcaption>Last 24 hours</figcaption>
     </figure>
   );
 }
@@ -45,7 +45,7 @@ export default function LeadCard({ lead, next, chart }) {
 
   return (
     <aside className="lc" aria-labelledby="lc-title">
-      <h2 id="lc-title" className="lc-title">Leading today</h2>
+      <h2 id="lc-title" className="sr-only">Leading today</h2>
       <Link className="lc-coin" href={`/coin/${lead.address}`}>
         <CoinImg src={lead.image} name={lead.name} symbol={lead.symbol} size={52} />
         <span className="lc-id">
@@ -58,7 +58,7 @@ export default function LeadCard({ lead, next, chart }) {
         </span>
         <span className="lc-gain">
           <LiveNumber value={v} format={gain} className={v >= 0 ? 'up' : 'down'} />
-          <span className="lc-gain-cap">24h</span>
+          <span className="lc-gain-cap">Leads today</span>
         </span>
       </Link>
       {lead.why && <p className="lc-why">{lead.why}</p>}

@@ -1,4 +1,4 @@
-# Consensus: project notes
+# Runners (formerly Consensus): project notes
 
 On-chain "meta consensus" tool for Solana memecoins. Sibling of GiftedSwaps and Parallax;
 same stack (Next.js 15 + React 19, plain CSS, Vercel) and the same launch playbook.

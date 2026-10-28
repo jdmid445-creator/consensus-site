@@ -6,6 +6,8 @@ import NarrativeWriter from '@/components/NarrativeWriter';
 import Ago from '@/components/Ago';
 import Ticker from '@/components/Ticker';
 import LeadCard from '@/components/LeadCard';
+import NewRunners from '@/components/NewRunners';
+import CountUp from '@/components/CountUp';
 import Trending from '@/components/Trending';
 import { Rising, Steady, Cooling } from '@/components/Icons';
 import Wire from '@/components/Wire';
@@ -68,6 +70,7 @@ export default async function Home() {
   const totalCap = stats.totalCap || 1;
   const mover = byAddr.get(stats.topMover);
   const pad = stats.launchpads[0];
+  const newest = [...runners].filter((r) => r.ageHours != null).sort((a, b) => a.ageHours - b.ageHours).slice(0, 8);
   const typeCounts = runners.reduce((m, r) => ({ ...m, [r.type]: (m[r.type] || 0) + 1 }), {});
 
   return (
@@ -77,6 +80,7 @@ export default async function Home() {
 
       {/* The lead: today's read, and the coin leading the day */}
       <section className="lead wrap">
+        <NewRunners coins={newest} />
         <div className="lead-top">
           <p className="dateline">
             <span>{today()}</span>
@@ -95,7 +99,7 @@ export default async function Home() {
           </div>
           {narratives.length > 0 && (
             <nav className="inread" aria-labelledby="inread-title">
-              <h2 id="inread-title">In today&apos;s read</h2>
+              <h2 id="inread-title">Today&apos;s narratives</h2>
               <ol>
                 {narratives.slice(0, 4).map((n, i) => {
                   const heat = n.heat && HEAT[n.heat];
@@ -117,7 +121,7 @@ export default async function Home() {
       </section>
 
       {/* Latest: the wire and the crypto headlines */}
-      <section id="latest" className="wrap latest" aria-label="Latest">
+      <section id="latest" className="wrap latest" aria-label="Latest" data-reveal="up">
         <div className="latest-col">
           <div className="col-head">
             <h2 className="h3">The wire</h2>
@@ -135,7 +139,7 @@ export default async function Home() {
       </section>
 
       {/* The field */}
-      <section className="wrap field-sec" aria-labelledby="field-title">
+      <section className="wrap field-sec" aria-labelledby="field-title" data-reveal="field">
         <div className="field-head">
           <h2 id="field-title" className="h3">The field</h2>
           <ul className="legend">
@@ -159,7 +163,7 @@ export default async function Home() {
       </section>
 
       {/* Movers by window */}
-      <section id="movers" className="wrap section">
+      <section id="movers" className="wrap section" data-reveal="up">
         <div className="sec-head">
           <h2 className="h2">Top movers</h2>
           <p className="muted">The runners with the biggest gains over each window.</p>
@@ -168,7 +172,7 @@ export default async function Home() {
       </section>
 
       {/* Narratives */}
-      <section id="narratives" className="wrap section">
+      <section id="narratives" className="wrap section" data-reveal="up">
         <div className="sec-head">
           <h2 className="h2">The narratives</h2>
           <p className="muted">{summary ? 'What today’s runners have in common, read from their names, lore and numbers.' : 'Runners grouped by the words in their names and descriptions.'}</p>
@@ -208,7 +212,7 @@ export default async function Home() {
       </section>
 
       {/* What's working */}
-      <section className="wrap section">
+      <section className="wrap section" data-reveal="up">
         <div className="sec-head">
           <h2 className="h2">What&apos;s working</h2>
         </div>
@@ -216,12 +220,12 @@ export default async function Home() {
           <div className="numbers">
             <h3>By the numbers</h3>
             <ul>
-              <li><b>{age(stats.medianAgeHours)}</b> is how old the median runner is, at a <b>{usd(stats.medianCap)}</b> market cap.</li>
-              <li><b>{share(stats.withX)}</b> have an X account and <b>{share(stats.withSite)}</b> have a website.</li>
-              <li><b>{share(stats.paidProfile)}</b> paid for a DexScreener profile.</li>
-              {pad && <li><b>{share(pad.share)}</b> launched on {pad.name}.</li>}
-              <li><b>{share(stats.buyShare)}</b> of today&apos;s trades across the field were buys.</li>
-              {stats.medianTop10 != null && <li>The 10 biggest wallets hold <b>{share(stats.medianTop10)}</b> of the median runner, pool excluded.</li>}
+              <li><CountUp value={stats.medianAgeHours} kind="age" /> is how old the median runner is, at a <CountUp value={stats.medianCap} kind="usd" /> market cap.</li>
+              <li><CountUp value={stats.withX} kind="share" /> have an X account and <CountUp value={stats.withSite} kind="share" /> have a website.</li>
+              <li><CountUp value={stats.paidProfile} kind="share" /> paid for a DexScreener profile.</li>
+              {pad && <li><CountUp value={pad.share} kind="share" /> launched on {pad.name}.</li>}
+              <li><CountUp value={stats.buyShare} kind="share" /> of today&apos;s trades across the field were buys.</li>
+              {stats.medianTop10 != null && <li>The 10 biggest wallets hold <CountUp value={stats.medianTop10} kind="share" /> of the median runner, pool excluded.</li>}
               {stats.concentration && (
                 <li>
                   Coins with spread-out holders: <b className={stats.concentration.spreadChange >= 0 ? 'up' : 'down'}>{pct(stats.concentration.spreadChange)}</b> median today, vs <b className={stats.concentration.tightChange >= 0 ? 'up' : 'down'}>{pct(stats.concentration.tightChange)}</b> for concentrated ones.
@@ -251,7 +255,7 @@ export default async function Home() {
       </section>
 
       {/* Runners */}
-      <section id="runners" className="wrap section">
+      <section id="runners" className="wrap section" data-reveal="up">
         <div className="sec-head">
           <h2 className="h2">All {stats.count} runners</h2>
           <p className="muted">The biggest Solana memecoins launched in the last {meta.windowHours} hours, by market cap.</p>
@@ -260,7 +264,7 @@ export default async function Home() {
       </section>
 
       {/* Narrative writer */}
-      <section id="write" className="wrap section">
+      <section id="write" className="wrap section" data-reveal="up">
         <div className="sec-head">
           <h2 className="h2">Write a narrative for today&apos;s meta</h2>
           <p className="muted">An original coin idea built on what&apos;s running right now. Each one is new and never reuses a live ticker.</p>

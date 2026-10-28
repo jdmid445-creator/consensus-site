@@ -1,4 +1,4 @@
-# Consensus: the Solana memecoin meta, read daily
+# Runners: the news on today's Solana memecoin runners
 
 Next.js site (same stack as GiftedSwaps, deploys on Vercel). It pulls the last 50
 Solana memecoin runners, sorts them into themes, has Claude write a read of the

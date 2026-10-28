@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import CoinImg from '@/components/CoinImg';
 import CoinStory from '@/components/CoinStory';
-import CoinChart from '@/components/CoinChart';
+import LiveChart from '@/components/LiveChart';
+import HolderStats from '@/components/HolderStats';
 import CoinLive from '@/components/CoinLive';
 import CopyText from '@/components/CopyText';
 import TypeBadge from '@/components/TypeBadge';
@@ -96,12 +97,14 @@ export default async function CoinPage({ params }) {
 
       {!runner && <p className="notice">This coin isn&apos;t one of today&apos;s runners, so there&apos;s no story for it right now. Live numbers are below.</p>}
 
+      <LiveChart pairAddress={r.pairAddress} day={day} week={week} />
+
       <div className="coin-grid">
         <div className="coin-main">
           <CoinStory address={address} enabled={runner && meta.aiEnabled} why={r.why} />
 
           {narratives.length > 0 && (
-            <section className="coin-sec">
+            <section className="coin-sec" data-reveal="up">
               <h2 className="h3">In today&apos;s narratives</h2>
               <ul className="coin-narr">
                 {narratives.map((n) => (
@@ -115,7 +118,7 @@ export default async function CoinPage({ params }) {
             </section>
           )}
 
-          <section className="coin-sec">
+          <section className="coin-sec" data-reveal="up">
             <h2 className="h3">On the wire</h2>
             {wire.length ? (
               <ol className="wire wire-compact">
@@ -133,14 +136,13 @@ export default async function CoinPage({ params }) {
         </div>
 
         <aside className="coin-side">
-          <CoinChart day={day} week={week} />
+          <HolderStats address={address} />
 
           <dl className="kv">
             <div><dt>Market cap</dt><dd>{usd(r.marketCap)}</dd></div>
             <div><dt>Liquidity</dt><dd>{usd(r.liquidity)}</dd></div>
             <div><dt>Volume, 24h</dt><dd>{usd(r.volume24h)}</dd></div>
             {buyShare != null && <div><dt>Buys vs sells, 24h</dt><dd>{Math.round(buyShare * 100)}% buys</dd></div>}
-            {r.top10 != null && <div><dt>Top 10 wallets</dt><dd>{Math.round(r.top10 * 100)}%</dd></div>}
             {r.change.m30 != null && <div><dt>30 minutes</dt><dd className={r.change.m30 >= 0 ? 'up' : 'down'}>{pct(r.change.m30)}</dd></div>}
             <div><dt>6 hours</dt><dd className={r.change.h6 >= 0 ? 'up' : 'down'}>{pct(r.change.h6)}</dd></div>
             {r.change.h12 != null && <div><dt>12 hours</dt><dd className={r.change.h12 >= 0 ? 'up' : 'down'}>{gain(r.change.h12)}</dd></div>}

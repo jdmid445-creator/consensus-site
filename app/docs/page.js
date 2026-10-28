@@ -10,6 +10,7 @@ const SECTIONS = [
   ['overview', 'Overview'],
   ['news', 'The wire and headlines'],
   ['coins', 'Coin pages'],
+  ['holders-launch', 'Holders, dev and bundles'],
   ['top', 'Top runner and movers'],
   ['types', 'Coin types'],
   ['holders', 'Holder share'],
@@ -49,6 +50,18 @@ export default function Docs() {
         <h2 id="coins">Coin pages</h2>
         <p>Every runner has its own page with its backstory, why it&apos;s trending right now, and facts worth keeping in mind, plus live numbers, a 24-hour and 7-day chart, holder share, the narratives it belongs to, its wire events and similar coins.</p>
         <p>The story is written by Claude from the coin&apos;s own description on DexScreener, the description in its launch metadata (read through Helius), the text of its website if it has one, and the live numbers. Anything the creators say about their coin is treated as their claim, not as fact. When a coin has published little, the story says so rather than inventing lore. Stories are refreshed every two hours.</p>
+
+        <h2 id="holders-launch">Holders, dev and bundles</h2>
+        <p>Each coin page reads its holders and its first trades straight from Solana through Helius, refreshed every 30 minutes:</p>
+        <ul>
+          <li><b>Holders:</b> wallets holding any of the coin (counted up to 10,000).</li>
+          <li><b>Top 10 wallets</b> and <b>biggest wallet:</b> their share of supply, not counting the liquidity pool.</li>
+          <li><b>Whales:</b> wallets holding 1% or more of supply, pool excluded.</li>
+          <li><b>Dev wallet:</b> the wallet that sent the transaction that created the coin. We show what it got at launch and what it holds now.</li>
+          <li><b>Bundles:</b> other wallets that bought in the same block the coin was created, how much they bought, and how much they still hold.</li>
+          <li><b>Early buyers:</b> wallets that bought in the next five blocks (about two seconds).</li>
+        </ul>
+        <p>Dev and bundle numbers need Helius&apos; launch-history method; if a plan doesn&apos;t include it, the page says so instead of showing a number. A launch tool or a fresh wallet can make a dev look separate from its bundle, so treat these as signals, not proof.</p>
 
         <h2 id="top">Top runner and movers</h2>
         <p>The top of the page is the runner with the biggest 24-hour gain that also has real trading behind it (at least $50K of volume and $15K of liquidity). Its 24h change, price, last-hour change and market cap update every 15 seconds while the page is open.</p>
