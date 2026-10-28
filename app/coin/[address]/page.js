@@ -113,12 +113,9 @@ export default async function CoinPage({ params }) {
             label: 'Stats',
             node: (
               <div className="cstats">
-                <div>
-                  <h2 className="h3">Market</h2>
-                  <CoinStatsLive r={r} />
-                </div>
-                <div className="cstats-side">
-                  <div>
+                <CoinStatsLive r={r} />
+                <div className="cstats-row">
+                  <section className="cstats-box">
                     <h2 className="h3">Trade and links</h2>
                     <div className="coin-links">
                       <a className="btn btn-ink btn-sm" href={r.url} target="_blank" rel="noopener noreferrer">DexScreener <Out width={15} height={15} /></a>
@@ -127,15 +124,17 @@ export default async function CoinPage({ params }) {
                       {r.socials.website && <a className="btn btn-quiet btn-sm" href={r.socials.website} target="_blank" rel="noopener noreferrer nofollow">Website</a>}
                       {r.socials.telegram && <a className="btn btn-quiet btn-sm" href={r.socials.telegram} target="_blank" rel="noopener noreferrer nofollow">Telegram</a>}
                     </div>
-                  </div>
-                  <div className="coin-ca">
-                    <span className="note">Contract address</span>
-                    <code className="addr">{r.address}</code>
-                    <CopyText text={r.address} label="Copy" />
-                  </div>
-                  {similar.length > 0 && (
-                    <section className="coin-sim">
-                      <h2 className="h3">Also in {themeObj?.name}</h2>
+                    <div className="coin-ca">
+                      <span className="note">Contract address</span>
+                      <div className="coin-ca-row">
+                        <span className="addr">{r.address}</span>
+                        <CopyText text={r.address} label="Copy" />
+                      </div>
+                    </div>
+                  </section>
+                  <section className="cstats-box coin-sim">
+                    <h2 className="h3">{similar.length ? `Also in ${themeObj?.name}` : 'Similar coins'}</h2>
+                    {similar.length ? (
                       <ul>
                         {similar.map((s) => (
                           <li key={s.address}>
@@ -147,8 +146,10 @@ export default async function CoinPage({ params }) {
                           </li>
                         ))}
                       </ul>
-                    </section>
-                  )}
+                    ) : (
+                      <p className="note">No other runners share this coin&apos;s theme right now.</p>
+                    )}
+                  </section>
                 </div>
               </div>
             ),

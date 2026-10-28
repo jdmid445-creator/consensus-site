@@ -23,15 +23,12 @@ export default function CoinStatsLive({ r }) {
     <dl className="kv">
       <div><dt>Market cap</dt><dd><LiveNumber value={cap} format={usd} /></dd></div>
       <div><dt>Liquidity</dt><dd><LiveNumber value={liq} format={usd} /></dd></div>
-      <div><dt>Volume, 24h</dt><dd><LiveNumber value={vol24} format={usd} /></dd></div>
-      {vol1 != null && <div><dt>Volume, 1h</dt><dd><LiveNumber value={vol1} format={usd} /></dd></div>}
-      {bs != null && (
-        <div>
-          <dt>Buys vs sells, 24h</dt>
-          <dd><LiveNumber value={Math.round(bs * 100)} format={(v) => `${v}% buys`} /> <small className="kv-sub">{(buys ?? 0).toLocaleString('en-US')} / {(sells ?? 0).toLocaleString('en-US')}</small></dd>
-        </div>
-      )}
-      {ch.m5 != null && <div><dt>5 minutes</dt><dd><LiveNumber value={ch.m5} format={pct} className={tone(ch.m5)} /></dd></div>}
+      <div><dt>Volume, 24h</dt><dd><LiveNumber value={vol24} format={usd} /> {vol1 != null && <small className="kv-sub">{usd(vol1)} in the last hour</small>}</dd></div>
+      <div>
+        <dt>Buys vs sells, 24h</dt>
+        <dd>{bs == null ? '–' : <LiveNumber value={Math.round(bs * 100)} format={(v) => `${v}% buys`} />} {bs != null && <small className="kv-sub">{(buys ?? 0).toLocaleString('en-US')} buys / {(sells ?? 0).toLocaleString('en-US')} sells</small>}</dd>
+      </div>
+      <div><dt>5 minutes</dt><dd>{ch.m5 == null ? '–' : <LiveNumber value={ch.m5} format={pct} className={tone(ch.m5)} />}</dd></div>
       <div><dt>1 hour</dt><dd><LiveNumber value={ch.h1} format={gain} className={tone(ch.h1)} /></dd></div>
       <div><dt>6 hours</dt><dd><LiveNumber value={ch.h6} format={gain} className={tone(ch.h6)} /></dd></div>
       <div><dt>24 hours</dt><dd><LiveNumber value={ch.h24} format={gain} className={tone(ch.h24)} /></dd></div>

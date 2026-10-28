@@ -710,3 +710,32 @@ p, h1, h2, h3, h4 { margin: 0; }
   .wh-sum div:nth-child(-n+2) { border-top: 0; }
   .wh-sum div:nth-child(even) { border-left: 1px solid var(--line); }
 }
+
+/* Stats tab: even tiles, then two equal boxes */
+.cstats { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.cstats-box > * { min-width: 0; }
+.cstats .kv div:nth-last-child(-n+4) { border-bottom: 0; }
+.cstats .kv { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.cstats .kv div { display: flex; flex-direction: column; justify-content: flex-start; gap: 4px; padding: 16px 18px; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line); }
+.cstats .kv div:nth-child(4n+1) { border-left: 0; }
+.cstats .kv dt { font-size: 13px; }
+.cstats .kv dd { font: 600 22px var(--serif); color: var(--ink); }
+.cstats .kv dd .up, .cstats .kv dd .down { font: inherit; }
+.cstats .kv .kv-sub { display: block; font: 500 12.5px var(--sans); color: var(--muted); margin-top: 2px; }
+.cstats-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+.cstats-box { display: grid; align-content: start; gap: 16px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 12px; }
+.cstats-box h2 { margin: 0; }
+.cstats-box.coin-sim ul { margin: 0; }
+.coin-ca-row { display: flex; gap: 8px; align-items: stretch; }
+.coin-ca-row .addr { flex: 1; min-width: 0; font-family: var(--sans); font-size: 13.5px; display: flex; align-items: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; word-break: normal; }
+.coin-ca-row .btn { flex: none; }
+@media (max-width: 900px) {
+  .cstats .kv { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cstats .kv div:nth-child(4n+1) { border-left: 1px solid var(--line); }
+  .cstats .kv div:nth-child(odd) { border-left: 0; }
+  .cstats .kv div:nth-last-child(-n+4) { border-bottom: 1px solid var(--line); }
+  .cstats .kv div:nth-last-child(-n+2) { border-bottom: 0; }
+  .cstats-row { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 720px) { .cstats .kv dd { font-size: 19px; } .cstats .kv div { padding: 13px 14px; } }
+.coin-ca { grid-template-columns: minmax(0, 1fr); min-width: 0; }
