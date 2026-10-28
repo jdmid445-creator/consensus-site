@@ -8,7 +8,9 @@ export const metadata = { title: 'Docs' };
 
 const SECTIONS = [
   ['overview', 'Overview'],
-  ['top', 'Top runner and trending'],
+  ['news', 'The wire and headlines'],
+  ['coins', 'Coin pages'],
+  ['top', 'Top runner and movers'],
   ['types', 'Coin types'],
   ['holders', 'Holder share'],
   ['runners', 'What counts as a runner'],
@@ -40,7 +42,15 @@ export default function Docs() {
         <p>{site.name} reads the last {runnerRules.count} Solana memecoin runners and tells you what the meta is: which narratives are running, what the runners have in common, and what&apos;s losing steam. Everything is on the front page and nothing needs a wallet.</p>
         <p>Every number on the site comes straight from market data at the time of the update. The only writing that comes from AI is the read itself (headline, narratives, working and losing steam) and the narratives you ask the writer for.</p>
 
-        <h2 id="top">Top runner and trending</h2>
+        <h2 id="news">The wire and headlines</h2>
+        <p>The wire is a running list of what just happened among the runners: a coin joining the 50, crossing a market cap milestone ($1M, $2.5M, $5M, $10M and up), taking the lead for the day, climbing 10 or more places, or moving 50% up or 35% down within an hour. Each event comes from comparing one refresh of the data with the last, so nothing on the wire is written by AI or made up. Each event is reported once.</p>
+        <p>Crypto headlines are the latest stories from CoinDesk, Cointelegraph, Decrypt, The Block and Blockworks, taken from their public feeds. We show the headline and link to the original story; stories about Solana or memecoins are marked.</p>
+
+        <h2 id="coins">Coin pages</h2>
+        <p>Every runner has its own page with its backstory, why it&apos;s trending right now, and facts worth keeping in mind, plus live numbers, a 24-hour and 7-day chart, holder share, the narratives it belongs to, its wire events and similar coins.</p>
+        <p>The story is written by Claude from the coin&apos;s own description on DexScreener, the description in its launch metadata (read through Helius), the text of its website if it has one, and the live numbers. Anything the creators say about their coin is treated as their claim, not as fact. When a coin has published little, the story says so rather than inventing lore. Stories are refreshed every two hours.</p>
+
+        <h2 id="top">Top runner and movers</h2>
         <p>The top of the page is the runner with the biggest 24-hour gain that also has real trading behind it (at least $50K of volume and $15K of liquidity). Its 24h change, price, last-hour change and market cap update every 15 seconds while the page is open.</p>
         <p>Below it, the trending list re-ranks the runners by their gain over 30 minutes, 1 hour, 6 hours, 12 hours or 24 hours. The 1h, 6h and 24h numbers update live. The 30m number comes from GeckoTerminal and refreshes every few minutes. Neither source gives a 12-hour number, so 12h is worked out from hourly price candles; a brand-new runner can take a few minutes to get one.</p>
 

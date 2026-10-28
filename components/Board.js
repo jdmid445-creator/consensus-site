@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import CoinImg from './CoinImg';
 import { usd, gain } from '@/lib/format';
 
@@ -14,7 +15,7 @@ export default function Board({ runners, themes }) {
           const v = r.change.h24;
           return (
             <li key={r.address} style={{ '--i': i, '--c': t?.color }}>
-              <a className="tile" href={r.url} target="_blank" rel="noopener noreferrer" aria-label={`${r.name} ($${r.symbol}), ${usd(r.marketCap)}, ${gain(v)} in 24 hours, ${t?.name}`}>
+              <Link className="tile" href={`/coin/${r.address}`} aria-label={`${r.name} ($${r.symbol}), ${usd(r.marketCap)}, ${gain(v)} in 24 hours, ${t?.name}`}>
                 <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={56} className="tile-img" />
                 <span className="tile-sym">${r.symbol}</span>
                 <span className={`tile-gain ${v >= 0 ? 'up' : 'down'}`}>{gain(v)}</span>
@@ -23,7 +24,7 @@ export default function Board({ runners, themes }) {
                   <span>{usd(r.marketCap)} market cap</span>
                   <span>{t?.name}</span>
                 </span>
-              </a>
+              </Link>
             </li>
           );
         })}

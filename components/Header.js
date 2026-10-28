@@ -12,10 +12,11 @@ export default function Header() {
           <span>{site.name}</span>
         </Link>
         <nav className="nav" aria-label="Main">
+          <Link href="/#latest">Latest</Link>
           <Link href="/#movers">Movers</Link>
           <Link href="/#narratives" className="hide-sm">Narratives</Link>
           <Link href="/#runners" className="hide-sm">Runners</Link>
-          <Link href="/#write">Write</Link>
+          <Link href="/#write" className="hide-sm">Write</Link>
           <Link href="/docs">Docs</Link>
           {site.links.x && (
             <a href={site.links.x} target="_blank" rel="noopener noreferrer" className="nav-icon" aria-label={`${site.name} on X`}>

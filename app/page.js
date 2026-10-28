@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Board from '@/components/Board';
 import CoinImg from '@/components/CoinImg';
 import RunnersTable from '@/components/RunnersTable';
@@ -7,7 +8,13 @@ import Ticker from '@/components/Ticker';
 import LeadCard from '@/components/LeadCard';
 import Trending from '@/components/Trending';
 import { Rising, Steady, Cooling } from '@/components/Icons';
+import Wire from '@/components/Wire';
+import Headlines from '@/components/Headlines';
+import MarketStrip from '@/components/MarketStrip';
 import { getCandles } from '@/lib/gecko';
+import { getWire } from '@/lib/wire';
+import { getHeadlines } from '@/lib/news';
+import { getMarkets } from '@/lib/markets';
 import { getMeta, WINDOWS } from '@/lib/meta';
 import { usd, share, age, pct, gain } from '@/lib/format';
 
@@ -42,7 +49,12 @@ export default async function Home() {
     .filter((r) => r.address !== lead.address && typeof r.change.h24 === 'number' && r.volume24h >= 50_000)
     .sort((a, b) => b.change.h24 - a.change.h24)
     .slice(0, 3);
-  const chart = lead.pairAddress ? await getCandles(lead.pairAddress, { timeframe: 'minute', aggregate: 15, limit: 96, revalidate: 300 }) : [];
+  const [chart, wire, headlines, markets] = await Promise.all([
+    lead.pairAddress ? getCandles(lead.pairAddress, { timeframe: 'minute', aggregate: 15, limit: 96, revalidate: 300 }) : [],
+    getWire(14).catch(() => []),
+    getHeadlines(10).catch(() => []),
+    getMarkets().catch(() => []),
+  ]);
 
   const named = stats.themes.filter((t) => t.id !== 'other');
   const headline = summary?.headline || `${lead.name} leads today's Solana runners`;
@@ -61,6 +73,7 @@ export default async function Home() {
   return (
     <>
       <Ticker runners={runners} />
+      <MarketStrip markets={markets} field={{ count: stats.count, cap: stats.totalCap }} />
 
       {/* The lead: today's read, and the coin leading the day */}
       <section className="lead wrap">
@@ -101,6 +114,24 @@ export default async function Home() {
           )}
         </div>
         <LeadCard lead={lead} next={next} chart={chart} />
+      </section>
+
+      {/* Latest: the wire and the crypto headlines */}
+      <section id="latest" className="wrap latest" aria-label="Latest">
+        <div className="latest-col">
+          <div className="col-head">
+            <h2 className="h3">The wire</h2>
+            <p className="note">What just happened among the runners</p>
+          </div>
+          <Wire events={wire} />
+        </div>
+        <div className="latest-col">
+          <div className="col-head">
+            <h2 className="h3">Crypto headlines</h2>
+            <p className="note">From CoinDesk, Cointelegraph, Decrypt, The Block and Blockworks</p>
+          </div>
+          <Headlines items={headlines} />
+        </div>
       </section>
 
       {/* The field */}
@@ -162,9 +193,9 @@ export default async function Home() {
                 <div className="story-coins">
                   <div className="stack">
                     {n.coins.slice(0, 6).map((r) => (
-                      <a key={r.address} href={r.url} target="_blank" rel="noopener noreferrer" title={`${r.name} ($${r.symbol})`}>
+                      <Link key={r.address} href={`/coin/${r.address}`} title={`${r.name} ($${r.symbol})`}>
                         <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={34} />
-                      </a>
+                      </Link>
                     ))}
                     {n.coins.length > 6 && <span className="stack-more">+{n.coins.length - 6}</span>}
                   </div>
@@ -198,7 +229,7 @@ export default async function Home() {
               )}
               {mover && (
                 <li>
-                  Biggest 24h move: <a href={mover.url} target="_blank" rel="noopener noreferrer">{mover.name}</a>, <b className={mover.change.h24 >= 0 ? 'up' : 'down'}>{gain(mover.change.h24)}</b>.
+                  Biggest 24h move: <Link href={`/coin/${mover.address}`}>{mover.name}</Link>, <b className={mover.change.h24 >= 0 ? 'up' : 'down'}>{gain(mover.change.h24)}</b>.
                 </li>
               )}
             </ul>

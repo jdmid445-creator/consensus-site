@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import CoinImg from './CoinImg';
 import LiveNumber from './LiveNumber';
 import TypeBadge from './TypeBadge';
@@ -45,7 +46,7 @@ export default function LeadCard({ lead, next, chart }) {
   return (
     <aside className="lc" aria-labelledby="lc-title">
       <h2 id="lc-title" className="lc-title">Leading today</h2>
-      <a className="lc-coin" href={lead.url} target="_blank" rel="noopener noreferrer">
+      <Link className="lc-coin" href={`/coin/${lead.address}`}>
         <CoinImg src={lead.image} name={lead.name} symbol={lead.symbol} size={52} />
         <span className="lc-id">
           <strong>{lead.name}</strong>
@@ -59,7 +60,8 @@ export default function LeadCard({ lead, next, chart }) {
           <LiveNumber value={v} format={gain} className={v >= 0 ? 'up' : 'down'} />
           <span className="lc-gain-cap">24h</span>
         </span>
-      </a>
+      </Link>
+      {lead.why && <p className="lc-why">{lead.why}</p>}
 
       <Spark points={chart} up={v >= 0} />
 
@@ -72,7 +74,8 @@ export default function LeadCard({ lead, next, chart }) {
       </dl>
 
       <div className="lc-actions">
-        <a className="btn btn-ink btn-sm" href={lead.url} target="_blank" rel="noopener noreferrer">Chart <Out width={15} height={15} /></a>
+        <Link className="btn btn-ink btn-sm" href={`/coin/${lead.address}`}>Read the story</Link>
+        <a className="btn btn-quiet btn-sm" href={lead.url} target="_blank" rel="noopener noreferrer">Chart <Out width={15} height={15} /></a>
         <a className="btn btn-quiet btn-sm" href={`https://gmgn.ai/sol/token/${lead.address}`} target="_blank" rel="noopener noreferrer">GMGN</a>
         {lead.socials.x && <a className="btn btn-quiet btn-sm btn-icon" href={lead.socials.x} target="_blank" rel="noopener noreferrer nofollow" aria-label={`${lead.name} on X`}><XLogo /></a>}
       </div>
@@ -83,11 +86,11 @@ export default function LeadCard({ lead, next, chart }) {
             const nv = live[n.address]?.change?.h24 ?? n.change.h24;
             return (
               <li key={n.address}>
-                <a href={n.url} target="_blank" rel="noopener noreferrer">
+                <Link href={`/coin/${n.address}`}>
                   <CoinImg src={n.image} name={n.name} symbol={n.symbol} size={22} />
                   <span className="lc-next-name">{n.name}</span>
                   <LiveNumber value={nv} format={gain} className={nv >= 0 ? 'up' : 'down'} />
-                </a>
+                </Link>
               </li>
             );
           })}

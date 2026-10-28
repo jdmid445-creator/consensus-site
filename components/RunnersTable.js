@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 
 const FIRST = 20;
+import Link from 'next/link';
 import CoinImg from './CoinImg';
 import TypeBadge from './TypeBadge';
 import { Sort, Out, XLogo } from './Icons';
@@ -70,13 +71,13 @@ export default function RunnersTable({ runners, themes }) {
                 <tr key={r.address} style={{ '--c': t?.color }}>
                   <td className="c-rank num muted">{r.rank}</td>
                   <td>
-                    <a className="coin-cell" href={r.url} target="_blank" rel="noopener noreferrer">
+                    <Link className="coin-cell" href={`/coin/${r.address}`}>
                       <CoinImg src={r.image} name={r.name} symbol={r.symbol} color={t?.color} size={34} />
                       <span>
                         <strong>{r.name}</strong>
                         <span className="sub"><TypeBadge id={r.type} /><span className="muted">${r.symbol}</span><span className="theme-tag">{t?.name}</span><span className="age-sm muted num">{age(r.ageHours)} old</span></span>
                       </span>
-                    </a>
+                    </Link>
                   </td>
                   <td className="c-num num">{usd(r.marketCap)}</td>
                   <td className={`c-num num ${r.change.h24 >= 0 ? 'up' : 'down'}`}>{gain(r.change.h24)}</td>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
 import CoinImg from './CoinImg';
 import LiveNumber from './LiveNumber';
 import TypeBadge, { TypeKey } from './TypeBadge';
@@ -71,7 +72,7 @@ export default function Trending({ windows, trending, runners, typeCounts }) {
             const w = v > 0 ? Math.max(2, (Math.log10(1 + v / 100) / max) * 100) : 2;
             return (
               <li key={r.address} data-k={r.address}>
-                <a href={r.url} target="_blank" rel="noopener noreferrer" className="mv-row">
+                <Link href={`/coin/${r.address}`} className="mv-row">
                   <span className="mv-rank">{i + 1}</span>
                   <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={32} />
                   <span className="mv-id">
@@ -81,13 +82,14 @@ export default function Trending({ windows, trending, runners, typeCounts }) {
                       <span>${r.symbol}</span>
                       <span><LiveNumber value={cap} format={usd} /></span>
                     </span>
+                    {r.why && <span className="mv-why">{r.why}</span>}
                   </span>
                   <span className="mv-meter" aria-hidden="true"><span className={v >= 0 ? 'fill-up' : 'fill-down'} style={{ width: `${w}%` }} /></span>
                   <span className="mv-val">
                     <LiveNumber value={v} format={gain} className={v >= 0 ? 'up' : 'down'} />
                     {vol != null && <span className="mv-vol">{usd(vol)} traded</span>}
                   </span>
-                </a>
+                </Link>
               </li>
             );
           })}

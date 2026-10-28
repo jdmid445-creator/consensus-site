@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import CoinImg from './CoinImg';
 import useLive from './useLive';
 import { gain } from '@/lib/format';
@@ -11,11 +12,11 @@ export default function Ticker({ runners }) {
   const items = runners.map((r) => {
     const v = live[r.address]?.change?.h24 ?? r.change.h24;
     return (
-      <a key={r.address} href={r.url} target="_blank" rel="noopener noreferrer" className="tp-item">
+      <Link key={r.address} href={`/coin/${r.address}`} className="tp-item" tabIndex={-1}>
         <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={18} />
         <span className="tp-sym">${r.symbol}</span>
         <span className={`tp-val ${v >= 0 ? 'up' : 'down'}`}>{v >= 0 ? '▲' : '▼'} {gain(v).replace(/^[+-]/, '')}</span>
-      </a>
+      </Link>
     );
   });
   const seconds = Math.max(40, runners.length * 3.2);
