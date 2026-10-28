@@ -5,6 +5,7 @@ import RunnersTable from '@/components/RunnersTable';
 import NarrativeWriter from '@/components/NarrativeWriter';
 import Ago from '@/components/Ago';
 import Ticker from '@/components/Ticker';
+import AutoRefresh from '@/components/AutoRefresh';
 import LeadCard from '@/components/LeadCard';
 import NewRunners from '@/components/NewRunners';
 import CountUp from '@/components/CountUp';
@@ -75,6 +76,7 @@ export default async function Home() {
 
   return (
     <>
+      <AutoRefresh ms={60000} />
       <Ticker runners={runners} />
       <MarketStrip markets={markets} field={{ count: stats.count, cap: stats.totalCap }} />
 

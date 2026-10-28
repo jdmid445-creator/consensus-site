@@ -38,7 +38,7 @@ export default function Trending({ windows, trending, runners, typeCounts }) {
   const [win, setWin] = useState('h1');
   const byAddr = useMemo(() => new Map(runners.map((r) => [r.address, r])), [runners]);
   const base = (trending[win] || []).map((a) => byAddr.get(a)).filter(Boolean);
-  const live = useLive(base.map((r) => r.address));
+  const live = useLive(base.map((r) => r.address), 5000);
 
   const value = (r) => (LIVE_WINDOWS.has(win) ? live[r.address]?.change?.[win] ?? r.change[win] : r.change[win]);
   const list = [...base].sort((a, b) => (value(b) ?? -Infinity) - (value(a) ?? -Infinity)).slice(0, 10);

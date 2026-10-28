@@ -4,6 +4,8 @@ import CoinImg from '@/components/CoinImg';
 import CoinStory from '@/components/CoinStory';
 import LiveChart from '@/components/LiveChart';
 import HolderStats from '@/components/HolderStats';
+import CoinStatsLive from '@/components/CoinStatsLive';
+import AutoRefresh from '@/components/AutoRefresh';
 import CoinLive from '@/components/CoinLive';
 import CopyText from '@/components/CopyText';
 import TypeBadge from '@/components/TypeBadge';
@@ -69,6 +71,7 @@ export default async function CoinPage({ params }) {
 
   return (
     <div className="wrap coinpage">
+      <AutoRefresh ms={60000} />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/">Today</Link>
         <span aria-hidden="true">/</span>
@@ -138,16 +141,7 @@ export default async function CoinPage({ params }) {
         <aside className="coin-side">
           <HolderStats address={address} />
 
-          <dl className="kv">
-            <div><dt>Market cap</dt><dd>{usd(r.marketCap)}</dd></div>
-            <div><dt>Liquidity</dt><dd>{usd(r.liquidity)}</dd></div>
-            <div><dt>Volume, 24h</dt><dd>{usd(r.volume24h)}</dd></div>
-            {buyShare != null && <div><dt>Buys vs sells, 24h</dt><dd>{Math.round(buyShare * 100)}% buys</dd></div>}
-            {r.change.m30 != null && <div><dt>30 minutes</dt><dd className={r.change.m30 >= 0 ? 'up' : 'down'}>{pct(r.change.m30)}</dd></div>}
-            <div><dt>6 hours</dt><dd className={r.change.h6 >= 0 ? 'up' : 'down'}>{pct(r.change.h6)}</dd></div>
-            {r.change.h12 != null && <div><dt>12 hours</dt><dd className={r.change.h12 >= 0 ? 'up' : 'down'}>{gain(r.change.h12)}</dd></div>}
-            <div><dt>24 hours</dt><dd className={r.change.h24 >= 0 ? 'up' : 'down'}>{gain(r.change.h24)}</dd></div>
-          </dl>
+          <CoinStatsLive r={r} />
 
           <div className="coin-links">
             <a className="btn btn-ink btn-sm" href={r.url} target="_blank" rel="noopener noreferrer">DexScreener <Out width={15} height={15} /></a>

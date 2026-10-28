@@ -8,7 +8,7 @@ import { gain } from '@/lib/format';
 // The markets-channel tape: every runner and its live 24h move, scrolling.
 // Pauses on hover and stays still for people who prefer reduced motion.
 export default function Ticker({ runners }) {
-  const live = useLive(runners.slice(0, 30).map((r) => r.address), 20000);
+  const live = useLive(runners.map((r) => r.address), 5000);
   const items = runners.map((r) => {
     const v = live[r.address]?.change?.h24 ?? r.change.h24;
     return (

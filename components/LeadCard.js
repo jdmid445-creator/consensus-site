@@ -37,7 +37,7 @@ function Spark({ points, up }) {
 
 // "Leading today": the coin with the biggest 24h gain that has real trading behind it, live.
 export default function LeadCard({ lead, next, chart }) {
-  const live = useLive([lead.address, ...next.map((n) => n.address)]);
+  const live = useLive([lead.address, ...next.map((n) => n.address)], 5000);
   const L = live[lead.address];
   const v = L?.change?.h24 ?? lead.change.h24;
   const h1 = L?.change?.h1 ?? lead.change.h1;

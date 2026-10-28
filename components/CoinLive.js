@@ -6,13 +6,13 @@ import { usd, gain, pct } from '@/lib/format';
 
 // The live numbers at the top of a coin page.
 export default function CoinLive({ r }) {
-  const live = useLive([r.address]);
+  const live = useLive([r.address], 2000);
   const L = live[r.address];
   const h24 = L?.change?.h24 ?? r.change.h24;
   const h1 = L?.change?.h1 ?? r.change.h1;
   const cap = L?.marketCap ?? r.marketCap;
   const price = L?.priceUsd ?? r.priceUsd;
-  const fmtPrice = (n) => (n == null ? '–' : n >= 1 ? `$${n.toFixed(2)}` : `$${n.toPrecision(3)}`);
+  const fmtPrice = (n) => (n == null ? '–' : n >= 1 ? `$${n.toFixed(2)}` : `$${n.toPrecision(4)}`);
   return (
     <div className="ch-live">
       <div className="ch-gain">

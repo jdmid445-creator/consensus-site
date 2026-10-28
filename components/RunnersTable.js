@@ -5,6 +5,8 @@ import { useMemo, useState } from 'react';
 const FIRST = 20;
 import Link from 'next/link';
 import CoinImg from './CoinImg';
+import LiveNumber from './LiveNumber';
+import useLive from './useLive';
 import TypeBadge from './TypeBadge';
 import { Sort, Out, XLogo } from './Icons';
 import { usd, gain, age } from '@/lib/format';
@@ -17,7 +19,16 @@ const COLS = [
   { key: 'top10', label: 'Top 10', get: (r) => r.top10 ?? Infinity, firstDir: 'asc', hideSm: true, title: 'Share of supply held by the 10 biggest wallets, pool excluded' },
 ];
 
-export default function RunnersTable({ runners, themes }) {
+export default function RunnersTable({ runners: base, themes }) {
+  // Live market cap, 24h move and volume for every row (sorting follows the live numbers).
+  const live = useLive(base.map((r) => r.address), 5000);
+  const runners = useMemo(
+    () => base.map((r) => {
+      const L = live[r.address];
+      return L ? { ...r, marketCap: L.marketCap ?? r.marketCap, volume24h: L.volume?.h24 ?? r.volume24h, change: { ...r.change, h24: L.change?.h24 ?? r.change.h24 } } : r;
+    }),
+    [base, live],
+  );
   const [theme, setTheme] = useState('all');
   const [sort, setSort] = useState({ key: 'marketCap', dir: 'desc' });
   const [all, setAll] = useState(false);
@@ -79,8 +90,8 @@ export default function RunnersTable({ runners, themes }) {
                       </span>
                     </Link>
                   </td>
-                  <td className="c-num num">{usd(r.marketCap)}</td>
-                  <td className={`c-num num ${r.change.h24 >= 0 ? 'up' : 'down'}`}>{gain(r.change.h24)}</td>
+                  <td className="c-num num"><LiveNumber value={r.marketCap} format={usd} /></td>
+                  <td className={`c-num num ${r.change.h24 >= 0 ? 'up' : 'down'}`}><LiveNumber value={r.change.h24} format={gain} /></td>
                   <td className="c-num num">{age(r.ageHours)}</td>
                   <td className="c-num num hide-sm">{usd(r.volume24h)}</td>
                   {cols.length > COLS.length - 1 && <td className="c-num num hide-sm">{r.top10 == null ? '–' : `${Math.round(r.top10 * 100)}%`}</td>}

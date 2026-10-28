@@ -52,7 +52,7 @@ export default function Docs() {
         <p>The story is written by Claude from the coin&apos;s own description on DexScreener, the description in its launch metadata (read through Helius), the text of its website if it has one, and the live numbers. Anything the creators say about their coin is treated as their claim, not as fact. When a coin has published little, the story says so rather than inventing lore. Stories are refreshed every two hours.</p>
 
         <h2 id="holders-launch">Holders, dev and bundles</h2>
-        <p>Each coin page reads its holders and its first trades straight from Solana through Helius, refreshed every 30 minutes:</p>
+        <p>Each coin page reads its holders and its first trades straight from Solana through Helius. Holdings update every 15 seconds and the holder count every minute:</p>
         <ul>
           <li><b>Holders:</b> wallets holding any of the coin (counted up to 10,000).</li>
           <li><b>Top 10 wallets</b> and <b>biggest wallet:</b> their share of supply, not counting the liquidity pool.</li>
@@ -123,7 +123,7 @@ export default function Docs() {
         <p>It won&apos;t copy an existing coin, impersonate a real person or brand, or talk price. Each visitor can write a few per minute.</p>
 
         <h2 id="refresh">How often it updates</h2>
-        <p>Market data refreshes every 3 minutes. The AI read refreshes every 15 minutes. The time of the last update is shown at the top of the front page.</p>
+        <p>Prices, market caps and % moves update every 2 seconds on coin pages and every 5 seconds on the front page, straight from DexScreener. Holder stats update every 15 seconds. The list of runners refreshes every 3 minutes, the wire and headlines every minute, and the AI read every 15 minutes.</p>
 
         <h2 id="api">Public JSON</h2>
         <p>Everything on the front page is available as JSON at <a href="/api/meta"><code>/api/meta</code></a>. It&apos;s read-only and cached for 3 minutes.</p>

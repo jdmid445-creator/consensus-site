@@ -8,7 +8,7 @@ import { usd, gain, age } from '@/lib/format';
 
 // The newest coins on the board: the youngest of today's runners, live.
 export default function NewRunners({ coins }) {
-  const live = useLive(coins.map((c) => c.address));
+  const live = useLive(coins.map((c) => c.address), 5000);
   return (
     <aside className="rail" aria-labelledby="rail-title">
       <h2 id="rail-title" className="rail-title">New runners</h2>

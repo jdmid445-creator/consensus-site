@@ -20,15 +20,25 @@ function Row({ label, value, sub, tone, help }) {
 // Holders, whales, dev and bundles for one coin, read from Solana through Helius.
 export default function HolderStats({ address }) {
   const [s, setS] = useState({ status: 'loading' });
+  // Loads now, then refreshes every 15 seconds while the tab is open (keeps showing the last
+  // numbers during a refresh, and keeps them if a refresh fails).
   useEffect(() => {
     let stop = false;
-    fetch(`/api/onchain?a=${address}`)
-      .then(async (res) => {
-        const d = await res.json();
-        if (!stop) setS(res.ok && !d.error ? { status: 'done', d } : { status: 'error', error: d.error });
-      })
-      .catch(() => !stop && setS({ status: 'error', error: 'Couldn’t load holder stats.' }));
-    return () => { stop = true; };
+    const load = () => {
+      if (document.visibilityState !== 'visible') return;
+      fetch(`/api/onchain?a=${address}`, { cache: 'no-store' })
+        .then(async (res) => {
+          const d = await res.json();
+          if (stop) return;
+          if (res.ok && !d.error) setS({ status: 'done', d });
+          else setS((prev) => (prev.status === 'done' ? prev : { status: 'error', error: d.error }));
+        })
+        .catch(() => !stop && setS((prev) => (prev.status === 'done' ? prev : { status: 'error', error: 'Couldn’t load holder stats.' })));
+    };
+    load();
+    const t = setInterval(load, 15000);
+    document.addEventListener('visibilitychange', load);
+    return () => { stop = true; clearInterval(t); document.removeEventListener('visibilitychange', load); };
   }, [address]);
 
   if (s.status === 'loading') {
@@ -86,7 +96,7 @@ export default function HolderStats({ address }) {
         ) : null}
       </dl>
       {d.launchNote && <p className="note">{d.launchNote}</p>}
-      <p className="note">Read from Solana through Helius, refreshed every 30 minutes. Pool excluded from all holder shares.</p>
+      <p className="note">Read from Solana through Helius. Updates every 15 seconds{d.at ? `, last at ${new Date(d.at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' })}` : ''}. Pool excluded from all holder shares.</p>
     </section>
   );
 }
