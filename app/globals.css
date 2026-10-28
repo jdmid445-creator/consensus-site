@@ -401,9 +401,9 @@ p, h1, h2, h3, h4 { margin: 0; }
 .mkts { border-bottom: 1px solid var(--line); background: var(--paper); font-size: 13.5px; }
 .mkts { overflow: hidden; }
 /* One full row, edge to edge: coins that don't fit wrap onto a hidden second row. */
-.mkts-in { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: 26px; row-gap: 24px; height: 38px; align-items: center; color: var(--ink-2); overflow: hidden; padding: 0 max(24px, env(safe-area-inset-left)); }
+.mkts-in { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: 26px; row-gap: 0; height: 40px; align-items: center; align-content: flex-start; color: var(--ink-2); overflow: hidden; padding: 0 max(24px, env(safe-area-inset-left)); }
 .mkts-in::-webkit-scrollbar { display: none; }
-.mkt { display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; flex: none; font-variant-numeric: tabular-nums; }
+.mkt { display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; flex: none; height: 40px; font-variant-numeric: tabular-nums; }
 .mkt .coin { width: 16px !important; height: 16px !important; }
 .mkt b { color: var(--navy); font-weight: 600; }
 
@@ -572,6 +572,7 @@ p, h1, h2, h3, h4 { margin: 0; }
   .sheet-head, .sheet-body section { padding-left: 18px; padding-right: 18px; }
   .nav { gap: 16px; }
   .mkts-in { flex-wrap: nowrap; height: auto; padding: 9px 18px; gap: 18px; font-size: 12.5px; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; }
+  .mkt { height: auto; }
   .ch { align-items: flex-start; }
   .ch-id { align-items: flex-start; gap: 14px; }
   .ch-id > .coin { width: 52px !important; height: 52px !important; }
