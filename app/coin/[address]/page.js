@@ -8,6 +8,7 @@ import CoinStatsLive from '@/components/CoinStatsLive';
 import AutoRefresh from '@/components/AutoRefresh';
 import CoinLive from '@/components/CoinLive';
 import CopyText from '@/components/CopyText';
+import CopyCA from '@/components/CopyCA';
 import TypeBadge from '@/components/TypeBadge';
 import { Out, XLogo } from '@/components/Icons';
 import { getMeta } from '@/lib/meta';
@@ -93,6 +94,7 @@ export default async function CoinPage({ params }) {
               <span>Launched on {r.launchpad}</span>
               {runner && <span>#{r.rank} of today&apos;s runners</span>}
             </p>
+            <CopyCA address={r.address} />
           </div>
         </div>
         <CoinLive r={r} />
