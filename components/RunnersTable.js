@@ -1,0 +1,103 @@
+'use client';
+
+import { useMemo, useState } from 'react';
+
+const FIRST = 20;
+import CoinImg from './CoinImg';
+import { Sort, Out, XLogo } from './Icons';
+import { usd, pct, age } from '@/lib/format';
+
+const COLS = [
+  { key: 'marketCap', label: 'Market cap', get: (r) => r.marketCap },
+  { key: 'h24', label: '24h', get: (r) => r.change.h24 ?? -Infinity },
+  { key: 'age', label: 'Age', get: (r) => r.ageHours ?? Infinity, firstDir: 'asc', hideSm: true },
+  { key: 'volume', label: 'Volume 24h', get: (r) => r.volume24h, hideSm: true },
+];
+
+export default function RunnersTable({ runners, themes }) {
+  const [theme, setTheme] = useState('all');
+  const [sort, setSort] = useState({ key: 'marketCap', dir: 'desc' });
+  const [all, setAll] = useState(false);
+  const themeMap = useMemo(() => new Map(themes.map((t) => [t.id, t])), [themes]);
+
+  const rows = useMemo(() => {
+    const col = COLS.find((c) => c.key === sort.key);
+    const list = runners.filter((r) => theme === 'all' || r.theme === theme);
+    return [...list].sort((a, b) => (col.get(a) - col.get(b)) * (sort.dir === 'asc' ? 1 : -1));
+  }, [runners, theme, sort]);
+
+  const toggle = (c) =>
+    setSort((s) => (s.key === c.key ? { key: c.key, dir: s.dir === 'asc' ? 'desc' : 'asc' } : { key: c.key, dir: c.firstDir || 'desc' }));
+
+  return (
+    <div>
+      <div className="chips chips-scroll" role="group" aria-label="Filter by theme">
+        <button type="button" className="chip" aria-pressed={theme === 'all'} onClick={() => setTheme('all')}>
+          All <span className="num">{runners.length}</span>
+        </button>
+        {themes.map((t) => (
+          <button key={t.id} type="button" className="chip" style={{ '--c': t.color }} aria-pressed={theme === t.id} onClick={() => setTheme(t.id)}>
+            <span className="sw" aria-hidden="true" />
+            {t.name} <span className="num">{t.count}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="table-scroll">
+        <table className="runners">
+          <thead>
+            <tr>
+              <th scope="col" className="c-rank">#</th>
+              <th scope="col">Coin</th>
+              {COLS.map((c) => (
+                <th key={c.key} scope="col" className={`c-num ${c.hideSm ? 'hide-sm' : ''}`} aria-sort={sort.key === c.key ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'}>
+                  <button type="button" onClick={() => toggle(c)}>
+                    {c.label} <Sort dir={sort.key === c.key ? sort.dir : null} />
+                  </button>
+                </th>
+              ))}
+              <th scope="col" className="hide-md">Launched on</th>
+              <th scope="col" className="c-links hide-sm"><span className="sr-only">Links</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {(all ? rows : rows.slice(0, FIRST)).map((r) => {
+              const t = themeMap.get(r.theme);
+              return (
+                <tr key={r.address} style={{ '--c': t?.color }}>
+                  <td className="c-rank num muted">{r.rank}</td>
+                  <td>
+                    <a className="coin-cell" href={r.url} target="_blank" rel="noopener noreferrer">
+                      <CoinImg src={r.image} name={r.name} symbol={r.symbol} color={t?.color} size={34} />
+                      <span>
+                        <strong>{r.name}</strong>
+                        <span className="sub"><span className="muted">${r.symbol}</span><span className="theme-tag">{t?.name}</span><span className="age-sm muted num">{age(r.ageHours)} old</span></span>
+                      </span>
+                    </a>
+                  </td>
+                  <td className="c-num num">{usd(r.marketCap)}</td>
+                  <td className={`c-num num ${r.change.h24 >= 0 ? 'up' : 'down'}`}>{pct(r.change.h24)}</td>
+                  <td className="c-num num">{age(r.ageHours)}</td>
+                  <td className="c-num num hide-sm">{usd(r.volume24h)}</td>
+                  <td className="hide-md muted">{r.launchpad}</td>
+                  <td className="c-links hide-sm">
+                    <span className="links">
+                      {r.socials.x && <a href={r.socials.x} target="_blank" rel="noopener noreferrer nofollow" aria-label={`${r.name} on X`}><XLogo /></a>}
+                      <a href={`https://gmgn.ai/sol/token/${r.address}`} target="_blank" rel="noopener noreferrer" aria-label={`${r.name} on GMGN`}>GMGN</a>
+                      <a href={r.url} target="_blank" rel="noopener noreferrer" aria-label={`${r.name} on DexScreener`}><Out /></a>
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        {!all && rows.length > FIRST && (
+          <div className="table-more">
+            <button type="button" className="btn btn-quiet" onClick={() => setAll(true)}>Show all {rows.length}</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
