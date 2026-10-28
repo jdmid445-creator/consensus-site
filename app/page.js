@@ -65,9 +65,12 @@ export default async function Home() {
     summary?.dek ||
     `${lead.name} is up ${gain(lead.change.h24)} in 24 hours. ${named[0] ? `${named[0].name} is the biggest theme, with ${share(named[0].shareCap)} of the field's market cap.` : ''}`;
 
-  const narratives = summary?.themes?.length
+  const allNarratives = (summary?.themes?.length
     ? summary.themes.map((t) => ({ ...t, coins: t.addresses.map((a) => byAddr.get(a)).filter(Boolean) }))
-    : named.map((t) => ({ name: t.name, take: '', heat: null, coins: t.addresses.map((a) => byAddr.get(a)).filter(Boolean) }));
+    : named.map((t) => ({ name: t.name, take: '', heat: null, coins: t.addresses.map((a) => byAddr.get(a)).filter(Boolean) }))
+  ).filter((n) => n.coins.length);
+  // Two columns, so keep an even number: drop the smallest one when the count is odd.
+  const narratives = allNarratives.length > 1 && allNarratives.length % 2 ? allNarratives.slice(0, -1) : allNarratives;
   const totalCap = stats.totalCap || 1;
   const mover = byAddr.get(stats.topMover);
   const pad = stats.launchpads[0];
