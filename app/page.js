@@ -3,8 +3,11 @@ import CoinImg from '@/components/CoinImg';
 import RunnersTable from '@/components/RunnersTable';
 import NarrativeWriter from '@/components/NarrativeWriter';
 import Ago from '@/components/Ago';
+import TopRunner from '@/components/TopRunner';
+import Trending from '@/components/Trending';
+import { getCandles } from '@/lib/gecko';
 import { Rising, Steady, Cooling } from '@/components/Icons';
-import { getMeta } from '@/lib/meta';
+import { getMeta, WINDOWS } from '@/lib/meta';
 import { themeById } from '@/lib/themes';
 import { usd, share, age, pct } from '@/lib/format';
 
@@ -45,11 +48,18 @@ export default async function Home() {
   const totalCap = stats.totalCap || 1;
 
   const mover = byAddr.get(stats.topMover);
+  const lead = byAddr.get(meta.top) || runners[0];
+  const others = runners
+    .filter((r) => r.address !== lead.address && typeof r.change.h24 === 'number' && r.volume24h >= 50_000)
+    .sort((a, b) => b.change.h24 - a.change.h24)
+    .slice(0, 3);
+  const chart = lead.pairAddress ? await getCandles(lead.pairAddress, { timeframe: 'minute', aggregate: 15, limit: 96, revalidate: 300 }) : [];
+  const typeCounts = runners.reduce((m, r) => ({ ...m, [r.type]: (m[r.type] || 0) + 1 }), {});
   const pad = stats.launchpads[0];
 
   return (
     <>
-      {/* Front: the read and the board */}
+      {/* Front: the coin running hardest today, live */}
       <section className="front">
         <div className="front-bg" aria-hidden="true">
           {runners.slice(0, 24).map((r) => r.image && (
@@ -57,13 +67,29 @@ export default async function Home() {
             <img key={r.address} src={r.image} alt="" referrerPolicy="no-referrer" loading="lazy" />
           ))}
         </div>
+        <div className="wrap front-top">
+          <TopRunner top={lead} others={others} chart={chart} />
+        </div>
+      </section>
+
+      {/* Trending by time window */}
+      <section id="trending" className="wrap section section-tight">
+        <div className="sec-head">
+          <h2 className="h2">Running right now</h2>
+          <p className="muted">The runners with the biggest gains in each window. Pick a window to re-rank them.</p>
+        </div>
+        <Trending windows={WINDOWS} trending={meta.trending} runners={runners} typeCounts={typeCounts} />
+      </section>
+
+      {/* The meta: the read and the board */}
+      <section id="meta" className="meta-sec">
         <div className="wrap front-in">
           <div className="read">
             <p className="date">
               <span>{today()}</span>
               <Ago at={meta.updatedAt} />
             </p>
-            <h1 className="display">{headline}</h1>
+            <h2 className="display">{headline}</h2>
             <p className="lede">{dek}</p>
             <div className="read-actions">
               <a href="#write" className="btn btn-ink">Write a narrative for today</a>
@@ -136,6 +162,14 @@ export default async function Home() {
             <p><b className="num">{share(stats.paidProfile)}</b> paid for a DexScreener profile.</p>
             {pad && <p><b className="num">{share(pad.share)}</b> launched on {pad.name}.</p>}
             <p><b className="num">{share(stats.buyShare)}</b> of today&apos;s trades across the board were buys.</p>
+            {stats.medianTop10 != null && (
+              <p>The 10 biggest wallets hold <b className="num">{share(stats.medianTop10)}</b> of the median runner, not counting the pool.</p>
+            )}
+            {stats.concentration && (
+              <p>
+                Spread-out holders (top 10 under {share(stats.concentration.cutoff)}): <b className={`num ${stats.concentration.spreadChange >= 0 ? 'up' : 'down'}`}>{pct(stats.concentration.spreadChange)}</b> median today, vs <b className={`num ${stats.concentration.tightChange >= 0 ? 'up' : 'down'}`}>{pct(stats.concentration.tightChange)}</b> for concentrated ones.
+              </p>
+            )}
             {mover && (
               <p>
                 Biggest mover today: <a href={mover.url} target="_blank" rel="noopener noreferrer">{mover.name}</a>, <b className={`num ${mover.change.h24 >= 0 ? 'up' : 'down'}`}>{pct(mover.change.h24)}</b>.

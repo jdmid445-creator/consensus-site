@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 
 const FIRST = 20;
 import CoinImg from './CoinImg';
+import TypeBadge from './TypeBadge';
 import { Sort, Out, XLogo } from './Icons';
 import { usd, pct, age } from '@/lib/format';
 
@@ -12,6 +13,7 @@ const COLS = [
   { key: 'h24', label: '24h', get: (r) => r.change.h24 ?? -Infinity },
   { key: 'age', label: 'Age', get: (r) => r.ageHours ?? Infinity, firstDir: 'asc', hideSm: true },
   { key: 'volume', label: 'Volume 24h', get: (r) => r.volume24h, hideSm: true },
+  { key: 'top10', label: 'Top 10', get: (r) => r.top10 ?? Infinity, firstDir: 'asc', hideSm: true, title: 'Share of supply held by the 10 biggest wallets, pool excluded' },
 ];
 
 export default function RunnersTable({ runners, themes }) {
@@ -20,6 +22,7 @@ export default function RunnersTable({ runners, themes }) {
   const [all, setAll] = useState(false);
   const themeMap = useMemo(() => new Map(themes.map((t) => [t.id, t])), [themes]);
 
+  const cols = useMemo(() => (runners.some((r) => r.top10 != null) ? COLS : COLS.filter((c) => c.key !== 'top10')), [runners]);
   const rows = useMemo(() => {
     const col = COLS.find((c) => c.key === sort.key);
     const list = runners.filter((r) => theme === 'all' || r.theme === theme);
@@ -49,9 +52,9 @@ export default function RunnersTable({ runners, themes }) {
             <tr>
               <th scope="col" className="c-rank">#</th>
               <th scope="col">Coin</th>
-              {COLS.map((c) => (
+              {cols.map((c) => (
                 <th key={c.key} scope="col" className={`c-num ${c.hideSm ? 'hide-sm' : ''}`} aria-sort={sort.key === c.key ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'}>
-                  <button type="button" onClick={() => toggle(c)}>
+                  <button type="button" onClick={() => toggle(c)} title={c.title}>
                     {c.label} <Sort dir={sort.key === c.key ? sort.dir : null} />
                   </button>
                 </th>
@@ -71,7 +74,7 @@ export default function RunnersTable({ runners, themes }) {
                       <CoinImg src={r.image} name={r.name} symbol={r.symbol} color={t?.color} size={34} />
                       <span>
                         <strong>{r.name}</strong>
-                        <span className="sub"><span className="muted">${r.symbol}</span><span className="theme-tag">{t?.name}</span><span className="age-sm muted num">{age(r.ageHours)} old</span></span>
+                        <span className="sub"><TypeBadge id={r.type} /><span className="muted">${r.symbol}</span><span className="theme-tag">{t?.name}</span><span className="age-sm muted num">{age(r.ageHours)} old</span></span>
                       </span>
                     </a>
                   </td>
@@ -79,6 +82,7 @@ export default function RunnersTable({ runners, themes }) {
                   <td className={`c-num num ${r.change.h24 >= 0 ? 'up' : 'down'}`}>{pct(r.change.h24)}</td>
                   <td className="c-num num">{age(r.ageHours)}</td>
                   <td className="c-num num hide-sm">{usd(r.volume24h)}</td>
+                  {cols.length > COLS.length - 1 && <td className="c-num num hide-sm">{r.top10 == null ? '–' : `${Math.round(r.top10 * 100)}%`}</td>}
                   <td className="hide-md muted">{r.launchpad}</td>
                   <td className="c-links hide-sm">
                     <span className="links">

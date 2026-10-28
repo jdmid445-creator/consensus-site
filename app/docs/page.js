@@ -1,11 +1,16 @@
 import Link from 'next/link';
 import { site, runnerRules } from '@/lib/site';
 import { THEMES } from '@/lib/themes';
+import { TYPES } from '@/lib/types';
+import { TypeIcon } from '@/components/TypeBadge';
 
 export const metadata = { title: 'Docs' };
 
 const SECTIONS = [
   ['overview', 'Overview'],
+  ['top', 'Top runner and trending'],
+  ['types', 'Coin types'],
+  ['holders', 'Holder share'],
   ['runners', 'What counts as a runner'],
   ['sources', 'Where the data comes from'],
   ['themes', 'How themes are found'],
@@ -35,6 +40,20 @@ export default function Docs() {
         <p>{site.name} reads the last {runnerRules.count} Solana memecoin runners and tells you what the meta is: which narratives are running, what the runners have in common, and what&apos;s losing steam. Everything is on the front page and nothing needs a wallet.</p>
         <p>Every number on the site comes straight from market data at the time of the update. The only writing that comes from AI is the read itself (headline, narratives, working and losing steam) and the narratives you ask the writer for.</p>
 
+        <h2 id="top">Top runner and trending</h2>
+        <p>The top of the page is the runner with the biggest 24-hour gain that also has real trading behind it (at least $50K of volume and $15K of liquidity). Its 24h change, price, last-hour change and market cap update every 15 seconds while the page is open.</p>
+        <p>Below it, the trending list re-ranks the runners by their gain over 30 minutes, 1 hour, 6 hours, 12 hours or 24 hours. The 1h, 6h and 24h numbers update live. The 30m number comes from GeckoTerminal and refreshes every few minutes. Neither source gives a 12-hour number, so 12h is worked out from hourly price candles; a brand-new runner can take a few minutes to get one.</p>
+
+        <h2 id="types">Coin types</h2>
+        <p>Each runner gets a badge for what kind of coin it is:</p>
+        <ul className="docs-themes">
+          {TYPES.map((t) => <li key={t.id}><span className={`type type-${t.id}`}><TypeIcon id={t.id} size={14} /></span> <span><b>{t.name}</b>: {t.blurb}</span></li>)}
+        </ul>
+        <p>Community takeover comes straight from DexScreener&apos;s takeover list. The rest start as a keyword guess and are then set by the AI read, which sees each coin&apos;s name, description and socials.</p>
+
+        <h2 id="holders">Holder share</h2>
+        <p>&quot;Top 10&quot; is the share of a coin&apos;s supply held by its 10 biggest wallets, read from Solana through Helius. The liquidity pool&apos;s own balance is left out, because it isn&apos;t a holder. It refreshes every 30 minutes per coin.</p>
+
         <h2 id="runners">What counts as a runner</h2>
         <p>A runner is a Solana token that:</p>
         <ul>
@@ -50,7 +69,8 @@ export default function Docs() {
           <thead><tr><th>Source</th><th>Used for</th></tr></thead>
           <tbody>
             <tr><td>DexScreener</td><td>Prices, market cap, liquidity, volume, trades, launch time, logos and socials. Also new token profiles, boosts and community takeovers, which surface coins people are putting money behind.</td></tr>
-            <tr><td>GeckoTerminal</td><td>Trending and top-volume Solana pools, used to find candidates.</td></tr>
+            <tr><td>GeckoTerminal</td><td>Trending and top-volume Solana pools (to find candidates), 30-minute change, and the price candles behind the 12h numbers and the top runner&apos;s chart.</td></tr>
+            <tr><td>Helius</td><td>The biggest holders of each runner, for the top-10 share.</td></tr>
             <tr><td>Claude (Anthropic)</td><td>The written read of the meta and the narrative writer.</td></tr>
           </tbody>
         </table>
