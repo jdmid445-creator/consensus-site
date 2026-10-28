@@ -7,6 +7,7 @@ import HolderStats from '@/components/HolderStats';
 import CoinStatsLive from '@/components/CoinStatsLive';
 import AutoRefresh from '@/components/AutoRefresh';
 import CoinLive from '@/components/CoinLive';
+import CoinTabs from '@/components/CoinTabs';
 import CopyText from '@/components/CopyText';
 import CopyCA from '@/components/CopyCA';
 import TypeBadge from '@/components/TypeBadge';
@@ -104,28 +105,84 @@ export default async function CoinPage({ params }) {
 
       <LiveChart pairAddress={r.pairAddress} day={day} week={week} />
 
-      <div className="coin-grid">
-        <div className="coin-main">
-          <CoinStory address={address} enabled={runner && meta.aiEnabled} why={r.why} />
-
-          {narratives.length > 0 && (
-            <section className="coin-sec" data-reveal="up">
-              <h2 className="h3">In today&apos;s narratives</h2>
-              <ul className="coin-narr">
-                {narratives.map((n) => (
-                  <li key={n.name}>
-                    <Link href="/#narratives"><strong>{n.name}</strong></Link>
-                    <span className={`heat heat-${n.heat}`}>{n.heat === 'rising' ? 'Rising' : n.heat === 'cooling' ? 'Cooling' : 'Holding'}</span>
-                    <p>{n.take}</p>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          <section className="coin-sec" data-reveal="up">
-            <h2 className="h3">On the wire</h2>
-            {wire.length ? (
+      <CoinTabs
+        address={address}
+        tabs={[
+          {
+            id: 'stats',
+            label: 'Stats',
+            node: (
+              <div className="cstats">
+                <div>
+                  <h2 className="h3">Market</h2>
+                  <CoinStatsLive r={r} />
+                </div>
+                <div className="cstats-side">
+                  <div>
+                    <h2 className="h3">Trade and links</h2>
+                    <div className="coin-links">
+                      <a className="btn btn-ink btn-sm" href={r.url} target="_blank" rel="noopener noreferrer">DexScreener <Out width={15} height={15} /></a>
+                      <a className="btn btn-quiet btn-sm" href={`https://gmgn.ai/sol/token/${r.address}`} target="_blank" rel="noopener noreferrer">GMGN</a>
+                      {r.socials.x && <a className="btn btn-quiet btn-sm" href={r.socials.x} target="_blank" rel="noopener noreferrer nofollow"><XLogo /> X</a>}
+                      {r.socials.website && <a className="btn btn-quiet btn-sm" href={r.socials.website} target="_blank" rel="noopener noreferrer nofollow">Website</a>}
+                      {r.socials.telegram && <a className="btn btn-quiet btn-sm" href={r.socials.telegram} target="_blank" rel="noopener noreferrer nofollow">Telegram</a>}
+                    </div>
+                  </div>
+                  <div className="coin-ca">
+                    <span className="note">Contract address</span>
+                    <code className="addr">{r.address}</code>
+                    <CopyText text={r.address} label="Copy" />
+                  </div>
+                  {similar.length > 0 && (
+                    <section className="coin-sim">
+                      <h2 className="h3">Also in {themeObj?.name}</h2>
+                      <ul>
+                        {similar.map((s) => (
+                          <li key={s.address}>
+                            <Link href={`/coin/${s.address}`}>
+                              <CoinImg src={s.image} name={s.name} symbol={s.symbol} size={26} />
+                              <span className="sim-name">{s.name}</span>
+                              <span className={s.change.h24 >= 0 ? 'up' : 'down'}>{gain(s.change.h24)}</span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  )}
+                </div>
+              </div>
+            ),
+          },
+          { id: 'whales', label: 'Whales' },
+          { id: 'holders', label: 'Holders', node: <HolderStats address={address} /> },
+          {
+            id: 'story',
+            label: 'Story',
+            node: (
+              <div className="cstory">
+                <CoinStory address={address} enabled={runner && meta.aiEnabled} why={r.why} />
+                {narratives.length > 0 && (
+                  <section className="coin-sec">
+                    <h2 className="h3">In today&apos;s narratives</h2>
+                    <ul className="coin-narr">
+                      {narratives.map((n) => (
+                        <li key={n.name}>
+                          <Link href="/#narratives"><strong>{n.name}</strong></Link>
+                          <span className={`heat heat-${n.heat}`}>{n.heat === 'rising' ? 'Rising' : n.heat === 'cooling' ? 'Cooling' : 'Holding'}</span>
+                          <p>{n.take}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+              </div>
+            ),
+          },
+          {
+            id: 'wire',
+            label: 'Wire',
+            count: wire.length || null,
+            node: wire.length ? (
               <ol className="wire wire-compact">
                 {wire.map((e) => (
                   <li key={e.id} className={`wire-${e.type}`}>
@@ -136,46 +193,10 @@ export default async function CoinPage({ params }) {
               </ol>
             ) : (
               <p className="note">No events for this coin yet. New ones appear here as it hits milestones or makes big moves.</p>
-            )}
-          </section>
-        </div>
-
-        <aside className="coin-side">
-          <HolderStats address={address} />
-
-          <CoinStatsLive r={r} />
-
-          <div className="coin-links">
-            <a className="btn btn-ink btn-sm" href={r.url} target="_blank" rel="noopener noreferrer">DexScreener <Out width={15} height={15} /></a>
-            <a className="btn btn-quiet btn-sm" href={`https://gmgn.ai/sol/token/${r.address}`} target="_blank" rel="noopener noreferrer">GMGN</a>
-            {r.socials.x && <a className="btn btn-quiet btn-sm" href={r.socials.x} target="_blank" rel="noopener noreferrer nofollow"><XLogo /> X</a>}
-            {r.socials.website && <a className="btn btn-quiet btn-sm" href={r.socials.website} target="_blank" rel="noopener noreferrer nofollow">Website</a>}
-            {r.socials.telegram && <a className="btn btn-quiet btn-sm" href={r.socials.telegram} target="_blank" rel="noopener noreferrer nofollow">Telegram</a>}
-          </div>
-          <div className="coin-ca">
-            <span className="note">Contract address</span>
-            <code className="addr">{r.address}</code>
-            <CopyText text={r.address} label="Copy" />
-          </div>
-
-          {similar.length > 0 && (
-            <section className="coin-sim">
-              <h2 className="h3">Also in {themeObj?.name}</h2>
-              <ul>
-                {similar.map((s) => (
-                  <li key={s.address}>
-                    <Link href={`/coin/${s.address}`}>
-                      <CoinImg src={s.image} name={s.name} symbol={s.symbol} size={26} />
-                      <span className="sim-name">{s.name}</span>
-                      <span className={s.change.h24 >= 0 ? 'up' : 'down'}>{gain(s.change.h24)}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-        </aside>
-      </div>
+            ),
+          },
+        ]}
+      />
     </div>
   );
 }

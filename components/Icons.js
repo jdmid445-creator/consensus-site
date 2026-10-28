@@ -20,3 +20,14 @@ export const Sort = ({ dir, ...p }) => (
     <path d="M5 11L1.5 7h7z" fill={dir === 'desc' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.2" />
   </svg>
 );
+export const Whale = (p) => (
+  <svg {...base} {...p}>
+    <path d="M2.5 10.5c0 3.2 2.8 5 6.5 5h3.5c3 0 4.5-2 4.5-4.5V9l1.5-3-3 1.2c-.8-.5-1.6-.5-2.2.3L12.5 10H5c-1.2 0-2 .1-2.5.5Z" />
+    <path d="M7 7V4.5M5 5.3 7 4.5l2 .8" />
+    <path d="M5.5 12.5h.01" />
+  </svg>
+);
+export const Bars = (p) => <svg {...base} {...p}><path d="M4 16V9M8 16V5M12 16v-5M16 16V7" /></svg>;
+export const People = (p) => <svg {...base} {...p}><circle cx="7.5" cy="7" r="2.5" /><path d="M3 16c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4" /><path d="M13 5a2.5 2.5 0 0 1 0 5M14.5 12.3c1.6.5 2.5 1.8 2.5 3.7" /></svg>;
+export const Page = (p) => <svg {...base} {...p}><path d="M5 3h7l3 3v11H5Z" /><path d="M8 9h4M8 12h4" /></svg>;
+export const Pulse = (p) => <svg {...base} {...p}><path d="M2 10h4l2-5 4 10 2-5h4" /></svg>;

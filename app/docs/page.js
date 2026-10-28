@@ -11,6 +11,7 @@ const SECTIONS = [
   ['news', 'The wire and headlines'],
   ['coins', 'Coin pages'],
   ['holders-launch', 'Holders, dev and bundles'],
+  ['whales', 'Whales and PnL'],
   ['top', 'Top runner and movers'],
   ['types', 'Coin types'],
   ['holders', 'Holder share'],
@@ -62,6 +63,17 @@ export default function Docs() {
           <li><b>Early buyers:</b> wallets that bought in the next five blocks (about two seconds).</li>
         </ul>
         <p>Dev and bundle numbers need Helius&apos; launch-history method; if a plan doesn&apos;t include it, the page says so instead of showing a number. A launch tool or a fresh wallet can make a dev look separate from its bundle, so treat these as signals, not proof.</p>
+
+        <h2 id="whales">Whales and PnL</h2>
+        <p>The Whales tab on each coin page lists the 20 biggest wallets (liquidity pool left out), with the 1%+ wallets marked. For each one you see:</p>
+        <ul>
+          <li><b>Holds:</b> its share of supply and what that&apos;s worth at the live price.</li>
+          <li><b>PnL on this coin:</b> profit or loss in USD, counting what it still holds, and how much it has already taken out.</li>
+          <li><b>Bought / sold:</b> how much it put in and took out.</li>
+          <li><b>Lifetime PnL:</b> its profit or loss across every coin it has traded, and how many coins that is.</li>
+          <li><b>Tags:</b> dev, bundle or early buyer (from the launch history), and a name when the wallet is known, like a KOL or an exchange.</li>
+        </ul>
+        <p>Holdings come from Solana through Helius. PnL and wallet names come from Solana Tracker and refresh every two minutes. Tap a wallet to open it on GMGN.</p>
 
         <h2 id="top">Top runner and movers</h2>
         <p>The top of the page is the runner with the biggest 24-hour gain that also has real trading behind it (at least $50K of volume and $15K of liquidity). Its 24h change, price, last-hour change and market cap update every 15 seconds while the page is open.</p>
