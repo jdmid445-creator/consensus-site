@@ -1514,3 +1514,6 @@ body { font-family: var(--sans); }
 .app { display: flex !important; flex-direction: column; min-height: 100vh; }
 .app > main { flex: 1; }
 .ftr { margin-top: 48px; width: 100%; }
+/* headline card: content stays together; only the stats row drops to the bottom */
+.row-1 > .wg-today .today-mix { margin-top: 4px !important; padding-top: 0 !important; }
+.row-1 > .wg-today .today-stats { margin-top: auto !important; }
