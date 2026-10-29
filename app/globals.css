@@ -773,3 +773,7 @@ p, h1, h2, h3, h4 { margin: 0; }
 @media (max-width: 720px) { .lead-actions .btn { padding-left: 14px; padding-right: 14px; } }
 .calls > div { border-top: 1px solid var(--ink); padding-top: 14px; }
 @media (max-width: 720px) { .lch .seg { width: fit-content; } .lch .seg-btn { flex: none; padding: 0 14px; } }
+@media (prefers-reduced-motion: no-preference) {
+  .lc.lc-new { animation: lc-swap .6s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes lc-swap { from { opacity: 0; transform: translateY(10px) scale(.985); } }
+}

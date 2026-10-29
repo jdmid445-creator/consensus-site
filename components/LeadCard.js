@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import CoinImg from './CoinImg';
 import LiveNumber from './LiveNumber';
@@ -35,16 +36,56 @@ function Spark({ points, up }) {
   );
 }
 
+// The same rule the server uses: biggest 24h gain among coins with real trading behind them.
+function pickLeader(field, live) {
+  const now = field.map((r) => {
+    const L = live[r.address];
+    return { ...r, h24: L?.change?.h24 ?? r.change.h24, vol: L?.volume?.h24 ?? r.volume24h, liq: L?.liquidity ?? r.liquidity };
+  }).filter((r) => typeof r.h24 === 'number');
+  const solid = now.filter((r) => r.vol >= 50_000 && r.liq >= 15_000);
+  return (solid.length ? solid : now).sort((a, b) => b.h24 - a.h24);
+}
+
 // "Leading today": the coin with the biggest 24h gain that has real trading behind it, live.
-export default function LeadCard({ lead, next, chart }) {
-  const live = useLive([lead.address, ...next.map((n) => n.address)], 5000);
+// It watches every runner, and when a new coin takes the lead (and holds it for two checks in
+// a row, so a one-tick blip doesn't flip it) the card switches to it on the spot.
+export default function LeadCard({ lead: serverLead, chart: serverChart, field }) {
+  const live = useLive(field.map((r) => r.address), 5000);
+  const [leadAddr, setLeadAddr] = useState(serverLead.address);
+  const [chart, setChart] = useState(serverChart);
+  const pending = useRef({ addr: null, n: 0 });
+
+  // When the server's own pick changes (a page refresh), follow it.
+  useEffect(() => {
+    setLeadAddr(serverLead.address);
+    setChart(serverChart);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serverLead.address]);
+
+  const ranked = pickLeader(field, live);
+  const top = ranked[0]?.address;
+  useEffect(() => {
+    if (!top || top === leadAddr) { pending.current = { addr: null, n: 0 }; return; }
+    const p = pending.current;
+    pending.current = p.addr === top ? { addr: top, n: p.n + 1 } : { addr: top, n: 1 };
+    if (pending.current.n >= 2) {
+      setLeadAddr(top);
+      setChart(null);
+      pending.current = { addr: null, n: 0 };
+      fetch(`/api/spark?a=${top}`).then((r) => r.json()).then((d) => Array.isArray(d.points) && setChart(d.points)).catch(() => {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [top, live]);
+
+  const lead = field.find((r) => r.address === leadAddr) || serverLead;
+  const next = ranked.filter((r) => r.address !== lead.address && r.vol >= 50_000).slice(0, 3);
   const L = live[lead.address];
   const v = L?.change?.h24 ?? lead.change.h24;
   const h1 = L?.change?.h1 ?? lead.change.h1;
   const cap = L?.marketCap ?? lead.marketCap;
 
   return (
-    <aside className="lc" aria-labelledby="lc-title">
+    <aside className={`lc ${leadAddr !== serverLead.address ? 'lc-new' : ''}`} key={lead.address} aria-labelledby="lc-title" aria-live="polite">
       <h2 id="lc-title" className="sr-only">Leading today</h2>
       <Link className="lc-coin" href={`/coin/${lead.address}`}>
         <CoinImg src={lead.image} name={lead.name} symbol={lead.symbol} size={52} />
@@ -68,7 +109,7 @@ export default function LeadCard({ lead, next, chart }) {
       <dl className="lc-rows">
         <div><dt>Market cap</dt><dd><LiveNumber value={cap} format={usd} /></dd></div>
         <div><dt>Last hour</dt><dd><LiveNumber value={h1} format={pct} className={h1 >= 0 ? 'up' : 'down'} /></dd></div>
-        <div><dt>Volume, 24h</dt><dd>{usd(lead.volume24h)}</dd></div>
+        <div><dt>Volume, 24h</dt><dd><LiveNumber value={L?.volume?.h24 ?? lead.volume24h} format={usd} /></dd></div>
         <div><dt>Age</dt><dd>{age(lead.ageHours)}</dd></div>
         {lead.top10 != null && <div><dt>Top 10 wallets</dt><dd>{Math.round(lead.top10 * 100)}%</dd></div>}
       </dl>
@@ -82,7 +123,7 @@ export default function LeadCard({ lead, next, chart }) {
       {next.length > 0 && (
         <ol className="lc-next" start={2} aria-label="Next behind it">
           {next.map((n) => {
-            const nv = live[n.address]?.change?.h24 ?? n.change.h24;
+            const nv = n.h24;
             return (
               <li key={n.address}>
                 <Link href={`/coin/${n.address}`}>

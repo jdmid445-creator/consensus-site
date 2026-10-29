@@ -49,10 +49,6 @@ export default async function Home() {
   }
 
   const lead = byAddr.get(meta.top) || runners[0];
-  const next = runners
-    .filter((r) => r.address !== lead.address && typeof r.change.h24 === 'number' && r.volume24h >= 50_000)
-    .sort((a, b) => b.change.h24 - a.change.h24)
-    .slice(0, 3);
   const [chart, wire, headlines, markets] = await Promise.all([
     lead.pairAddress ? getCandles(lead.pairAddress, { timeframe: 'minute', aggregate: 15, limit: 96, revalidate: 300 }) : [],
     getWire(14).catch(() => []),
@@ -123,7 +119,11 @@ export default async function Home() {
             </nav>
           )}
         </div>
-        <LeadCard lead={lead} next={next} chart={chart} />
+        <LeadCard
+          lead={lead}
+          chart={chart}
+          field={runners.map((r) => ({ address: r.address, name: r.name, symbol: r.symbol, image: r.image, type: r.type, why: r.why, url: r.url, socials: { x: r.socials.x }, change: { h1: r.change.h1, h24: r.change.h24 }, marketCap: r.marketCap, volume24h: r.volume24h, liquidity: r.liquidity, ageHours: r.ageHours, top10: r.top10 }))}
+        />
       </section>
 
       {/* Latest: the wire and the crypto headlines */}
