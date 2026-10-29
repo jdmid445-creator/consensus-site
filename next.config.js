@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  outputFileTracingIncludes: { '/api/card': ['./assets/fonts/**'] },
   async headers() {
     return [
       {
