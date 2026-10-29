@@ -58,7 +58,7 @@ export default function WhalesTab({ address, active }) {
     if (s.status !== 'done') return [];
     let list = s.d.wallets.map((w) => ({ ...w, value: price != null ? w.amount * price : null }));
     if (only) list = list.filter((w) => (w.share || 0) >= 0.01);
-    const key = { share: (w) => w.share ?? -1, coin: (w) => w.coin?.total ?? -Infinity, life: (w) => w.lifetime?.total ?? -Infinity }[sort];
+    const key = { share: (w) => w.share ?? -1, coin: (w) => w.coin?.total ?? -Infinity, life: (w) => w.lifetime?.total ?? -Infinity, insiders: (w) => (w.tags.includes('dev') ? 3e9 : w.tags.includes('bundle') ? 2e9 : w.tags.includes('early') ? 1e9 : 0) + (w.share || 0) }[sort] || ((w) => w.share ?? -1);
     return [...list].sort((a, b) => key(b) - key(a));
   }, [s, price, sort, only]);
 
@@ -115,8 +115,8 @@ export default function WhalesTab({ address, active }) {
 
       <div className="wh-bar">
         <div className="seg seg-sm" role="tablist" aria-label="Sort wallets">
-          {SORTS.map(([id, label]) => (
-            <button key={id} type="button" role="tab" className="seg-btn" aria-selected={sort === id} disabled={id !== 'share' && !pnlOn} onClick={() => setSort(id)}>{label}</button>
+          {(pnlOn ? SORTS : [['share', 'Biggest bag'], ['insiders', 'Dev and bundles first']]).map(([id, label]) => (
+            <button key={id} type="button" role="tab" className="seg-btn" aria-selected={sort === id} onClick={() => setSort(id)}>{label}</button>
           ))}
         </div>
         <label className="wh-only"><input type="checkbox" checked={only} onChange={(e) => setOnly(e.target.checked)} /> Only 1%+ wallets</label>
