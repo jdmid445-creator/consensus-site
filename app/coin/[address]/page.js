@@ -170,8 +170,10 @@ export default async function CoinPage({ params }) {
                     <ul className="coin-narr">
                       {narratives.map((n) => (
                         <li key={n.name}>
-                          <Link href="/#narratives"><strong>{n.name}</strong></Link>
-                          <span className={`heat heat-${n.heat}`}>{n.heat === 'rising' ? 'Rising' : n.heat === 'cooling' ? 'Cooling' : 'Holding'}</span>
+                          <div className="coin-narr-top">
+                            <Link href="/#narratives"><strong>{n.name}</strong></Link>
+                            <span className={`heat heat-${n.heat}`} title="How this narrative is doing today">{n.heat === 'rising' ? 'Heating up' : n.heat === 'cooling' ? 'Cooling off' : 'Holding steady'}</span>
+                          </div>
                           <p>{n.take}</p>
                         </li>
                       ))}

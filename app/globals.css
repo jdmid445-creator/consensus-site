@@ -1235,3 +1235,11 @@ p, h1, h2, h3, h4 { margin: 0; }
   .pz-key { height: 42px; }
 }
 @media (prefers-reduced-motion: reduce) { .pz-cell, .jb-tile { animation: none !important; } }
+
+.coin-narr li { display: grid; gap: 6px; padding: 14px 0; border-top: 1px solid var(--line); }
+.coin-narr li:first-child { border-top: 0; padding-top: 0; }
+.coin-narr-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.coin-narr strong { font: 600 16px var(--sans); letter-spacing: -0.01em; }
+.heat { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 99px; font-size: 12.5px; font-weight: 600; white-space: nowrap; background: var(--wash); color: var(--ink-2); }
+.heat-rising { background: var(--up-wash); color: var(--up); }
+.heat-cooling { background: var(--down-wash); color: var(--down); }

@@ -23,9 +23,9 @@ export const revalidate = 30;
 export const maxDuration = 60; // room for the AI read when it refreshes
 
 const HEAT = {
-  rising: { Icon: Rising, label: 'Rising' },
-  steady: { Icon: Steady, label: 'Holding' },
-  cooling: { Icon: Cooling, label: 'Cooling' },
+  rising: { Icon: Rising, label: 'Heating up' },
+  steady: { Icon: Steady, label: 'Holding steady' },
+  cooling: { Icon: Cooling, label: 'Cooling off' },
 };
 
 const today = () =>
