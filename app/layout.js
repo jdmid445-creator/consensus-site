@@ -15,7 +15,7 @@ export const metadata = {
   twitter: { card: 'summary_large_image', title: site.name, description: site.tagline },
 };
 
-export const viewport = { themeColor: '#F4F4F1', width: 'device-width', initialScale: 1, viewportFit: 'cover' };
+export const viewport = { themeColor: '#0D1421', width: 'device-width', initialScale: 1, viewportFit: 'cover' };
 
 export default async function RootLayout({ children }) {
   const markets = await getMarkets().catch(() => []);
