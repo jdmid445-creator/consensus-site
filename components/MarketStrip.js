@@ -14,23 +14,27 @@ const price = (n) => {
 };
 const ch = (v) => (v == null ? '' : `${v >= 0 ? '+' : ''}${v.toFixed(1)}%`);
 
-// Majors and the big Solana coins, live.
-export default function MarketStrip({ markets, field }) {
+// Majors and the big Solana coins, live, gliding left to right on a loop like an old-school
+// ticker. Hovering (or focusing a coin) pauses it; reduced-motion users get a still row.
+export default function MarketStrip({ markets }) {
   const live = useLive(markets.map((m) => m.address), 5000);
+  const items = (copy) =>
+    [...markets, ...markets].map((m, i) => {
+      const p = live[m.address]?.priceUsd ?? m.price;
+      const h = live[m.address]?.change?.h24 ?? m.h24;
+      return (
+        <Link key={`${copy}-${m.id}-${i}`} href={`/coin/${m.address}`} className="mkt" title={`${m.name}: chart and stats`} tabIndex={copy || i >= markets.length ? -1 : 0}>
+          {m.image && <CoinImg src={m.image} name={m.name} symbol={m.id} size={16} />}
+          <b>{m.id}</b> <LiveNumber value={p} format={price} />
+          {h != null && <LiveNumber value={h} format={ch} className={h >= 0 ? 'up' : 'down'} />}
+        </Link>
+      );
+    });
   return (
     <div className="mkts" aria-label="Markets">
-      <div className="mkts-in">
-        {markets.map((m) => {
-          const p = live[m.address]?.priceUsd ?? m.price;
-          const h = live[m.address]?.change?.h24 ?? m.h24;
-          return (
-            <Link key={m.id} href={`/coin/${m.address}`} className="mkt" title={`${m.name}: chart and stats`}>
-              {m.image && <CoinImg src={m.image} name={m.name} symbol={m.id} size={16} />}
-              <b>{m.id}</b> <LiveNumber value={p} format={price} />
-              {h != null && <LiveNumber value={h} format={ch} className={h >= 0 ? 'up' : 'down'} />}
-            </Link>
-          );
-        })}
+      <div className="mkts-track" style={{ '--dur': `${Math.max(40, markets.length * 9)}s` }}>
+        <div className="mkts-run">{items(0)}</div>
+        <div className="mkts-run" aria-hidden="true">{items(1)}</div>
       </div>
     </div>
   );
