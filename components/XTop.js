@@ -80,7 +80,7 @@ export default function XTop({ initial }) {
   const [hover, setHover] = useState(false);
   const [lane, setLane] = useState('all');
   const [now, setNow] = useState(() => Date.now());
-  const last = useRef(Object.fromEntries(initial.top.map((p) => [p.id, `${p.rank}:${p.likes}`])));
+  const last = useRef(Object.fromEntries((initial.lists?.all || []).map((p) => [p.id, `${p.rank}:${p.likes}`])));
   const [flash, setFlash] = useState(new Set());
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function XTop({ initial }) {
       if (!document.hidden) {
         try {
           const r = await fetch('/api/x/live', { cache: 'no-store' });
-          if (r.ok) { const j = await r.json(); if (!stop && j.top) setLive(j); }
+          if (r.ok) { const j = await r.json(); if (!stop && j.lists) setLive(j); }
         } catch {}
       }
       if (!stop) timer = setTimeout(tick, 5000);
@@ -103,17 +103,18 @@ export default function XTop({ initial }) {
   useEffect(() => {
     if (hover) return;
     // Light up rows that are new or moved since the last update.
-    const changed = new Set(live.top.filter((p) => last.current[p.id] !== `${p.rank}:${p.likes}` && last.current[p.id]?.split(':')[0] !== String(p.rank)).map((p) => p.id));
-    last.current = Object.fromEntries(live.top.map((p) => [p.id, `${p.rank}:${p.likes}`]));
+    const all = live.lists?.all || [];
+    const changed = new Set(all.filter((p) => last.current[p.id]?.split(':')[0] !== String(p.rank)).map((p) => p.id));
+    last.current = Object.fromEntries(all.map((p) => [p.id, `${p.rank}:${p.likes}`]));
     setFlash(changed);
     setShown(live);
   }, [live, hover]);
 
   const waiting = hover && live.at !== shown.at;
-  const list = useMemo(() => shown.top.filter((p) => lane === 'all' || p.kind === lane), [shown, lane]);
+  const list = useMemo(() => shown.lists?.[lane] || [], [shown, lane]);
   const accounts = useMemo(() => {
     const m = new Map();
-    for (const p of shown.top) if (!m.has(p.author.handle)) m.set(p.author.handle, p.author);
+    for (const p of shown.lists?.all || []) if (!m.has(p.author.handle)) m.set(p.author.handle, p.author);
     return [...m.values()].sort((a, b) => b.followers - a.followers).slice(0, 6);
   }, [shown]);
 
