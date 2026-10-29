@@ -12,6 +12,7 @@ const money = (x) => {
   const s = usd(Math.abs(x));
   return x > 0 ? `+${s}` : x < 0 ? `-${s}` : s;
 };
+const tokens = (n) => (n == null ? '' : n >= 1e9 ? `${(n / 1e9).toFixed(2)}B` : n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}K` : `${Math.round(n)}`);
 const tone = (x) => (x == null || x === 0 ? '' : x > 0 ? 'up' : 'down');
 const held = (secs) => {
   if (secs == null) return null;
@@ -88,6 +89,30 @@ export default function WhalesTab({ address, active }) {
         {pnlOn && named > 0 && <div><dt>Known wallets</dt><dd>{named}</dd></div>}
       </dl>
 
+      {pnlOn && (
+        <section className="wh-smart">
+          <header>
+            <h3>Top traders in this coin</h3>
+            <span className="note">{d.topCount ? `Out of Solana's ${d.topCount} most profitable traders` : 'Solana\u2019s most profitable traders'}</span>
+          </header>
+          {d.smart?.length ? (
+            <ul>
+              {d.smart.slice(0, 12).map((t) => (
+                <li key={t.wallet}>
+                  <a href={`https://solscan.io/account/${t.wallet}#portfolio`} target="_blank" rel="noopener noreferrer">
+                    <span className="wh-rankpill">#{t.rank}</span>
+                    <span className="wh-smart-id"><b>{t.name || short(t.wallet)}</b><small>{t.realized != null ? `${money(t.realized)} realized` : short(t.wallet)}</small></span>
+                    <span className="wh-smart-num"><b>{pc(t.share)}</b><small className={tone(t.coin?.total)}>{t.coin?.total != null ? `${money(t.coin.total)} here` : ''}</small></span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="note">{d.smart ? 'None of them hold this coin right now.' : 'Couldn\u2019t check the top traders just now.'}</p>
+          )}
+        </section>
+      )}
+
       <div className="wh-bar">
         <div className="seg seg-sm" role="tablist" aria-label="Sort wallets">
           {SORTS.map(([id, label]) => (
@@ -115,13 +140,15 @@ export default function WhalesTab({ address, active }) {
                   <div className="wh-who">
                     <span className="wh-rank num">{i + 1}</span>
                     <span>
-                      <a href={`https://gmgn.ai/sol/address/${w.owner}`} target="_blank" rel="noopener noreferrer" className="wh-name">
+                      <a href={`https://solscan.io/account/${w.owner}#portfolio`} target="_blank" rel="noopener noreferrer" className="wh-name" title="Open this wallet's holdings on Solscan">
                         {w.identity?.name || short(w.owner)}
                       </a>
                       <span className="wh-tags">
                         {w.identity?.name && <span className="muted">{short(w.owner)}</span>}
+                        <a href={`https://gmgn.ai/sol/address/${w.owner}`} target="_blank" rel="noopener noreferrer" className="wh-ext">GMGN</a>
                         {w.identity?.twitter && <a href={`https://x.com/${w.identity.twitter.replace(/^@/, '')}`} target="_blank" rel="noopener noreferrer nofollow" aria-label="On X"><XLogo width={12} height={12} /></a>}
                         {w.identity?.type && w.identity.type !== 'sns' && <span className="wh-tag">{w.identity.type === 'kol' ? 'KOL' : w.identity.type}</span>}
+                        {w.topRank && <span className="wh-tag wh-top">Top trader #{w.topRank}</span>}
                         {w.tags.map((t) => <span key={t} className={`wh-tag wh-${t}`}>{TAG[t]}</span>)}
                         {w.holdSecs != null && <span className="muted">in {held(w.holdSecs)}</span>}
                       </span>
@@ -130,7 +157,7 @@ export default function WhalesTab({ address, active }) {
                 </td>
                 <td className="c-num" data-label="Holds">
                   <b>{pc(w.share)}</b>
-                  <small>{w.value != null ? usd(w.value) : ''}</small>
+                  <small>{tokens(w.amount)}{w.value != null ? ` · ${usd(w.value)}` : ''}</small>
                 </td>
                 <td className="c-num" data-label="On this coin">
                   <b className={tone(w.coin?.total)}>{money(w.coin?.total)}</b>
@@ -151,7 +178,7 @@ export default function WhalesTab({ address, active }) {
       </div>
       {d.pnl === 'off' && <p className="note">Profit and loss columns turn on once a Solana Tracker key is added to the site.</p>}
       {d.pnl === 'error' && <p className="note">Profit and loss couldn’t be read just now. Holdings are still live.</p>}
-      <p className="note">The biggest wallets by how much of the coin they hold, biggest first. Pools, bonding curves and other program accounts are left out{d.excluded ? ` (${d.excluded} here)` : ''}, so every row is a real wallet. Holdings from Solana through Helius{pnlOn ? '; PnL from Solana Tracker, in USD, including what’s still held' : ''}. Tap a wallet to open it on GMGN.</p>
+      <p className="note">The biggest wallets by how much of the coin they hold, biggest first. Pools, bonding curves and other program accounts are left out{d.excluded ? ` (${d.excluded} here)` : ''}, so every row is a real wallet. Holdings from Solana through Helius{pnlOn ? '; PnL from Solana Tracker, in USD, including what’s still held' : ''}. Tap a wallet to see its holdings on Solscan. <a href={`https://solscan.io/token/${address}#holders`} target="_blank" rel="noopener noreferrer">Compare with Solscan&apos;s holder list</a>.</p>
     </div>
   );
 }

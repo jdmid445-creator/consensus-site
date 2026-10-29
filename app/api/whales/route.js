@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getMeta } from '@/lib/meta';
 import { resolveTokens } from '@/lib/dexscreener';
 import { getOnchain } from '@/lib/onchain';
-import { getPnl, pnlEnabled, pnlLastError } from '@/lib/pnl';
+import { getPnl, pnlEnabled, pnlLastError, getTopTraders, getTopTradersIn } from '@/lib/pnl';
 import { rateLimit } from '@/lib/ratelimit';
 
 // GET /api/whales?a=<mint>: the biggest wallets in a coin (pool excluded), what they hold,
@@ -30,10 +30,15 @@ export async function GET(req) {
   const on = await getOnchain(a, { pairAddress: r.pairAddress, poolTokens: r.liquidityBase });
   if (!on) return NextResponse.json({ error: 'Wallets couldn’t be read just now.' }, { status: 502 });
   const list = (on.wallets || []).slice(0, SHOW);
-  const pnl = await getPnl(a, list.map((w) => w.owner));
-  const wallets = list.map((w) => ({ ...w, ...(pnl?.[w.owner] || {}) }));
+  const [pnl, top, smart] = await Promise.all([
+    getPnl(a, list.map((w) => w.owner)),
+    getTopTraders().catch(() => []),
+    getTopTradersIn(a, on.supply).catch(() => null),
+  ]);
+  const topRank = new Map(top.map((t) => [t.wallet, t.rank]));
+  const wallets = list.map((w) => ({ ...w, ...(pnl?.[w.owner] || {}), topRank: topRank.get(w.owner) || null }));
   return NextResponse.json(
-    { wallets, excluded: on.excluded || 0, supply: on.supply, whales: on.whales, pnl: pnlEnabled() ? (pnl ? 'ok' : 'error') : 'off', pnlError: pnl ? '' : pnlLastError(), at: Date.now() },
+    { wallets, smart, topCount: top.length, excluded: on.excluded || 0, supply: on.supply, whales: on.whales, pnl: pnlEnabled() ? (pnl ? 'ok' : 'error') : 'off', pnlError: pnl ? '' : pnlLastError(), at: Date.now() },
     { headers: { 'cache-control': 'public, s-maxage=15' } },
   );
 }
