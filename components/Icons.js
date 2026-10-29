@@ -32,3 +32,8 @@ export const People = (p) => <svg {...base} {...p}><circle cx="7.5" cy="7" r="2.
 export const Page = (p) => <svg {...base} {...p}><path d="M5 3h7l3 3v11H5Z" /><path d="M8 9h4M8 12h4" /></svg>;
 export const Pulse = (p) => <svg {...base} {...p}><path d="M2 10h4l2-5 4 10 2-5h4" /></svg>;
 export const Gauge = (p) => <svg {...base} {...p}><path d="M3 14a7 7 0 1 1 14 0" /><path d="M10 14l3.5-4" /><path d="M3 17h14" /></svg>;
+export const Home = (p) => <svg {...base} {...p}><path d="M3 9.5 10 4l7 5.5V17H3Z" /><path d="M8 17v-5h4v5" /></svg>;
+export const List = (p) => <svg {...base} {...p}><path d="M7 5h10M7 10h10M7 15h10" /><path d="M3 5h1M3 10h1M3 15h1" /></svg>;
+export const Pen = (p) => <svg {...base} {...p}><path d="M4 16l1-4 8.5-8.5 3 3L8 15Z" /><path d="M12 5l3 3" /></svg>;
+export const Book = (p) => <svg {...base} {...p}><path d="M4 4h5a2 2 0 0 1 2 2v11a2 2 0 0 0-2-2H4Z" /><path d="M16 4h-3a2 2 0 0 0-2 2" /><path d="M16 4v11h-3" /></svg>;
+export const Search = (p) => <svg {...base} {...p}><circle cx="8.5" cy="8.5" r="5" /><path d="M12.5 12.5 17 17" /></svg>;

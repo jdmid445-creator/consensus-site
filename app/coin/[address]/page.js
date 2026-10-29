@@ -80,7 +80,7 @@ export default async function CoinPage({ params }) {
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/">Today</Link>
         <span aria-hidden="true">/</span>
-        <Link href="/#runners">Runners</Link>
+        <Link href="/coins">Runners</Link>
         <span aria-hidden="true">/</span>
         <span>${r.symbol}</span>
       </nav>

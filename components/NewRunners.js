@@ -10,8 +10,7 @@ import { usd, gain, age } from '@/lib/format';
 export default function NewRunners({ coins }) {
   const live = useLive(coins.map((c) => c.address), 5000);
   return (
-    <aside className="rail" aria-labelledby="rail-title">
-      <h2 id="rail-title" className="rail-title">New runners <span className="h-note">24h move</span></h2>
+    <div className="rail">
       <ol className="rail-list">
         {coins.map((c, i) => {
           const v = live[c.address]?.change?.h24 ?? c.change.h24;
@@ -33,7 +32,6 @@ export default function NewRunners({ coins }) {
           );
         })}
       </ol>
-      <a href="#runners" className="rail-more">See every coin on the board</a>
-    </aside>
+    </div>
   );
 }
