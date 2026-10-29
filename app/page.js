@@ -96,7 +96,7 @@ export default async function Home() {
         <div className="lead-rest">
           <p className="dek">{dek}</p>
           <p className="byline">
-            {summary ? 'Read by Claude' : 'Sorted by keyword'} from the {stats.count} biggest Solana memecoins launched in the last {meta.windowHours} hours.
+            {summary ? 'Read' : 'Sorted by keyword'} from the {stats.count} biggest Solana memecoins launched in the last {meta.windowHours} hours.
           </p>
           <div className="lead-actions">
             <a href="#movers" className="btn btn-ink">See the movers</a>

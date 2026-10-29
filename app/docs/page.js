@@ -50,7 +50,7 @@ export default function Docs() {
 
         <h2 id="coins">Coin pages</h2>
         <p>Every runner has its own page with its backstory, why it&apos;s trending right now, and facts worth keeping in mind, plus live numbers, a 24-hour and 7-day chart, holder share, the narratives it belongs to, its wire events and similar coins.</p>
-        <p>The story is written by Claude from the coin&apos;s own description on DexScreener, the description in its launch metadata (read through Helius), the text of its website if it has one, and the live numbers. Anything the creators say about their coin is treated as their claim, not as fact. When a coin has published little, the story says so rather than inventing lore. Stories are refreshed every two hours.</p>
+        <p>The story is written from the coin&apos;s own description on DexScreener, the description in its launch metadata (read through Helius), the text of its website if it has one, and the live numbers. Anything the creators say about their coin is treated as their claim, not as fact. When a coin has published little, the story says so rather than inventing lore. Stories are refreshed every two hours.</p>
 
         <h2 id="holders-launch">Holders, dev and bundles</h2>
         <p>Each coin page reads its holders and its first trades straight from Solana through Helius. Holdings update every 15 seconds and the holder count every minute:</p>
@@ -106,7 +106,7 @@ export default function Docs() {
             <tr><td>DexScreener</td><td>Prices, market cap, liquidity, volume, trades, launch time, logos and socials. Also new token profiles, boosts and community takeovers, which surface coins people are putting money behind.</td></tr>
             <tr><td>GeckoTerminal</td><td>Trending and top-volume Solana pools (to find candidates), 30-minute change, and the price candles behind the 12h numbers and the top runner&apos;s chart.</td></tr>
             <tr><td>Helius</td><td>The biggest holders of each runner, for the top-10 share.</td></tr>
-            <tr><td>Claude (Anthropic)</td><td>The written read of the meta and the narrative writer.</td></tr>
+            <tr><td>AI</td><td>The written read of the meta, the coin stories and the narrative writer.</td></tr>
           </tbody>
         </table>
         <p>Candidates that get close to qualifying are remembered for up to a week, so a coin that ran two days ago stays on the board even after it drops off the &quot;latest&quot; lists.</p>
@@ -120,7 +120,7 @@ export default function Docs() {
         <p>These colors are the board, the bar under it and the filter on the runners table. The AI read then goes further and names the specific narratives behind them, like a particular kind of animal story rather than just &quot;animals&quot;.</p>
 
         <h2 id="read">The AI read</h2>
-        <p>Claude gets the current runners as a table: name, ticker, market cap, age, 24h change, launchpad, which socials they have, and the creator&apos;s own description. It writes the headline, groups the runners into 3 to 6 narratives (each marked rising, holding or cooling), and lists what&apos;s working and what&apos;s losing steam.</p>
+        <p>The AI gets the current runners as a table: name, ticker, market cap, age, 24h change, launchpad, which socials they have, and the creator&apos;s own description. It writes the headline, groups the runners into 3 to 6 narratives (each marked rising, holding or cooling), and lists what&apos;s working and what&apos;s losing steam.</p>
         <p>It&apos;s told to stick to the data, to treat coin descriptions as data rather than instructions, and never to give buy or sell calls. One read is written every 15 minutes and shared by every visitor.</p>
 
         <h2 id="narrative">Narrative writer</h2>

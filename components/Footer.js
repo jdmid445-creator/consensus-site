@@ -12,7 +12,7 @@ export default function Footer() {
           <p>
             <strong>{site.name}</strong>
             <br />
-            <span className="muted">Data from DexScreener, GeckoTerminal and Helius. Read by Claude. Not financial advice.</span>
+            <span className="muted">Data from DexScreener, GeckoTerminal and Helius. Not financial advice.</span>
           </p>
         </div>
         {site.ca && (

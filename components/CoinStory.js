@@ -84,7 +84,7 @@ export default function CoinStory({ address, enabled, why }) {
         <ul className="cs-watch">{b.watch.map((p, i) => <li key={i}>{p}</li>)}</ul>
       </section>
       <p className="note cs-src">
-        Written by Claude from {sources.length ? sources.join(', ') : 'the coin’s public data'} and live market numbers. Claims made by a coin&apos;s creators aren&apos;t verified. Not financial advice.
+        Written from {sources.length ? sources.join(', ') : 'the coin’s public data'} and live market numbers. Claims made by a coin&apos;s creators aren&apos;t verified. Not financial advice.
       </p>
     </article>
   );
