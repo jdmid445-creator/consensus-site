@@ -1,8 +1,3 @@
-import '@fontsource-variable/bricolage-grotesque';
-import '@fontsource/onest/400.css';
-import '@fontsource/onest/500.css';
-import '@fontsource/onest/600.css';
-import '@fontsource/onest/700.css';
 import './globals.css';
 import AppNav from '@/components/AppNav';
 import Search from '@/components/Search';
@@ -26,6 +21,8 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preload" href="/fonts/satoshi-500.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preload" href="/fonts/satoshi-700.woff2" as="font" type="font/woff2" crossOrigin="" />
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>
       <body>

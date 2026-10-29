@@ -1406,11 +1406,11 @@ body::before {
   .ftr { flex-direction: column; }
 }
 
-/* ================= News-desk layout: Bricolage Grotesque headlines, Onest text ================= */
+/* ================= News-desk layout: Satoshi throughout ================= */
 :root {
-  --sans: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --serif: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --display: 'Bricolage Grotesque Variable', 'Onest', system-ui, sans-serif;
+  --sans: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Satoshi', system-ui, sans-serif;
 }
 body { font-family: var(--sans); }
 .headline, .page-head h1, .coinpage .ch h1, .brand, .lc-id strong, .cs-head, .rt-big b, .hl-score b, .wh-sum dd { font-family: var(--display); font-variation-settings: 'wdth' 100; }
@@ -1520,3 +1520,15 @@ body { font-family: var(--sans); }
 /* tighter space between front-page sections */
 .board-app { gap: 18px !important; }
 .row-1 > .wg-today .today-stats div { padding-bottom: 0; }
+
+/* ===== Satoshi (Fontshare), self-hosted ===== */
+@font-face { font-family: 'Satoshi'; font-weight: 400; font-display: swap; src: url(/fonts/satoshi-400.woff2) format('woff2'); }
+@font-face { font-family: 'Satoshi'; font-weight: 500; font-display: swap; src: url(/fonts/satoshi-500.woff2) format('woff2'); }
+@font-face { font-family: 'Satoshi'; font-weight: 600 700; font-display: swap; src: url(/fonts/satoshi-700.woff2) format('woff2'); }
+:root {
+  --sans: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+  --serif: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+  --display: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+}
+body, button, input, textarea, select { font-family: var(--sans); }
+.headline { font-weight: 700 !important; letter-spacing: -0.03em !important; }
