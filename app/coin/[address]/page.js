@@ -101,7 +101,7 @@ export default async function CoinPage({ params }) {
         <CoinLive r={r} />
       </header>
 
-      {!runner && <p className="notice">This coin isn&apos;t one of today&apos;s runners, so there&apos;s no story for it right now. Live numbers are below.</p>}
+      {!runner && <p className="notice">This isn&apos;t one of today&apos;s runners, so there&apos;s no story for it. The chart, live numbers, whales and holders are all below.</p>}
 
       <LiveChart pairAddress={r.pairAddress} day={day} week={week} />
 

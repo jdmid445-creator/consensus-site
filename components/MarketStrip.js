@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import CoinImg from './CoinImg';
 import LiveNumber from './LiveNumber';
 import useLive from './useLive';
@@ -23,11 +24,11 @@ export default function MarketStrip({ markets, field }) {
           const p = live[m.address]?.priceUsd ?? m.price;
           const h = live[m.address]?.change?.h24 ?? m.h24;
           return (
-            <span key={m.id} className="mkt" title={m.name}>
+            <Link key={m.id} href={`/coin/${m.address}`} className="mkt" title={`${m.name}: chart and stats`}>
               {m.image && <CoinImg src={m.image} name={m.name} symbol={m.id} size={16} />}
               <b>{m.id}</b> <LiveNumber value={p} format={price} />
               {h != null && <LiveNumber value={h} format={ch} className={h >= 0 ? 'up' : 'down'} />}
-            </span>
+            </Link>
           );
         })}
       </div>
