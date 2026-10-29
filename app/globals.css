@@ -604,7 +604,7 @@ p, h1, h2, h3, h4 { margin: 0; }
 /* Coin page: live chart + holder stats */
 .lch { display: grid; gap: 10px; margin-top: 24px; }
 .lch .seg { width: fit-content; }
-.lch-frame { position: relative; height: 460px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--wash); }
+.lch-frame { position: relative; height: 460px; border: 1px solid #1E2530; border-radius: 12px; overflow: hidden; background: #0D1117; }
 .lch-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .lch .cc svg { height: 300px; }
 .hs { display: grid; gap: 10px; }

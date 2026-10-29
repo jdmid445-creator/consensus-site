@@ -7,7 +7,7 @@ import CoinChart from './CoinChart';
 // with our simple 24h/7d line as the other view.
 export default function LiveChart({ pairAddress, day, week }) {
   const [view, setView] = useState(pairAddress ? 'live' : 'simple');
-  const src = `https://dexscreener.com/solana/${pairAddress}?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=light&theme=light&chartStyle=1&chartType=usd&interval=15`;
+  const src = `https://dexscreener.com/solana/${pairAddress}?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=1&chartType=usd&interval=15`;
   return (
     <section className="lch" aria-label="Price chart">
       {pairAddress && (
