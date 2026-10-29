@@ -21,6 +21,7 @@ export default async function XTracker() {
   const byAddr = new Map(meta.runners.map((r) => [r.address, r]));
   const lite = (a) => { const r = byAddr.get(a); return r ? { address: r.address, name: r.name, symbol: r.symbol, image: r.image } : null; };
   const posts = (feed?.posts || []).map((p) => ({ ...p, coins: p.coins.map(lite).filter(Boolean) }));
+  const watch = (feed?.watch || []).map((p) => ({ ...p, coins: p.coins.map(lite).filter(Boolean) }));
   const talked = (feed?.coins || []).slice(0, 10).map((c) => ({ ...c, coin: byAddr.get(c.address) })).filter((c) => c.coin);
   const loud = (feed?.loudest || []).slice(0, 8);
 
@@ -29,11 +30,11 @@ export default async function XTracker() {
       <AutoRefresh ms={60000} />
       <header className="page-head">
         <h1>X tracker</h1>
-        <p className="muted">What X is saying about today&apos;s runners, newest first. Reposts, reply raids and paid-group promos are left out.</p>
+        <p className="muted">What X is saying about today&apos;s runners, plus the big crypto accounts worth hearing from. Only posts with real reach or traction make it in.</p>
       </header>
       <div className="row row-x">
-        <Widget title="The feed" note={`${posts.length} posts`} className="wg-xfeed">
-          <XFeed posts={posts} />
+        <Widget title="The feed" className="wg-xfeed">
+          <XFeed posts={posts} watch={watch} />
         </Widget>
         <div className="x-side">
           <Widget title="Most talked about" note="by accounts posting" className="wg-xtalk">

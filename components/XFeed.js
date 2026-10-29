@@ -12,16 +12,19 @@ const ago = (iso) => {
 
 const FILTERS = [
   ['all', 'All'],
-  ['big', '10K+ followers'],
+  ['runners', 'Runners'],
+  ['big', 'Big accounts'],
   ['hot', 'Most liked'],
 ];
 
 // The post list, with a filter for bigger accounts and a most-liked sort.
-export default function XFeed({ posts }) {
+export default function XFeed({ posts, watch = [] }) {
   const [f, setF] = useState('all');
-  let list = posts;
-  if (f === 'big') list = posts.filter((p) => p.author.followers >= 10000);
-  if (f === 'hot') list = [...posts].sort((a, b) => b.likes + b.reposts * 2 - (a.likes + a.reposts * 2));
+  const merged = [...posts, ...watch].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  let list = merged;
+  if (f === 'runners') list = posts;
+  if (f === 'big') list = watch;
+  if (f === 'hot') list = [...merged].sort((a, b) => b.likes + b.reposts * 2 - (a.likes + a.reposts * 2));
   return (
     <>
       <div className="seg seg-sm x-seg" role="tablist">
@@ -45,6 +48,7 @@ export default function XFeed({ posts }) {
                 <a href={p.url} target="_blank" rel="noopener noreferrer" className="xp-text">{p.text.replace(/\n{2,}/g, "\n")}</a>
                 <div className="xp-foot">
                   <span className="xp-coins">
+                    {p.big && <span className="xp-big">Big account</span>}
                     {p.coins.map((c) => (
                       <Link key={c.address} href={`/coin/${c.address}`} className="xp-coin">
                         <CoinImg address={c.address} src={c.image} name={c.name} symbol={c.symbol} size={18} />
