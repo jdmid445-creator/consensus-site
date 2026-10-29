@@ -119,10 +119,10 @@ export default function Docs() {
         <p>Candidates that get close to qualifying are remembered for up to a week, so a coin that ran two days ago stays on the board even after it drops off the &quot;latest&quot; lists.</p>
 
         <h2 id="themes">How themes are found</h2>
-        <p>Each runner is first sorted by the words in its name, ticker and description into one of these themes:</p>
+        <p>Each runner gets one of these themes. The AI read picks it from what the coin actually is (a coin pitching its own launchpad or app goes under Platforms &amp; tools, a dog coin under Animals). Until the read runs, a keyword pass over the name, ticker and description stands in:</p>
         <ul className="docs-themes">
           {THEMES.map((t) => <li key={t.id}><span className="sw" style={{ '--c': t.color }} /> {t.name}</li>)}
-          <li><span className="sw" style={{ '--c': '#6B7280' }} /> One-offs (no clear theme)</li>
+          <li><span className="sw" style={{ '--c': '#9CA3AF' }} /> Standalone memes (a meme with no wider theme)</li>
         </ul>
         <p>These colors are the board, the bar under it and the filter on the runners table. The AI read then goes further and names the specific narratives behind them, like a particular kind of animal story rather than just &quot;animals&quot;.</p>
 

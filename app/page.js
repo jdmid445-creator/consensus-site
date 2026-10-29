@@ -11,6 +11,8 @@ import { Rising, Steady, Cooling } from '@/components/Icons';
 import Wire from '@/components/Wire';
 import Headlines from '@/components/Headlines';
 import Widget from '@/components/Widget';
+import DailyPuzzle from '@/components/DailyPuzzle';
+import { buildGames } from '@/lib/games';
 import { getCandles } from '@/lib/gecko';
 import { getWire } from '@/lib/wire';
 import { getHeadlines } from '@/lib/news';
@@ -67,6 +69,7 @@ export default async function Home() {
   const pad = stats.launchpads[0];
   const newest = [...runners].filter((r) => r.ageHours != null).sort((a, b) => a.ageHours - b.ageHours).slice(0, 6);
 
+  const games = buildGames(runners, stats.themes);
   const biggest = [...runners].filter((r) => typeof r.change.h24 === 'number').sort((a, b) => b.change.h24 - a.change.h24).slice(0, 12);
   const wireEvents = wire.map((e) => ({ ...e, image: byAddr.get(e.address)?.image || e.image }));
 
@@ -205,7 +208,24 @@ export default async function Home() {
         </Widget>
       </div>
 
-      {/* Row 5: headlines, two even columns */}
+      {/* Row 5: today's puzzle + the other games */}
+      {games.ticker && (
+        <div className="row row-4">
+          <Widget title="Daily ticker" note="guess today's runner" action="All games" href="/games" className="wg-game wg-game-home">
+            <DailyPuzzle day={games.day} {...games.ticker} />
+          </Widget>
+          <section className="wg wg-more">
+            <header className="wg-head"><h2>More games</h2></header>
+            <ul className="more-games">
+              <li><a href="/games#jumble"><b>The Jumble</b><span>Unscramble one of today&apos;s runners.</span></a></li>
+              <li><a href="/games#higher"><b>Higher or lower</b><span>Ten pairs. Which one has the bigger cap?</span></a></li>
+              <li><a href="/games#logo"><b>Name that logo</b><span>Six logos off today&apos;s board, four names each.</span></a></li>
+            </ul>
+          </section>
+        </div>
+      )}
+
+      {/* Row 6: headlines, two even columns */}
       {headlines.length > 0 && (
         <Widget title="Crypto headlines" className="wg-news">
           <Headlines items={headlines.slice(0, 8)} />

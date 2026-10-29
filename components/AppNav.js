@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Mark from './Mark';
 import CopyText from './CopyText';
-import { Home, List, Pen, Book, XLogo } from './Icons';
+import { Home, List, Pen, Book, Puzzle, XLogo } from './Icons';
 
 const ITEMS = [
   { href: '/', label: 'Dashboard', short: 'Home', Icon: Home },
   { href: '/coins', label: 'All coins', short: 'Coins', Icon: List },
+  { href: '/games', label: 'Games', short: 'Games', Icon: Puzzle },
   { href: '/write', label: 'Write a narrative', short: 'Write', Icon: Pen },
   { href: '/docs', label: 'Docs', short: 'Docs', Icon: Book },
 ];
