@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getMeta } from '@/lib/meta';
 
 // Public, read-only JSON of everything on the front page. Cached for 3 minutes.
-export const revalidate = 180;
+export const revalidate = 30;
 export const maxDuration = 60; // room for the AI read when it refreshes
 
 export async function GET() {

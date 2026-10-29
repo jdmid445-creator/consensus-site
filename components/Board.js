@@ -11,7 +11,7 @@ export default function Board({ runners, themes }) {
   const order = new Map(themes.map((t, i) => [t.id, i]));
   const tMap = new Map(themes.map((t) => [t.id, t]));
   const live = useLive(runners.map((r) => r.address), 5000);
-  const sorted = [...runners].sort((a, b) => (order.get(a.theme) ?? 99) - (order.get(b.theme) ?? 99) || a.rank - b.rank);
+  const sorted = [...runners].sort((a, b) => (a.extra ? 1 : 0) - (b.extra ? 1 : 0) || (order.get(a.theme) ?? 99) - (order.get(b.theme) ?? 99) || (a.rank ?? 999) - (b.rank ?? 999) || b.marketCap - a.marketCap);
   return (
     <div className="field-grid">
       <ol className="board" aria-label="Every runner, grouped by theme">
@@ -21,14 +21,14 @@ export default function Board({ runners, themes }) {
           const cap = live[r.address]?.marketCap ?? r.marketCap;
           return (
             <li key={r.address} style={{ '--i': i, '--c': t?.color }}>
-              <Link className="tile" href={`/coin/${r.address}`} aria-label={`${r.name} ($${r.symbol}), ${usd(cap)}, ${gain(v)} in 24 hours, ${t?.name}`}>
+              <Link className="tile" href={`/coin/${r.address}`} aria-label={`${r.name} ($${r.symbol}), ${usd(cap)}, ${gain(v)} in 24 hours, ${r.extra ? 'close behind' : t?.name}`}>
                 <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={56} className="tile-img" />
                 <span className="tile-sym">${r.symbol}</span>
                 <LiveNumber value={v} format={gain} className={`tile-gain ${v >= 0 ? 'up' : 'down'}`} />
                 <span className="tile-card" aria-hidden="true">
                   <strong>{r.name}</strong>
                   <span>{usd(cap)} market cap, {gain(v)} in 24h</span>
-                  <span>{t?.name}</span>
+                  <span>{r.extra ? 'Close behind today’s runners' : t?.name}</span>
                 </span>
               </Link>
             </li>

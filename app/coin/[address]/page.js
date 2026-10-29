@@ -21,7 +21,7 @@ import { logoFor } from '@/lib/lore';
 import { buzzField } from '@/lib/buzz';
 import { usd, gain, pct, age } from '@/lib/format';
 
-export const revalidate = 180;
+export const revalidate = 30;
 export const maxDuration = 60;
 
 const MINT = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
@@ -76,7 +76,7 @@ export default async function CoinPage({ params }) {
 
   return (
     <div className="wrap coinpage">
-      <AutoRefresh ms={60000} />
+      <AutoRefresh ms={30000} />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/">Today</Link>
         <span aria-hidden="true">/</span>

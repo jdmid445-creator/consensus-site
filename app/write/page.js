@@ -2,7 +2,7 @@ import NarrativeWriter from '@/components/NarrativeWriter';
 import Widget from '@/components/Widget';
 import { getMeta } from '@/lib/meta';
 
-export const revalidate = 180;
+export const revalidate = 30;
 export const maxDuration = 60;
 export const metadata = { title: 'Write a narrative' };
 
