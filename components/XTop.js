@@ -93,9 +93,9 @@ export default function XTop({ initial }) {
           if (r.ok) { const j = await r.json(); if (!stop && j.lists) setLive(j); }
         } catch {}
       }
-      if (!stop) timer = setTimeout(tick, 5000);
+      if (!stop) timer = setTimeout(tick, 20000);
     };
-    timer = setTimeout(tick, 5000);
+    timer = setTimeout(tick, 20000);
     const clock = setInterval(() => setNow(Date.now()), 1000);
     return () => { stop = true; clearTimeout(timer); clearInterval(clock); };
   }, []);
@@ -129,7 +129,7 @@ export default function XTop({ initial }) {
           </div>
           <span className={`x-live${hover ? ' is-paused' : ''}`}>
             <i aria-hidden="true" />
-            {hover ? (waiting ? 'Update waiting' : 'Paused') : 'Live'}
+            {hover ? (waiting ? 'Update waiting' : 'Paused') : `Updated ${ago(new Date(shown.at).toISOString(), now)} ago · every 15m`}
           </span>
         </div>
         {list.length ? (
