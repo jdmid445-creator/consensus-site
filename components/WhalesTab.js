@@ -38,19 +38,21 @@ export default function WhalesTab({ address, active }) {
   useEffect(() => {
     if (!active) return;
     let stop = false;
-    const load = () => {
+    const load = (lite) => {
       if (document.visibilityState !== 'visible') return;
-      fetch(`/api/whales?a=${address}`, { cache: 'no-store' })
+      return fetch(`/api/whales?a=${address}${lite ? '&lite=1' : ''}`, { cache: 'no-store' })
         .then(async (res) => {
           const d = await res.json().catch(() => ({}));
           if (stop) return;
-          if (res.ok && !d.error) setS({ status: 'done', d });
+          if (res.ok && !d.error && (d.wallets?.length || !lite)) setS({ status: 'done', d });
+          if (res.ok && !d.wallets?.length && !stop) setTimeout(() => load(false), 4000);
           else setS((prev) => (prev.status === 'done' ? prev : { status: 'error', error: d.error || 'Couldn’t load the wallets.' }));
         })
         .catch(() => !stop && setS((prev) => (prev.status === 'done' ? prev : { status: 'error', error: 'Couldn’t load the wallets.' })));
     };
-    load();
-    const t = setInterval(load, 30000);
+    // Holdings first (fast), then profit and loss on top.
+    Promise.resolve(load(true)).finally(() => !stop && load(false));
+    const t = setInterval(() => load(false), 30000);
     return () => { stop = true; clearInterval(t); };
   }, [address, active]);
 
@@ -73,6 +75,7 @@ export default function WhalesTab({ address, active }) {
   if (s.status === 'error') return <p className="note">{s.error}</p>;
 
   const d = s.d;
+  if (!d.wallets?.length) return <p className="note">Couldn&apos;t read this coin&apos;s holders just now. Trying again…</p>;
   const withPnl = d.wallets.filter((w) => w.coin?.total != null);
   const inProfit = withPnl.filter((w) => w.coin.total > 0).length;
   const smart = d.wallets.filter((w) => (w.lifetime?.total ?? 0) >= 100000).length;
@@ -177,6 +180,7 @@ export default function WhalesTab({ address, active }) {
         </table>
       </div>
       {d.pnl === 'off' && <p className="note">Profit and loss columns turn on once a Solana Tracker key is added to the site.</p>}
+      {d.pnl === 'loading' && <p className="note">Loading profit and loss…</p>}
       {d.pnl === 'error' && <p className="note">Profit and loss couldn’t be read just now. Holdings are still live.</p>}
       <p className="note">The biggest wallets by how much of the coin they hold, biggest first. Pools, bonding curves and other program accounts are left out{d.excluded ? ` (${d.excluded} here)` : ''}, so every row is a real wallet. Holdings from Solana through Helius{pnlOn ? '; PnL from Solana Tracker, in USD, including what’s still held' : ''}. Tap a wallet to see its holdings on Solscan. <a href={`https://solscan.io/token/${address}#holders`} target="_blank" rel="noopener noreferrer">Compare with Solscan&apos;s holder list</a>.</p>
     </div>

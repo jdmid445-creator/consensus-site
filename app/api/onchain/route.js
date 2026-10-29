@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { getMeta } from '@/lib/meta';
 import { resolveTokens } from '@/lib/dexscreener';
 import { getOnchain } from '@/lib/onchain';
 import { rateLimit } from '@/lib/ratelimit';
@@ -16,9 +15,9 @@ export async function GET(req) {
   if (!process.env.HELIUS_API_KEY) return NextResponse.json({ error: 'Holder stats are switched off on this site right now.' }, { status: 503 });
   if (!rateLimit(req, { key: 'onchain', limit: 12, windowMs: 60_000 })) return NextResponse.json({ error: 'Too many requests. Try again in a minute.' }, { status: 429 });
 
-  const meta = await getMeta();
-  let r = meta.runners.find((x) => x.address === a);
-  if (!r) {
+  // Straight from DexScreener (cached 2 minutes): no need to build the whole board for one coin.
+  let r;
+  {
     const p = (await resolveTokens([a], { revalidate: 120 })).get(a);
     if (!p) return NextResponse.json({ error: 'Couldn’t find this coin on DexScreener.' }, { status: 404 });
     r = { pairAddress: p.pairAddress, liquidityBase: Number(p.liquidity?.base) || 0 };
