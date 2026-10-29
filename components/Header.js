@@ -7,10 +7,11 @@ export default function Header() {
   return (
     <header className="top">
       <div className="wrap top-in">
-        <Link href="/" className="brand" aria-label={`${site.name} home`}>
+        {/* A plain link (not client-side navigation) so clicking the name always reloads the page fresh. */}
+        <a href="/" className="brand" aria-label={`${site.name} home`}>
           <Mark size={26} />
           <span>{site.name}</span>
-        </Link>
+        </a>
         <nav className="nav" aria-label="Main">
           <Link href="/#latest">Latest</Link>
           <Link href="/#movers">Movers</Link>

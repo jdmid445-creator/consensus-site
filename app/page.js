@@ -4,7 +4,6 @@ import CoinImg from '@/components/CoinImg';
 import RunnersTable from '@/components/RunnersTable';
 import NarrativeWriter from '@/components/NarrativeWriter';
 import Ago from '@/components/Ago';
-import Ticker from '@/components/Ticker';
 import AutoRefresh from '@/components/AutoRefresh';
 import LeadCard from '@/components/LeadCard';
 import NewRunners from '@/components/NewRunners';
@@ -51,8 +50,8 @@ export default async function Home() {
   const lead = byAddr.get(meta.top) || runners[0];
   const [chart, wire, headlines, markets] = await Promise.all([
     lead.pairAddress ? getCandles(lead.pairAddress, { timeframe: 'minute', aggregate: 15, limit: 96, revalidate: 300 }) : [],
-    getWire(14).catch(() => []),
-    getHeadlines(10).catch(() => []),
+    getWire(8).catch(() => []),
+    getHeadlines(6).catch(() => []),
     getMarkets().catch(() => []),
   ]);
 
@@ -71,13 +70,12 @@ export default async function Home() {
   const totalCap = stats.totalCap || 1;
   const mover = byAddr.get(stats.topMover);
   const pad = stats.launchpads[0];
-  const newest = [...runners].filter((r) => r.ageHours != null).sort((a, b) => a.ageHours - b.ageHours).slice(0, 8);
+  const newest = [...runners].filter((r) => r.ageHours != null).sort((a, b) => a.ageHours - b.ageHours).slice(0, 6);
   const typeCounts = runners.reduce((m, r) => ({ ...m, [r.type]: (m[r.type] || 0) + 1 }), {});
 
   return (
     <>
       <AutoRefresh ms={60000} />
-      <Ticker runners={runners} />
       <MarketStrip markets={markets} field={{ count: stats.count, cap: stats.totalCap }} />
 
       {/* The lead: today's read, and the coin leading the day */}
@@ -92,32 +90,10 @@ export default async function Home() {
         </div>
         <div className="lead-rest">
           <p className="dek">{dek}</p>
-          <p className="byline">
-            {summary ? 'Read' : 'Sorted by keyword'} from the {stats.count} biggest Solana memecoins launched in the last {meta.windowHours} hours.
-          </p>
           <div className="lead-actions">
             <a href="#movers" className="btn btn-ink">See the movers</a>
             <a href="#write" className="btn btn-quiet">Write a narrative for today</a>
           </div>
-          {narratives.length > 0 && (
-            <nav className="inread" aria-labelledby="inread-title">
-              <h2 id="inread-title">Today&apos;s narratives</h2>
-              <ol>
-                {narratives.slice(0, 4).map((n, i) => {
-                  const heat = n.heat && HEAT[n.heat];
-                  return (
-                    <li key={n.name + i}>
-                      <a href="#narratives">
-                        <span className="inread-name">{n.name}</span>
-                        {heat && <span className={`heat heat-${n.heat}`}><heat.Icon width={14} height={14} /> {heat.label}</span>}
-                        <span className="inread-count">{n.coins.length} {n.coins.length === 1 ? 'coin' : 'coins'}</span>
-                      </a>
-                    </li>
-                  );
-                })}
-              </ol>
-            </nav>
-          )}
         </div>
         <LeadCard
           lead={lead}
@@ -147,7 +123,7 @@ export default async function Home() {
       {/* The field */}
       <section className="wrap field-sec" aria-labelledby="field-title" data-reveal="field">
         <div className="field-head">
-          <h2 id="field-title" className="h3">The field <span className="h-note">every runner, with its move over the last 24 hours</span></h2>
+          <h2 id="field-title" className="h3">The field <span className="h-note">24h moves</span></h2>
           <ul className="legend">
             {stats.themes.map((t) => (
               <li key={t.id} style={{ '--c': t.color }}>
@@ -158,14 +134,6 @@ export default async function Home() {
           </ul>
         </div>
         <Board runners={runners} themes={stats.themes} />
-        <div className="mix" aria-label="Share of market cap by theme">
-          {stats.themes.map((t, i) => (
-            <span key={t.id} className="mix-seg" data-dark={t.ink === '#fff'} style={{ '--c': t.color, '--i': i, flexGrow: Math.max(t.shareCap, 0.012) }} title={`${t.name}: ${share(t.shareCap)} of market cap`}>
-              {t.shareCap >= 0.13 && <span className="mix-label">{t.name} <b>{share(t.shareCap)}</b></span>}
-            </span>
-          ))}
-        </div>
-        <p className="note">Bar shows each theme&apos;s share of the field&apos;s combined {usd(stats.totalCap)} market cap.</p>
       </section>
 
       {/* Movers by window */}
@@ -228,15 +196,8 @@ export default async function Home() {
             <ul>
               <li><CountUp value={stats.medianAgeHours} kind="age" /> is how old the median runner is, at a <CountUp value={stats.medianCap} kind="usd" /> market cap.</li>
               <li><CountUp value={stats.withX} kind="share" /> have an X account and <CountUp value={stats.withSite} kind="share" /> have a website.</li>
-              <li><CountUp value={stats.paidProfile} kind="share" /> paid for a DexScreener profile.</li>
               {pad && <li><CountUp value={pad.share} kind="share" /> launched on {pad.name}.</li>}
               <li><CountUp value={stats.buyShare} kind="share" /> of today&apos;s trades across the field were buys.</li>
-              {stats.medianTop10 != null && <li>The 10 biggest wallets hold <CountUp value={stats.medianTop10} kind="share" /> of the median runner, pool excluded.</li>}
-              {stats.concentration && (
-                <li>
-                  Coins with spread-out holders: <b className={stats.concentration.spreadChange >= 0 ? 'up' : 'down'}>{pct(stats.concentration.spreadChange)}</b> median today, vs <b className={stats.concentration.tightChange >= 0 ? 'up' : 'down'}>{pct(stats.concentration.tightChange)}</b> for concentrated ones.
-                </li>
-              )}
               {mover && (
                 <li>
                   Biggest 24h move: <Link href={`/coin/${mover.address}`}>{mover.name}</Link>, <b className={mover.change.h24 >= 0 ? 'up' : 'down'}>{gain(mover.change.h24)}</b>.
@@ -248,11 +209,11 @@ export default async function Home() {
             <div className="calls">
               <div>
                 <h3>Working</h3>
-                <ul className="ticks">{summary.working.map((w, i) => <li key={i}>{w}</li>)}</ul>
+                <ul className="ticks">{summary.working.slice(0, 3).map((w, i) => <li key={i}>{w}</li>)}</ul>
               </div>
               <div>
                 <h3>Losing steam</h3>
-                <ul className="ticks ticks-down">{summary.fading.map((w, i) => <li key={i}>{w}</li>)}</ul>
+                <ul className="ticks ticks-down">{summary.fading.slice(0, 2).map((w, i) => <li key={i}>{w}</li>)}</ul>
               </div>
               {summary.watch && <p className="watch"><b>Watch next.</b> {summary.watch}</p>}
             </div>

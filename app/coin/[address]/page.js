@@ -93,10 +93,7 @@ export default async function CoinPage({ params }) {
             <p className="ch-meta">
               <span>${r.symbol}</span>
               <span className="ch-type"><TypeBadge id={r.type} /> {t.name}</span>
-              {themeObj && <span className="theme-tag" style={{ '--c': themeObj.color }}>{themeObj.name}</span>}
               <span>{age(r.ageHours)} old</span>
-              <span>Launched on {r.launchpad}</span>
-              {runner && <span>#{r.rank} of today&apos;s runners</span>}
             </p>
             <CopyCA address={r.address} />
           </div>

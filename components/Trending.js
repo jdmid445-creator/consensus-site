@@ -4,7 +4,7 @@ import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import CoinImg from './CoinImg';
 import LiveNumber from './LiveNumber';
-import TypeBadge, { TypeKey } from './TypeBadge';
+import TypeBadge from './TypeBadge';
 import useLive from './useLive';
 import { usd, gain } from '@/lib/format';
 
@@ -58,7 +58,6 @@ export default function Trending({ windows, trending, runners, typeCounts }) {
             </button>
           ))}
         </div>
-        <TypeKey counts={typeCounts} />
       </div>
 
       {list.length === 0 ? (

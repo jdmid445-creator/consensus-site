@@ -76,7 +76,6 @@ export default function RunnersTable({ runners: base, themes }) {
                   </button>
                 </th>
               ))}
-              <th scope="col" className="hide-md">Launched on</th>
               <th scope="col" className="c-links hide-sm"><span className="sr-only">Links</span></th>
             </tr>
           </thead>
@@ -91,7 +90,7 @@ export default function RunnersTable({ runners: base, themes }) {
                       <CoinImg src={r.image} name={r.name} symbol={r.symbol} color={t?.color} size={34} />
                       <span>
                         <strong>{r.name}</strong>
-                        <span className="sub"><TypeBadge id={r.type} /><span className="muted">${r.symbol}</span><span className="theme-tag">{t?.name}</span><span className="age-sm muted num">{age(r.ageHours)} old</span></span>
+                        <span className="sub"><TypeBadge id={r.type} /><span className="muted">${r.symbol}</span><span className="age-sm muted num">{age(r.ageHours)} old</span></span>
                       </span>
                     </Link>
                   </td>
@@ -100,7 +99,6 @@ export default function RunnersTable({ runners: base, themes }) {
                   <td className="c-num num hide-sm">{age(r.ageHours)}</td>
                   <td className="c-num num hide-sm">{usd(r.volume24h)}</td>
                   {cols.length > COLS.length - 1 && <td className="c-num num hide-sm">{r.top10 == null ? '–' : `${Math.round(r.top10 * 100)}%`}</td>}
-                  <td className="hide-md muted">{r.launchpad}</td>
                   <td className="c-links hide-sm">
                     <span className="links">
                       {r.socials.x ? <a href={r.socials.x} target="_blank" rel="noopener noreferrer nofollow" aria-label={`${r.name} on X`}><XLogo /></a> : <span className="links-gap" aria-hidden="true" />}

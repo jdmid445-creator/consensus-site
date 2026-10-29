@@ -24,7 +24,7 @@ export default function Board({ runners, themes }) {
               <Link className="tile" href={`/coin/${r.address}`} aria-label={`${r.name} ($${r.symbol}), ${usd(cap)}, ${gain(v)} in 24 hours, ${t?.name}`}>
                 <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={56} className="tile-img" />
                 <span className="tile-sym">${r.symbol}</span>
-                <span className="tile-move"><LiveNumber value={v} format={gain} className={`tile-gain ${v >= 0 ? 'up' : 'down'}`} /><small>24h</small></span>
+                <LiveNumber value={v} format={gain} className={`tile-gain ${v >= 0 ? 'up' : 'down'}`} />
                 <span className="tile-card" aria-hidden="true">
                   <strong>{r.name}</strong>
                   <span>{usd(cap)} market cap, {gain(v)} in 24h</span>

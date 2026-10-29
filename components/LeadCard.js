@@ -110,8 +110,6 @@ export default function LeadCard({ lead: serverLead, chart: serverChart, field }
         <div><dt>Market cap</dt><dd><LiveNumber value={cap} format={usd} /></dd></div>
         <div><dt>Last hour</dt><dd><LiveNumber value={h1} format={pct} className={h1 >= 0 ? 'up' : 'down'} /></dd></div>
         <div><dt>Volume, 24h</dt><dd><LiveNumber value={L?.volume?.h24 ?? lead.volume24h} format={usd} /></dd></div>
-        <div><dt>Age</dt><dd>{age(lead.ageHours)}</dd></div>
-        {lead.top10 != null && <div><dt>Top 10 wallets</dt><dd>{Math.round(lead.top10 * 100)}%</dd></div>}
       </dl>
 
       <div className="lc-actions">
