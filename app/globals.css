@@ -1472,3 +1472,32 @@ body { font-family: var(--sans); }
 .board-app .mv-list li { background: transparent; }
 .board-app .wg-scroll > :not(.wg-head) { align-content: start; }
 .board-app .ww-list { align-content: start; }
+.board-app .wg.wg-lead { border-top: 0; padding-top: 0; }
+
+/* ===== Unslop pass 3 ===== */
+/* live numbers: no highlighter boxes, just a brief color pulse on the digits */
+.tick-up, .tick-down { background-color: transparent !important; }
+@media (prefers-reduced-motion: no-preference) {
+  .tick-up > span { animation: pulse-up 1s ease; }
+  .tick-down > span { animation: pulse-down 1s ease; }
+  @keyframes pulse-up { 0% { color: var(--up); } }
+  @keyframes pulse-down { 0% { color: var(--down); } }
+}
+/* notices: a plain line, not a callout box */
+.notice { margin-top: 14px; padding: 0; border: 0; background: none; border-radius: 0; color: var(--muted); font-size: 14px; }
+/* no box-in-a-box on the writer and table pages */
+.wg-writer, .wg-table { background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; }
+.wg-table .table-scroll { border: 1px solid var(--line); border-radius: var(--r); }
+.wg-table > div > .chips { padding: 0 0 14px; }
+/* coin page header: newspaper style like the front page */
+.coinpage .ch { background: transparent; border: 0; border-top: 2px solid var(--ink); border-radius: 0; padding: 18px 0 6px; box-shadow: none; }
+.crumbs { font-size: 13px; color: var(--muted); }
+.crumbs a { color: var(--ink-2); text-decoration: none; }
+.crumbs a:hover { color: var(--accent); }
+/* chart toggle sits quietly above the chart */
+.lch .seg { margin-bottom: 2px; }
+/* page titles on inner pages get the same rule as the front page sections */
+.page-head { border-top: 2px solid var(--ink); padding-top: 16px; }
+/* front page: the lead card's divider starts level with the rule */
+.board-app .row-1 > * + *::before { top: 0; }
+.dash-one { max-width: none; padding: 18px 28px 40px; }
