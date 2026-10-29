@@ -8,7 +8,7 @@ import { getMeta } from '@/lib/meta';
 import { getXFeed, xFeedEnabled } from '@/lib/xfeed';
 import { usd } from '@/lib/format';
 
-export const revalidate = 60;
+export const revalidate = 30;
 export const maxDuration = 60;
 export const metadata = { title: 'X tracker' };
 
@@ -27,7 +27,7 @@ export default async function XTracker() {
 
   return (
     <div className="board-app">
-      <AutoRefresh ms={60000} />
+      <AutoRefresh ms={30000} />
       <header className="page-head">
         <h1>X tracker</h1>
         <p className="muted">What X is saying about today&apos;s runners, plus the big crypto accounts worth hearing from. Only posts with real reach or traction make it in.</p>

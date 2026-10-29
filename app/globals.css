@@ -1579,3 +1579,14 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .xp-big { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 99px; background: var(--accent-wash); color: var(--accent); font-size: 12px; font-weight: 600; }
 .wg-xfeed .x-seg { width: fit-content; }
 @media (max-width: 720px) { .wg-xfeed .x-seg { width: 100%; } }
+.x-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+.x-bar .x-seg { margin-bottom: 0; }
+.x-live { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--up); white-space: nowrap; }
+.x-live i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: xlive 1.6s ease-in-out infinite; }
+.x-live.is-paused { color: var(--accent); }
+.x-live.is-paused i { animation: none; }
+@keyframes xlive { 50% { opacity: .3; } }
+.xp-new { animation: xpnew .5s cubic-bezier(.2,.8,.2,1); }
+@keyframes xpnew { from { opacity: 0; transform: translateY(-8px); } }
+@media (max-width: 720px) { .x-bar { flex-direction: column; align-items: stretch; } .x-live { align-self: flex-end; } }
+@media (prefers-reduced-motion: reduce) { .xp-new, .x-live i { animation: none; } }

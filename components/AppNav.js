@@ -17,7 +17,7 @@ const ITEMS = [
 // The header: name, the pages, search, and the CA. On phones the pages move to a tab bar
 // along the bottom.
 export default function AppNav({ name, ca, ticker, x, xFeed = false, children }) {
-  const items = xFeed ? [...ITEMS.slice(0, 2), { href: '/x', label: 'X tracker', short: 'X', Icon: XLogo }, ...ITEMS.slice(2)] : ITEMS;
+  const items = xFeed ? [{ href: '/x', label: 'X tracker', short: 'X', Icon: XLogo }, ...ITEMS] : ITEMS;
   const path = usePathname() || '/';
   const on = (href) => (href === '/' ? path === '/' : path.startsWith(href));
   return (
