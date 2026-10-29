@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import Widget from './Widget';
 import CoinImg from './CoinImg';
@@ -25,9 +25,9 @@ function Move({ rank, was }) {
   return <span className={`xr-move ${d > 0 ? 'is-up' : 'is-down'}`}>{d > 0 ? '▲' : '▼'}{Math.abs(d)}</span>;
 }
 
-function Row({ p, now, flash }) {
+function Row({ p, now, flash, hidden }) {
   return (
-    <li className={flash ? 'xr-flash' : undefined}>
+    <li className={flash ? 'xr-flash' : undefined} hidden={hidden}>
       <div className="xr-rank">
         <b>{p.rank}</b>
         <Move rank={p.rank} was={p.was} />
@@ -79,7 +79,10 @@ export default function XTop({ initial }) {
   const [hover, setHover] = useState(false);
   const [lane, setLane] = useState('all');
   const [more, setMore] = useState(false);
-  const FIRST = 10;
+  // How many posts fit beside the sidebar, so both columns end on the same line.
+  const [fit, setFit] = useState(10);
+  const listRef = useRef(null);
+  const sideRef = useRef(null);
   const [now, setNow] = useState(() => Date.now());
   const last = useRef(Object.fromEntries((initial.lists?.all || []).map((p) => [p.id, `${p.rank}:${p.likes}`])));
   const [flash, setFlash] = useState(new Set());
@@ -113,7 +116,37 @@ export default function XTop({ initial }) {
 
   const waiting = hover && live.at !== shown.at;
   const full = useMemo(() => shown.lists?.[lane] || [], [shown, lane]);
-  const list = more ? full : full.slice(0, FIRST);
+  const FIRST = Math.min(fit, full.length);
+
+  useLayoutEffect(() => {
+    const ul = listRef.current;
+    const side = sideRef.current;
+    if (!ul || !side) return;
+    const measure = () => {
+      const items = [...ul.children];
+      // One column (phones): a fixed first ten.
+      if (getComputedStyle(side.parentElement).gridTemplateColumns.split(' ').length < 2) { setFit(10); return; }
+      if (more) return;
+      const last = side.lastElementChild;
+      const sideH = last ? last.getBoundingClientRect().bottom - side.getBoundingClientRect().top : 0;
+      const feed = ul.closest('.wg');
+      const btn = feed.querySelector('.x-more');
+      const above = ul.getBoundingClientRect().top - feed.getBoundingClientRect().top;
+      const room = sideH - above - (btn ? btn.offsetHeight : 64);
+      const was = items.map((li) => li.hidden);
+      items.forEach((li) => { li.hidden = false; });
+      const top = ul.getBoundingClientRect().top;
+      let n = 0;
+      for (const li of items) { if (li.getBoundingClientRect().bottom - top <= room) n++; else break; }
+      items.forEach((li, i) => { li.hidden = was[i]; });
+      setFit(Math.max(3, n));
+    };
+    measure();
+    const ro = new ResizeObserver(() => measure());
+    ro.observe(side);
+    ul.querySelectorAll('img').forEach((img) => { if (!img.complete) img.addEventListener('load', measure, { once: true }); });
+    return () => ro.disconnect();
+  }, [full, more, lane]);
   const accounts = useMemo(() => {
     const m = new Map();
     for (const p of shown.lists?.all || []) if (!m.has(p.author.handle)) m.set(p.author.handle, p.author);
@@ -134,9 +167,9 @@ export default function XTop({ initial }) {
             {hover ? (waiting ? 'Update waiting' : 'Paused') : `Updated ${ago(new Date(shown.at).toISOString(), now)} ago · every 15m`}
           </span>
         </div>
-        {list.length ? (
-          <ol className="xr" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-            {list.map((p) => <Row key={p.id} p={p} now={now} flash={flash.has(p.id)} />)}
+        {full.length ? (
+          <ol ref={listRef} className="xr" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+            {full.map((p, i) => <Row key={p.id} p={p} now={now} flash={flash.has(p.id)} hidden={!more && i >= FIRST} />)}
           </ol>
         ) : (
           <p className="muted x-empty">Gathering today&apos;s top posts. They show up here within a couple of minutes.</p>
@@ -149,11 +182,11 @@ export default function XTop({ initial }) {
           </div>
         )}
       </Widget>
-      <div className="x-side">
+      <div className="x-side" ref={sideRef}>
         <Widget title="Celebrities on runners" note="last 48h" className="wg-xceleb">
           {shown.celebs?.posts?.length ? (
             <ul className="xc">
-              {shown.celebs.posts.map((p) => (
+              {shown.celebs.posts.slice(0, 6).map((p) => (
                 <li key={p.id}>
                   <p className="xp-who">
                     <XImg src={p.author.avatar} name={p.author.name} size={22} avatar />

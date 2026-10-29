@@ -1677,3 +1677,7 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .xl li a > :first-child { width: 32px; height: 32px; }
 .xl-name { overflow: hidden; }
 .xl-name, .xl-name small { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+/* Sidebar keeps its natural height; the feed shows as many posts as fit beside it. */
+.x-side > .wg:last-child { flex: none; }
+.xr .xp-img img { max-height: 180px; max-width: min(100%, 320px); }
+.xr > li[hidden] { display: none; }
