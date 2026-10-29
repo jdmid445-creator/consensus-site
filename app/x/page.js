@@ -5,7 +5,7 @@ import { getXTop, xTopEnabled } from '@/lib/xtop';
 import { getCelebPosts } from '@/lib/xceleb';
 
 export const dynamic = 'force-dynamic';
-export const maxDuration = 30;
+export const maxDuration = 60;
 export const metadata = { title: 'Top on X' };
 
 export default async function XPage() {

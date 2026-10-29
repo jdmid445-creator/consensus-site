@@ -207,7 +207,7 @@ export default function XTop({ initial }) {
                 </li>
               ))}
             </ul>
-          ) : <p className="muted x-empty">No celebrity has posted about a running coin in the last 48 hours. When one does, it shows up here.</p>}
+          ) : <p className="muted x-empty">None of the {shown.celebs?.watching || 'big'} accounts we watch has posted about a running coin in the last 48 hours.{shown.celebs?.at ? ` Checked ${ago(new Date(shown.celebs.at).toISOString(), now)} ago.` : ''}</p>}
         </Widget>
         <Widget title="Coins in the top 25" className="wg-xtalk">
           {shown.named.length ? (

@@ -3,7 +3,7 @@ import { getXTop } from '@/lib/xtop';
 import { getCelebPosts } from '@/lib/xceleb';
 
 export const dynamic = 'force-dynamic';
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 // Today's top 25, polled by the X page every few seconds.
 export async function GET() {
