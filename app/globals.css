@@ -1681,3 +1681,6 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .x-side > .wg:last-child { flex: none; }
 .xr .xp-img img { max-height: 180px; max-width: min(100%, 320px); }
 .xr > li[hidden] { display: none; }
+.ftr-links { display: inline-flex; align-items: center; gap: 20px; }
+.ftr-links a { display: inline-flex; align-items: center; gap: 6px; }
+@media (max-width: 760px) { .hdr-tools .hdr-x { display: grid; flex: none; } }

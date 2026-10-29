@@ -5,6 +5,7 @@ import MarketStrip from '@/components/MarketStrip';
 import { getMarkets } from '@/lib/markets';
 import Reveal from '@/components/Reveal';
 import { site } from '@/lib/site';
+import { XLogo } from '@/components/Icons';
 import { xTopEnabled } from '@/lib/xtop';
 
 export const metadata = {
@@ -36,7 +37,10 @@ export default async function RootLayout({ children }) {
           <main id="main">{children}</main>
           <footer className="ftr">
             <span>{site.name}. Data from DexScreener, GeckoTerminal and Helius. Not financial advice.</span>
-            <a href="/docs">Docs</a>
+            <span className="ftr-links">
+              <a href={site.links.x} target="_blank" rel="noopener noreferrer"><XLogo width={13} height={13} /> @{site.links.x.split('/').pop()}</a>
+              <a href="/docs">Docs</a>
+            </span>
           </footer>
         </div>
         <Reveal />
