@@ -29,7 +29,7 @@ export default async function XTracker() {
       <AutoRefresh ms={60000} />
       <header className="page-head">
         <h1>X tracker</h1>
-        <p className="muted">What X is saying about today&apos;s runners, newest first. Reposts and cashtag spam are left out.</p>
+        <p className="muted">What X is saying about today&apos;s runners, newest first. Reposts, reply raids and paid-group promos are left out.</p>
       </header>
       <div className="row row-x">
         <Widget title="The feed" note={`${posts.length} posts`} className="wg-xfeed">
