@@ -84,7 +84,7 @@ export default async function Home() {
           <h1 id="today-title" className="headline">{headline}</h1>
           <p className="dek">{dek}</p>
           <div className="today-mix">
-            <p className="today-label">Where the market cap is</p>
+            <p className="today-label">Where the market cap is{(() => { const big = [...runners].sort((a, b) => b.marketCap - a.marketCap)[0]; const sh = big && stats.totalCap ? big.marketCap / stats.totalCap : 0; return sh >= 0.4 ? <span className="today-note"> · {big.name} alone is {share(sh)} of it</span> : null; })()}</p>
             <div className="mix" aria-label="Share of market cap by theme">
               {stats.themes.map((t, i) => (
                 <span key={t.id} className="mix-seg" style={{ '--c': t.color, '--i': i, flexGrow: Math.max(t.shareCap, 0.012) }} title={`${t.name}: ${share(t.shareCap)} of market cap`} />

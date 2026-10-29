@@ -1501,3 +1501,4 @@ body { font-family: var(--sans); }
 /* front page: the lead card's divider starts level with the rule */
 .board-app .row-1 > * + *::before { top: 0; }
 .dash-one { max-width: none; padding: 18px 28px 40px; }
+.today-note { color: var(--ink-2); font-weight: 500; }
