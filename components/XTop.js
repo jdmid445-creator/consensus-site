@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import Widget from './Widget';
 import CoinImg from './CoinImg';
+import XImg from './XImg';
 
 const k = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${(n / 1e3).toFixed(n >= 1e4 ? 0 : 1)}K` : String(n));
 const ago = (iso, now) => {
@@ -33,8 +34,7 @@ function Row({ p, now, flash }) {
       </div>
       <div className="xr-body">
         <p className="xp-who">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={p.author.avatar} alt="" width={22} height={22} loading="lazy" />
+          <XImg src={p.author.avatar} name={p.author.name} size={22} avatar />
           <b>{p.author.name}</b>
           <span>@{p.author.handle} · {k(p.author.followers)}</span>
           <time dateTime={p.createdAt}>{ago(p.createdAt, now)}</time>
@@ -48,8 +48,7 @@ function Row({ p, now, flash }) {
         )}
         {p.img && (
           <a href={p.url} target="_blank" rel="noopener noreferrer" className="xp-img">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={p.img} alt="" loading="lazy" />
+            <XImg src={p.img} />
           </a>
         )}
         <div className="xp-foot">
@@ -79,6 +78,8 @@ export default function XTop({ initial }) {
   const [shown, setShown] = useState(initial);
   const [hover, setHover] = useState(false);
   const [lane, setLane] = useState('all');
+  const [more, setMore] = useState(false);
+  const FIRST = 10;
   const [now, setNow] = useState(() => Date.now());
   const last = useRef(Object.fromEntries((initial.lists?.all || []).map((p) => [p.id, `${p.rank}:${p.likes}`])));
   const [flash, setFlash] = useState(new Set());
@@ -111,7 +112,8 @@ export default function XTop({ initial }) {
   }, [live, hover]);
 
   const waiting = hover && live.at !== shown.at;
-  const list = useMemo(() => shown.lists?.[lane] || [], [shown, lane]);
+  const full = useMemo(() => shown.lists?.[lane] || [], [shown, lane]);
+  const list = more ? full : full.slice(0, FIRST);
   const accounts = useMemo(() => {
     const m = new Map();
     for (const p of shown.lists?.all || []) if (!m.has(p.author.handle)) m.set(p.author.handle, p.author);
@@ -120,11 +122,11 @@ export default function XTop({ initial }) {
 
   return (
     <div className="row row-x">
-      <Widget title="Top 25" note="today, ET" className="wg-xfeed">
+      <Widget id="x-top" title="Top 25" note="today, ET" className="wg-xfeed">
         <div className="x-bar">
           <div className="seg seg-sm x-seg" role="tablist">
             {LANES.map(([id, label]) => (
-              <button key={id} type="button" role="tab" className="seg-btn" aria-selected={lane === id} onClick={() => setLane(id)}>{label}</button>
+              <button key={id} type="button" role="tab" className="seg-btn" aria-selected={lane === id} onClick={() => { setLane(id); setMore(false); }}>{label}</button>
             ))}
           </div>
           <span className={`x-live${hover ? ' is-paused' : ''}`}>
@@ -139,6 +141,13 @@ export default function XTop({ initial }) {
         ) : (
           <p className="muted x-empty">Gathering today&apos;s top posts. They show up here within a couple of minutes.</p>
         )}
+        {full.length > FIRST && (
+          <div className="x-more">
+            {more
+              ? <button type="button" className="btn btn-quiet" onClick={() => { setMore(false); document.getElementById('x-top')?.scrollIntoView({ block: 'start' }); }}>Show fewer posts</button>
+              : <button type="button" className="btn btn-quiet" onClick={() => setMore(true)}>Show {full.length - FIRST} more posts</button>}
+          </div>
+        )}
       </Widget>
       <div className="x-side">
         <Widget title="Celebrities on runners" note="last 48h" className="wg-xceleb">
@@ -147,8 +156,7 @@ export default function XTop({ initial }) {
               {shown.celebs.posts.map((p) => (
                 <li key={p.id}>
                   <p className="xp-who">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={p.author.avatar} alt="" width={22} height={22} loading="lazy" />
+                    <XImg src={p.author.avatar} name={p.author.name} size={22} avatar />
                     <b>{p.author.name}</b>
                     <span>{k(p.author.followers)}</span>
                     <time dateTime={p.createdAt}>{ago(p.createdAt, now)}</time>
@@ -191,8 +199,7 @@ export default function XTop({ initial }) {
               {accounts.map((a) => (
                 <li key={a.handle}>
                   <a href={`https://x.com/${a.handle}`} target="_blank" rel="noopener noreferrer">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={a.avatar} alt="" width={32} height={32} loading="lazy" />
+                    <XImg src={a.avatar} name={a.name} size={32} avatar />
                     <span className="xl-name">{a.name}<small>@{a.handle}</small></span>
                     <b>{k(a.followers)}</b>
                   </a>

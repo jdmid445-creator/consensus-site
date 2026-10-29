@@ -1665,3 +1665,15 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .xc-text { color: var(--ink-2); font-size: 14px; line-height: 1.45; text-decoration: none; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
 .xc-text:hover { color: var(--ink); }
 .xp-coin i { font-style: normal; font-weight: 600; font-size: 12px; }
+/* Top on X: both columns end on the same line, the button sits centered at the bottom. */
+.row-x { align-items: stretch; }
+.wg-xfeed { display: flex; flex-direction: column; }
+.x-more { margin-top: auto; display: flex; justify-content: center; padding: 18px 0 4px; border-top: 1px solid var(--line); }
+.x-side { display: flex; flex-direction: column; min-width: 0; }
+.x-side > .wg:last-child { flex: 1; }
+.row-x > * { min-width: 0; }
+.xp-img:empty { display: none; }
+.x-av-fallback { display: inline-grid; place-items: center; flex: none; border-radius: 50%; background: var(--wash-2); color: var(--ink-2); font-weight: 700; }
+.xl li a > :first-child { width: 32px; height: 32px; }
+.xl-name { overflow: hidden; }
+.xl-name, .xl-name small { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
