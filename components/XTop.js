@@ -141,6 +141,33 @@ export default function XTop({ initial }) {
         )}
       </Widget>
       <div className="x-side">
+        <Widget title="Celebrities on runners" note="last 48h" className="wg-xceleb">
+          {shown.celebs?.posts?.length ? (
+            <ul className="xc">
+              {shown.celebs.posts.map((p) => (
+                <li key={p.id}>
+                  <p className="xp-who">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.author.avatar} alt="" width={22} height={22} loading="lazy" />
+                    <b>{p.author.name}</b>
+                    <span>{k(p.author.followers)}</span>
+                    <time dateTime={p.createdAt}>{ago(p.createdAt, now)}</time>
+                  </p>
+                  <a href={p.url} target="_blank" rel="noopener noreferrer" className="xc-text">{p.text}</a>
+                  <span className="xp-coins">
+                    {p.coins.map((c) => (
+                      <Link key={c.address} href={`/coin/${c.address}`} className="xp-coin">
+                        <CoinImg address={c.address} src={c.image} name={c.name} symbol={c.symbol} size={18} />
+                        {c.symbol}
+                        {c.h24 != null && <i className={c.h24 >= 0 ? 'up' : 'down'}>{c.h24 >= 0 ? '+' : ''}{Math.round(c.h24)}%</i>}
+                      </Link>
+                    ))}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : <p className="muted x-empty">No celebrity has posted about a running coin in the last 48 hours. When one does, it shows up here.</p>}
+        </Widget>
         <Widget title="Coins in the top 25" className="wg-xtalk">
           {shown.named.length ? (
             <ol className="xt">

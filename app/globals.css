@@ -1657,3 +1657,11 @@ body, button, input, textarea, select { font-family: var(--sans); }
   .wg-xfeed { position: relative; }
   .wg-xfeed .x-live { position: absolute; top: 19px; right: 0; }
 }
+.xc { list-style: none; margin: 0; padding: 0; }
+.xc li { display: grid; gap: 8px; padding: 12px 0; border-top: 1px solid var(--line); }
+.xc li:first-child { border-top: 0; padding-top: 2px; }
+.xc .xp-who img { width: 22px; height: 22px; border-radius: 50%; background: var(--wash); }
+.xc .xp-who { align-items: center; }
+.xc-text { color: var(--ink-2); font-size: 14px; line-height: 1.45; text-decoration: none; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.xc-text:hover { color: var(--ink); }
+.xp-coin i { font-style: normal; font-weight: 600; font-size: 12px; }
