@@ -81,7 +81,7 @@ export default function RatingTab({ r, active, aiOn, field, themeCount, heat }) 
         {brief.status === 'off' && <p className="note">Ratings are written for today&apos;s runners only.</p>}
         {brief.status === 'error' && <p className="note">The rating couldn&apos;t be written just now. Open this tab again in a minute.</p>}
         {brief.status === 'loading' && <div className="cs-skel"><span /><span /><span /><span /></div>}
-        {brief.status === 'done' && !rating && <p className="note">This coin&apos;s rating will appear when its story next refreshes.</p>}
+        {brief.status === 'done' && !rating && <p className="note">The rating couldn&apos;t be written just now. Open this tab again in a minute.</p>}
         {rating && (
           <>
             <dl className="rt-rows">

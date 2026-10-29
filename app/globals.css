@@ -1540,3 +1540,6 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .headline { font-weight: 600 !important; letter-spacing: -0.025em !important; }
 
 .headline { font-weight: 700 !important; }
+.ctab:focus { outline: none; }
+.ctab:focus-visible { outline: none; color: var(--ink); background: rgba(255,255,255,.04); border-radius: 8px 8px 0 0; }
+.rt { align-items: start; }

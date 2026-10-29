@@ -19,5 +19,5 @@ export async function GET(req) {
   const narratives = (meta.summary?.themes || []).filter((t) => t.addresses.includes(a));
   const brief = await getBrief(r, { narratives });
   if (!brief) return NextResponse.json({ error: 'The story couldn’t be written just now.', detail: aiLastError() }, { status: 502 });
-  return NextResponse.json(brief, { headers: { 'cache-control': 'public, s-maxage=600, stale-while-revalidate=3600' } });
+  return NextResponse.json(brief, { headers: { 'cache-control': 'public, s-maxage=120, stale-while-revalidate=600' } });
 }
