@@ -1369,3 +1369,39 @@ body::before {
 .wire time, .heads-meta { color: var(--muted); font-size: 12px; }
 .heads-title { font-size: 14px; line-height: 1.45; }
 @media (max-width: 760px) { .today-legend li { white-space: nowrap; font-size: 12.5px; overflow: hidden; } .today-legend li:nth-child(n+5) { display: none; } }
+
+/* ================= Header navigation (replaces the sidebar) ================= */
+.app { display: block; }
+.side, .topbar { display: none !important; }
+.hdr { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid var(--line); }
+.hdr-in { display: flex; align-items: center; gap: 28px; height: 60px; padding: 0 28px; max-width: 1480px; margin: 0 auto; }
+.hdr .brand { padding: 0; font-size: 18px; flex: none; }
+.hdr-nav { display: flex; align-items: center; gap: 4px; }
+.hdr-link { position: relative; padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .15s, background .15s; }
+.hdr-link:hover { color: var(--ink); background: rgba(255, 255, 255, 0.03); }
+.hdr-link[aria-current="page"] { color: var(--ink); }
+.hdr-link[aria-current="page"]::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: -11px; height: 2px; border-radius: 2px; background: var(--accent); }
+.hdr-tools { margin-left: auto; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.hdr-tools .search { width: 320px; max-width: none; flex: none; }
+.hdr-x { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; color: var(--ink-2); border: 1px solid var(--line); }
+.hdr-x:hover { color: var(--ink); background: rgba(255, 255, 255, 0.04); }
+.mkts { max-width: 1480px; margin: 0 auto; }
+.board-app, .coinpage, .docs { max-width: 1480px; margin-left: auto; margin-right: auto; }
+.ftr { max-width: 1480px; margin: 0 auto; padding: 18px 28px 32px; display: flex; justify-content: space-between; gap: 16px; font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); }
+.ftr a { color: var(--ink-2); text-decoration: none; }
+.ftr a:hover { color: var(--accent); }
+.coinpage .ctabs-bar { top: 60px; }
+@media (max-width: 1080px) {
+  .hdr-nav { display: none; }
+  .hdr-in { gap: 14px; padding: 0 18px; }
+  .hdr-tools { flex: 1; }
+  .hdr-tools .search { flex: 1; width: auto; }
+  .ftr { padding: 16px 18px calc(84px + env(safe-area-inset-bottom)); }
+}
+@media (max-width: 760px) {
+  .hdr-in { padding: 0 14px; height: 56px; }
+  .hdr .brand span { display: none; }
+  .hdr-tools .btn, .hdr-tools .hdr-x { display: none; }
+  .coinpage .ctabs-bar { top: 56px; }
+  .ftr { flex-direction: column; }
+}

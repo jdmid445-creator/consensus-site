@@ -10,41 +10,36 @@ const ITEMS = [
   { href: '/', label: 'Dashboard', short: 'Home', Icon: Home },
   { href: '/coins', label: 'All coins', short: 'Coins', Icon: List },
   { href: '/games', label: 'Games', short: 'Games', Icon: Puzzle },
-  { href: '/write', label: 'Write a narrative', short: 'Write', Icon: Pen },
+  { href: '/write', label: 'Write', short: 'Write', Icon: Pen },
   { href: '/docs', label: 'Docs', short: 'Docs', Icon: Book },
 ];
 
-// The app's navigation: a sidebar on wide screens, a tab bar along the bottom on phones.
-export default function AppNav({ name, ca, ticker, x }) {
+// The header: name, the pages, search, and the CA. On phones the pages move to a tab bar
+// along the bottom.
+export default function AppNav({ name, ca, ticker, x, children }) {
   const path = usePathname() || '/';
   const on = (href) => (href === '/' ? path === '/' : path.startsWith(href));
   return (
     <>
-      <aside className="side" aria-label="Main">
-        {/* A plain link so clicking the name always reloads the page fresh. */}
-        <a href="/" className="brand">
-          <Mark size={26} />
-          <span>{name}</span>
-        </a>
-        <nav className="side-nav">
-          {ITEMS.map(({ href, label, Icon }) => (
-            <Link key={href} href={href} className="side-item" aria-current={on(href) ? 'page' : undefined}>
-              <Icon width={18} height={18} />
-              <span>{label}</span>
-            </Link>
-          ))}
-        </nav>
-        <div className="side-foot">
-          {ca && (
-            <div className="side-ca">
-              <span>{ticker ? `${ticker} contract` : 'Contract'}</span>
-              <CopyText text={ca} label="Copy CA" />
-            </div>
-          )}
-          {x && <a href={x} target="_blank" rel="noopener noreferrer" className="side-x"><XLogo /> Follow on X</a>}
-          <p>Data from DexScreener, GeckoTerminal and Helius. Not financial advice.</p>
+      <header className="hdr">
+        <div className="hdr-in">
+          {/* A plain link so clicking the name always reloads the page fresh. */}
+          <a href="/" className="brand">
+            <Mark size={24} />
+            <span>{name}</span>
+          </a>
+          <nav className="hdr-nav" aria-label="Main">
+            {ITEMS.map(({ href, label }) => (
+              <Link key={href} href={href} className="hdr-link" aria-current={on(href) ? 'page' : undefined}>{label}</Link>
+            ))}
+          </nav>
+          <div className="hdr-tools">
+            {children}
+            {ca && <CopyText text={ca} label={ticker ? `${ticker} CA` : 'CA'} />}
+            {x && <a href={x} target="_blank" rel="noopener noreferrer" className="hdr-x" aria-label={`${name} on X`}><XLogo /></a>}
+          </div>
         </div>
-      </aside>
+      </header>
 
       <nav className="tabbar" aria-label="Main">
         {ITEMS.map(({ href, short, Icon }) => (

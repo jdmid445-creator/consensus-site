@@ -2,7 +2,6 @@ import './globals.css';
 import AppNav from '@/components/AppNav';
 import Search from '@/components/Search';
 import MarketStrip from '@/components/MarketStrip';
-import Mark from '@/components/Mark';
 import { getMarkets } from '@/lib/markets';
 import Reveal from '@/components/Reveal';
 import { site } from '@/lib/site';
@@ -30,18 +29,15 @@ export default async function RootLayout({ children }) {
       <body>
         <a href="#main" className="sr-only skip">Skip to content</a>
         <div className="app">
-          <AppNav name={site.name} ca={site.ca} ticker={site.ticker} x={site.links.x} />
-          <div className="app-main">
-            <div className="topbar">
-              <a href="/" className="brand brand-sm" aria-label={`${site.name} home`}>
-                <Mark size={24} />
-                <span>{site.name}</span>
-              </a>
-              <Search />
-            </div>
-            {markets.length > 0 && <MarketStrip markets={markets} />}
-            <main id="main">{children}</main>
-          </div>
+          <AppNav name={site.name} ca={site.ca} ticker={site.ticker} x={site.links.x}>
+            <Search />
+          </AppNav>
+          {markets.length > 0 && <MarketStrip markets={markets} />}
+          <main id="main">{children}</main>
+          <footer className="ftr">
+            <span>{site.name}. Data from DexScreener, GeckoTerminal and Helius. Not financial advice.</span>
+            <a href="/docs">Docs</a>
+          </footer>
         </div>
         <Reveal />
       </body>
