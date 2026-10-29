@@ -35,23 +35,41 @@ export async function GET(req) {
   const a = new URL(req.url).searchParams.get('a');
   const meta = await getMeta();
   const all = [...meta.runners, ...(meta.alsoRunning || [])];
-  const r = a ? all.find((x) => x.address === a) : leader(meta.runners);
+  // Live numbers for every runner, so "#1" here is the same coin the site's leader card shows.
+  const liveBy = new Map();
+  for (let i = 0; i < meta.runners.length; i += 30) {
+    try {
+      const res = await fetch(`https://api.dexscreener.com/tokens/v1/solana/${meta.runners.slice(i, i + 30).map((x) => x.address).join(',')}`, { signal: AbortSignal.timeout(6000), cache: 'no-store' });
+      for (const p of res.ok ? await res.json() : []) {
+        const k = p.baseToken?.address;
+        if (k && (!liveBy.has(k) || (p.liquidity?.usd || 0) > (liveBy.get(k).liquidity?.usd || 0))) liveBy.set(k, p);
+      }
+    } catch {}
+  }
+  const field = meta.runners.map((x) => {
+    const L = liveBy.get(x.address);
+    return L ? { ...x, change: { ...x.change, h24: L.priceChange?.h24 ?? x.change?.h24 }, volume24h: L.volume?.h24 ?? x.volume24h, liquidity: L.liquidity?.usd ?? x.liquidity } : x;
+  });
+  const top = leader(field);
+  const r = a ? all.find((x) => x.address === a) : top;
   if (!r) return new Response('not found', { status: 404 });
 
   // Fresh numbers for the card.
-  let live = null;
-  try {
-    const res = await fetch(`https://api.dexscreener.com/tokens/v1/solana/${r.address}`, { signal: AbortSignal.timeout(6000), cache: 'no-store' });
-    const pairs = res.ok ? await res.json() : [];
-    live = [...(pairs || [])].sort((x, y) => (y.liquidity?.usd || 0) - (x.liquidity?.usd || 0))[0] || null;
-  } catch {}
+  let live = liveBy.get(r.address) || null;
+  if (!live) {
+    try {
+      const res = await fetch(`https://api.dexscreener.com/tokens/v1/solana/${r.address}`, { signal: AbortSignal.timeout(6000), cache: 'no-store' });
+      const pairs = res.ok ? await res.json() : [];
+      live = [...(pairs || [])].sort((x, y) => (y.liquidity?.usd || 0) - (x.liquidity?.usd || 0))[0] || null;
+    } catch {}
+  }
   const h24 = live?.priceChange?.h24 ?? r.change?.h24;
   const cap = live?.marketCap ?? r.marketCap;
   const vol = live?.volume?.h24 ?? r.volume24h;
   const buys = live?.txns?.h24?.buys ?? r.buys24h;
   const sells = live?.txns?.h24?.sells ?? r.sells24h;
   const buyShare = buys + sells > 0 ? Math.round((buys / (buys + sells)) * 100) : null;
-  const isLead = !a || leader(meta.runners)?.address === r.address;
+  const isLead = top?.address === r.address;
 
   const [f500, f700, logo] = await Promise.all([font(500), font(700), logoData(live?.info?.imageUrl || r.image)]);
   const up = (h24 ?? 0) >= 0;
