@@ -4,6 +4,7 @@ import CoinImg from '@/components/CoinImg';
 import Ago from '@/components/Ago';
 import AutoRefresh from '@/components/AutoRefresh';
 import LeadCard from '@/components/LeadCard';
+import LeadLine from '@/components/LeadLine';
 import NewRunners from '@/components/NewRunners';
 import CountUp from '@/components/CountUp';
 import Trending from '@/components/Trending';
@@ -52,10 +53,15 @@ export default async function Home() {
   ]);
 
   const named = stats.themes.filter((t) => t.id !== 'other');
-  const headline = summary?.headline || `${lead.name} leads today's Solana runners`;
-  const dek =
-    summary?.dek ||
-    `${lead.name} is up ${gain(lead.change.h24)} in 24 hours. ${named[0] ? `${named[0].name} is the biggest theme, with ${share(named[0].shareCap)} of the field's market cap.` : ''}`;
+  // The AI text describes the meta; it never names today's #1 (that changes by the minute).
+  // Any sentence that still does is dropped, and LeadLine states the leader from live data.
+  const LEADWORDS = /(biggest|top|largest)\s+(24h\s+)?(gain|gainer|mover|runner)|\bleads?\b|\bleading\b|#1|number one|out front/i;
+  const names = runners.map((r) => r.name.toLowerCase()).filter((n) => n.length >= 3);
+  const namesCoin = (t) => { const l = t.toLowerCase(); return names.some((n) => l.includes(n)); };
+  const themeLine = named[0] ? `${named[0].name} is the biggest theme, with ${share(named[0].shareCap)} of the field's market cap.` : '';
+  const rawHead = summary?.headline || '';
+  const headline = rawHead && !(LEADWORDS.test(rawHead) && namesCoin(rawHead)) ? rawHead : (named[0] ? `Most of today's cap sits in ${named[0].name.toLowerCase()}` : 'Today on the Solana runners');
+  const dek = (summary?.dek || themeLine).split(/(?<=[.!?])\s+/).filter((s) => !(LEADWORDS.test(s) && namesCoin(s))).join(' ') || themeLine;
 
   const allNarratives = (summary?.themes?.length
     ? summary.themes.map((t) => ({ ...t, coins: t.addresses.map((a) => byAddr.get(a)).filter(Boolean) }))
@@ -82,7 +88,7 @@ export default async function Home() {
             <Ago at={meta.updatedAt} />
           </p>
           <h1 id="today-title" className="headline">{headline}</h1>
-          <p className="dek">{dek}</p>
+          <p className="dek"><LeadLine initial={{ address: lead.address, name: lead.name, symbol: lead.symbol, h24: lead.change.h24 }} />{dek}</p>
           <div className="today-mix">
             <p className="today-label">Where the market cap is{(() => { const big = [...runners].sort((a, b) => b.marketCap - a.marketCap)[0]; const sh = big && stats.totalCap ? big.marketCap / stats.totalCap : 0; return sh >= 0.4 ? <span className="today-note"> · {big.name} alone is {share(sh)} of it</span> : null; })()}</p>
             <div className="mix" aria-label="Share of market cap by theme">

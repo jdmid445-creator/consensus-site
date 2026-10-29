@@ -84,6 +84,13 @@ export default function LeadCard({ lead: serverLead, chart: serverChart, field }
   const h1 = L?.change?.h1 ?? lead.change.h1;
   const cap = L?.marketCap ?? lead.marketCap;
 
+  // Tell the headline's lead sentence who's #1, so the two always agree.
+  useEffect(() => {
+    const detail = { address: lead.address, name: lead.name, symbol: lead.symbol, h24: v };
+    window.__mtLead = detail;
+    window.dispatchEvent(new CustomEvent('mt:lead', { detail }));
+  }, [lead.address, lead.name, lead.symbol, v]);
+
   return (
     <aside className={`lc ${leadAddr !== serverLead.address ? 'lc-new' : ''}`} key={lead.address} aria-labelledby="lc-title" aria-live="polite">
       <h2 id="lc-title" className="sr-only">Leading today</h2>

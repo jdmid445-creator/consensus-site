@@ -1684,3 +1684,6 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .ftr-links { display: inline-flex; align-items: center; gap: 20px; }
 .ftr-links a { display: inline-flex; align-items: center; gap: 6px; }
 @media (max-width: 760px) { .hdr-tools .hdr-x { display: grid; flex: none; } }
+.dek .lead-link { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+.dek .lead-link:hover { text-decoration-color: var(--accent); }
+.dek b.up, .dek b.down { font-weight: 600; }
