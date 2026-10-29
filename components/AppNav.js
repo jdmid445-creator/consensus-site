@@ -16,7 +16,8 @@ const ITEMS = [
 
 // The header: name, the pages, search, and the CA. On phones the pages move to a tab bar
 // along the bottom.
-export default function AppNav({ name, ca, ticker, x, children }) {
+export default function AppNav({ name, ca, ticker, x, xFeed = false, children }) {
+  const items = xFeed ? [...ITEMS.slice(0, 2), { href: '/x', label: 'X tracker', short: 'X', Icon: XLogo }, ...ITEMS.slice(2)] : ITEMS;
   const path = usePathname() || '/';
   const on = (href) => (href === '/' ? path === '/' : path.startsWith(href));
   return (
@@ -29,7 +30,7 @@ export default function AppNav({ name, ca, ticker, x, children }) {
             <span>{name}</span>
           </a>
           <nav className="hdr-nav" aria-label="Main">
-            {ITEMS.map(({ href, label }) => (
+            {items.map(({ href, label }) => (
               <Link key={href} href={href} className="hdr-link" aria-current={on(href) ? 'page' : undefined}>{label}</Link>
             ))}
           </nav>
@@ -42,7 +43,7 @@ export default function AppNav({ name, ca, ticker, x, children }) {
       </header>
 
       <nav className="tabbar" aria-label="Main">
-        {ITEMS.map(({ href, short, Icon }) => (
+        {items.map(({ href, short, Icon }) => (
           <Link key={href} href={href} className="tab-item" aria-current={on(href) ? 'page' : undefined}>
             <Icon width={21} height={21} />
             <span>{short}</span>
