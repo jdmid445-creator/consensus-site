@@ -1405,3 +1405,70 @@ body::before {
   .coinpage .ctabs-bar { top: 56px; }
   .ftr { flex-direction: column; }
 }
+
+/* ================= News-desk layout: Bricolage Grotesque headlines, Onest text ================= */
+:root {
+  --sans: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Bricolage Grotesque Variable', 'Onest', system-ui, sans-serif;
+}
+body { font-family: var(--sans); }
+.headline, .page-head h1, .coinpage .ch h1, .brand, .lc-id strong, .cs-head, .rt-big b, .hl-score b, .wh-sum dd { font-family: var(--display); font-variation-settings: 'wdth' 100; }
+
+/* Masthead */
+.hdr-in { height: 64px; }
+.hdr .brand { font-size: 21px; font-weight: 800; letter-spacing: -0.035em; }
+.hdr-link { font-size: 14px; font-weight: 500; }
+
+/* Sections read like a newspaper: a strong rule over each one, no boxes */
+.board-app .wg, .board-app .wg-lead .lc {
+  background: transparent; border: 0; border-radius: 0; box-shadow: none;
+  border-top: 2px solid var(--ink); padding: 14px 0 0;
+}
+.board-app .row { gap: 0 36px; }
+.board-app .row > * + * { position: relative; }
+.board-app .row > * + *::before { content: ''; position: absolute; left: -18px; top: 18px; bottom: 0; width: 1px; background: var(--line); }
+.board-app .wg-head { margin-bottom: 12px; }
+.board-app .wg-head h2 { font-family: var(--display); font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+.board-app .wg-note { font-family: var(--sans); font-size: 12.5px; font-weight: 500; }
+.board-app .wg-link { font-size: 12.5px; }
+.wg-scroll::after { display: none; }
+.board-app { gap: 36px; padding-top: 28px; }
+
+/* The lead story */
+.row-1 > .wg-today { padding-right: 8px; }
+.headline { font-size: clamp(34px, 3.6vw, 56px); font-weight: 750; letter-spacing: -0.04em; line-height: 1.0; max-width: 20ch; }
+.dek { font-size: 17px; line-height: 1.55; color: var(--ink-2); max-width: 60ch; }
+.dateline { text-transform: none; font-size: 13px; }
+.today-stats { border-top: 1px solid var(--line); }
+.today-stats b { font-family: var(--display); font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+
+/* Lead coin: the "photo" of the front page */
+.board-app .wg-lead .lc { gap: 14px; }
+.lc-id strong { font-size: 24px; font-weight: 750; letter-spacing: -0.03em; }
+.lc-gain .up, .lc-gain .down { font-family: var(--display); font-size: 40px; font-weight: 750; }
+
+/* Lists: tighter, rule-separated */
+.mv-row strong, .rail-id strong, .nl-top b, .bm-name { font-weight: 600; }
+.heads-title { font-family: var(--display); font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+
+/* Field reads like a photo grid */
+.board-app .wg-field .board { gap: 2px 4px; }
+
+/* Coin and inner pages keep panels, but quieter */
+.page-head h1 { font-size: 40px; font-weight: 750; letter-spacing: -0.035em; }
+.coinpage .ch h1 { font-size: 38px; font-weight: 750; letter-spacing: -0.035em; }
+
+@media (max-width: 900px) {
+  .board-app .row { gap: 28px; }
+  .board-app .row > * + *::before { display: none; }
+}
+@media (max-width: 760px) {
+  .board-app { gap: 28px; padding-top: 18px; }
+  .headline { font-size: 34px; }
+  .lc-gain .up, .lc-gain .down { font-size: 32px; }
+}
+.board-app .mv-list { background: transparent; border: 0; }
+.board-app .mv-list li { background: transparent; }
+.board-app .wg-scroll > :not(.wg-head) { align-content: start; }
+.board-app .ww-list { align-content: start; }
