@@ -1502,3 +1502,8 @@ body { font-family: var(--sans); }
 .board-app .row-1 > * + *::before { top: 0; }
 .dash-one { max-width: none; padding: 18px 28px 40px; }
 .today-note { color: var(--ink-2); font-weight: 500; }
+/* tighter top, simpler headline */
+.board-app { padding-top: 12px; }
+.headline { font-family: var(--sans) !important; font-size: clamp(28px, 2.5vw, 38px) !important; font-weight: 650 !important; letter-spacing: -0.025em !important; line-height: 1.15 !important; max-width: 26ch; }
+.row-1 > .wg-today { gap: 12px; }
+@media (max-width: 760px) { .headline { font-size: 27px !important; } .board-app { padding-top: 8px; } }
