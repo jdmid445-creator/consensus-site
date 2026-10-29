@@ -8,6 +8,7 @@ export const metadata = { title: 'Docs' };
 
 const SECTIONS = [
   ['overview', 'Overview'],
+  ['topx', 'Top on X'],
   ['news', 'The wire and headlines'],
   ['coins', 'Coin pages'],
   ['holders-launch', 'Holders, dev and bundles'],
@@ -44,6 +45,10 @@ export default function Docs() {
         <h1 id="overview">Overview</h1>
         <p>{site.name} reads the last {runnerRules.count} Solana memecoin runners and tells you what the meta is: which narratives are running, what the runners have in common, and what&apos;s losing steam. Everything is on the front page and nothing needs a wallet.</p>
         <p>Every number on the site comes straight from market data at the time of the update. The only writing that comes from AI is the read itself (headline, narratives, working and losing steam) and the narratives you ask the writer for.</p>
+
+        <h2 id="topx">Top on X</h2>
+        <p>Top on X is the day&apos;s 25 biggest posts on X about meme coins and memes, ranked by likes, plus reposts and quotes counted three times, plus replies. It looks at three things: posts naming today&apos;s runners, posts about meme coins in general (pump.fun, the trenches, the big Solana memes), and viral memes that could turn into tomorrow&apos;s narratives. Only English posts from today (midnight ET onward) count.</p>
+        <p>Meme coin posts come first: plain memes can hold at most 8 of the 25 spots in the All tab, and the Meme coins and Memes tabs each have their own top 25. Call-group brags, &quot;next 1000x&quot; promos, engagement-farming giveaways and paid-group posts are left out. The counts and ranks refresh about every minute; the arrows show how far each post moved since the last refresh. While your pointer is on the list it holds still.</p>
 
         <h2 id="news">The wire and headlines</h2>
         <p>The wire is a running list of what just happened among the runners: a coin joining the 50, crossing a market cap milestone ($1M, $2.5M, $5M, $10M and up), taking the lead for the day, climbing 10 or more places, or moving 50% up or 35% down within an hour. Each event comes from comparing one refresh of the data with the last, so nothing on the wire is written by AI or made up. Each event is reported once.</p>

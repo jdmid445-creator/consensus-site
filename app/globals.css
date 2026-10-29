@@ -1625,3 +1625,35 @@ body, button, input, textarea, select { font-family: var(--sans); }
 @keyframes xrflash { from { background: color-mix(in srgb, var(--accent) 10%, transparent); } to { background: transparent; } }
 @media (prefers-reduced-motion: reduce) { .xr-flash { animation: none; } }
 .xr .xp-img img { max-width: min(100%, 420px); max-height: 240px; }
+
+/* Keep the ticker inside the viewport: it sizes to the screen, not to its contents. */
+.app > * { min-width: 0; }
+.mkts { width: 100%; min-width: 0; }
+
+/* Polish pass */
+.runners th.c-num { text-align: right; }
+.chip[aria-pressed="true"] .num { color: var(--on-accent); opacity: .6; }
+.board-app .wg-today .headline { max-width: 26ch; }
+.board-app .wg-today .dek { max-width: 68ch; }
+.board-app .wg-scroll > :not(.wg-head) { -webkit-mask-image: linear-gradient(#000 calc(100% - 56px), transparent); mask-image: linear-gradient(#000 calc(100% - 56px), transparent); }
+.coin-facts { margin: 18px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+.coin-facts > div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.coin-facts dt { color: var(--muted); }
+.coin-facts dd { margin: 0; font-weight: 600; color: var(--ink); }
+.coin-facts a { color: inherit; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+@media (max-width: 560px) { .coin-facts { grid-template-columns: 1fr; } }
+/* Daily ticker on wide screens: hint on the left, board centered, clues on the right. */
+@media (min-width: 1100px) {
+  .pz { grid-template-columns: 240px minmax(0, 1fr) 240px; grid-template-rows: auto auto 1fr; row-gap: 12px; }
+  .pz-side { display: contents; }
+  .pz-logo { grid-column: 1; grid-row: 1; }
+  .pz-len { grid-column: 1; grid-row: 2; align-self: start; margin: 0; }
+  .pz-clues { grid-column: 3; grid-row: 1 / span 3; align-self: start; margin: 0; width: 100%; }
+  .pz-end { grid-column: 1; grid-row: 3; align-self: start; }
+  .pz-play { grid-column: 2; grid-row: 1 / span 3; }
+}
+/* Top on X: the live status sits on the title line on phones. */
+@media (max-width: 720px) {
+  .wg-xfeed { position: relative; }
+  .wg-xfeed .x-live { position: absolute; top: 19px; right: 0; }
+}

@@ -125,6 +125,12 @@ export default async function CoinPage({ params }) {
                       {r.socials.website && <a className="btn btn-quiet btn-sm" href={r.socials.website} target="_blank" rel="noopener noreferrer nofollow">Website</a>}
                       {r.socials.telegram && <a className="btn btn-quiet btn-sm" href={r.socials.telegram} target="_blank" rel="noopener noreferrer nofollow">Telegram</a>}
                     </div>
+                    <dl className="coin-facts">
+                      <div><dt>Launched on</dt><dd>{r.launchpad || 'Unknown'}</dd></div>
+                      <div><dt>Age</dt><dd>{r.ageHours != null ? age(r.ageHours) : '–'}</dd></div>
+                      <div><dt>Liquidity</dt><dd>{r.liquidity ? usd(r.liquidity) : '–'}</dd></div>
+                      {r.pairAddress && <div><dt>Pair</dt><dd><a href={r.url} target="_blank" rel="noopener noreferrer">{r.pairAddress.slice(0, 4)}…{r.pairAddress.slice(-4)}</a></dd></div>}
+                    </dl>
                     <div className="coin-ca">
                       <span className="note">Contract address</span>
                       <div className="coin-ca-row">
