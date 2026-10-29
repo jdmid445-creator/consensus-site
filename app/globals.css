@@ -1590,3 +1590,16 @@ body, button, input, textarea, select { font-family: var(--sans); }
 @keyframes xpnew { from { opacity: 0; transform: translateY(-8px); } }
 @media (max-width: 720px) { .x-bar { flex-direction: column; align-items: stretch; } .x-live { align-self: flex-end; } }
 @media (prefers-reduced-motion: reduce) { .xp-new, .x-live i { animation: none; } }
+.x-types { margin: 4px 0 2px; }
+.x-types .chip { min-height: 30px; padding: 0 12px; font-size: 13px; }
+.xp-who time { margin-left: auto; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.xp-kind { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+.xp-kind-quote, .xp-kind-repost { color: var(--accent); }
+.xp-quote { margin-top: 10px; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: var(--r-sm); background: var(--wash); }
+.xp-quote p { margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.4; white-space: pre-line; overflow-wrap: anywhere; }
+.xp-quote .xp-who { margin-bottom: 4px; }
+.xp-img { display: block; margin-top: 10px; }
+.xp-img img { display: block; max-width: 100%; max-height: 320px; border-radius: var(--r-sm); border: 1px solid var(--line); object-fit: cover; }
+.x-types .chip { background: transparent; border-color: var(--line-2); color: var(--muted); }
+.x-types .chip[aria-pressed="true"] { background: var(--wash-2); border-color: var(--line-2); color: var(--ink); }
+.x-types .chip:hover { border-color: var(--accent); }
