@@ -1,24 +1,23 @@
 import { notFound } from 'next/navigation';
-import XTracker from '@/components/XTracker';
+import XTop from '@/components/XTop';
 import { getMeta } from '@/lib/meta';
-import { xFeedEnabled } from '@/lib/xfeed';
-import { getXLive } from '@/lib/xlive';
+import { getXTop, xTopEnabled } from '@/lib/xtop';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
-export const metadata = { title: 'X tracker' };
+export const metadata = { title: 'Top on X' };
 
 export default async function XPage() {
-  if (!xFeedEnabled()) notFound();
+  if (!xTopEnabled()) notFound();
   const meta = await getMeta();
-  const data = await getXLive(meta.runners).catch(() => null);
+  const data = await getXTop(meta.runners).catch(() => null);
   return (
     <div className="board-app">
       <header className="page-head">
-        <h1>X tracker</h1>
-        <p className="muted">Live posts about today&apos;s runners and from the big crypto accounts, a few seconds after they go up.</p>
+        <h1>Top on X today</h1>
+        <p className="muted">The 25 biggest posts of the day about memes and meme coins, ranked by likes, reposts and quotes. The ranking moves as the day goes.</p>
       </header>
-      <XTracker initial={data || { posts: [], talked: [], loud: [], poll: 5 }} />
+      <XTop initial={data || { top: [], named: [], every: 90 }} />
     </div>
   );
 }

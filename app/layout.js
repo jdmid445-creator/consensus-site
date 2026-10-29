@@ -5,7 +5,7 @@ import MarketStrip from '@/components/MarketStrip';
 import { getMarkets } from '@/lib/markets';
 import Reveal from '@/components/Reveal';
 import { site } from '@/lib/site';
-import { xFeedEnabled } from '@/lib/xfeed';
+import { xTopEnabled } from '@/lib/xtop';
 
 export const metadata = {
   metadataBase: new URL(site.url),
@@ -29,7 +29,7 @@ export default async function RootLayout({ children }) {
       <body>
         <a href="#main" className="sr-only skip">Skip to content</a>
         <div className="app">
-          <AppNav name={site.name} ca={site.ca} ticker={site.ticker} x={site.links.x} xFeed={xFeedEnabled()}>
+          <AppNav name={site.name} ca={site.ca} ticker={site.ticker} x={site.links.x} xFeed={xTopEnabled()}>
             <Search />
           </AppNav>
           {markets.length > 0 && <MarketStrip markets={markets} />}
