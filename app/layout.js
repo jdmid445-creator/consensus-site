@@ -8,7 +8,7 @@ import { site } from '@/lib/site';
 
 export const metadata = {
   metadataBase: new URL(site.url),
-  title: { default: `${site.name}: the news on today's Solana memecoins`, template: `%s, ${site.name}` },
+  title: { default: site.name, template: `${site.name} · %s` },
   description: site.description,
   openGraph: { title: site.name, description: site.tagline, url: site.url, siteName: site.name, type: 'website' },
   twitter: { card: 'summary_large_image', title: site.name, description: site.tagline },
