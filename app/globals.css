@@ -787,3 +787,12 @@ p, h1, h2, h3, h4 { margin: 0; }
 .lc-next .lc-next-title { font-size: 12.5px; color: var(--muted); padding: 2px 0 4px; counter-increment: none; }
 .lc-next .lc-next-title::before { content: none !important; }
 @media (max-width: 720px) { .h-note { display: block; margin: 4px 0 0; } .rail-title .h-note { float: none; display: inline; margin-left: 8px; } }
+
+.rt-origin { display: grid; gap: 10px; padding-top: 6px; border-top: 1px solid var(--line); }
+.rt-origin h3 { margin: 0; font: 600 16px var(--serif); color: var(--ink); }
+.rt-origin p { margin: 0; color: var(--ink-2); font-size: 15px; line-height: 1.6; }
+.rt-facts { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; border-top: 1px solid var(--line); }
+.rt-facts div { padding: 9px 0; border-bottom: 1px solid var(--line); }
+.rt-facts dt { font-size: 12.5px; color: var(--muted); }
+.rt-facts dd { margin: 2px 0 0; font-weight: 600; font-size: 14.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rt-facts a { color: var(--navy); }

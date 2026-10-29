@@ -110,7 +110,7 @@ export default async function CoinPage({ params }) {
 
       <CoinTabs
         address={address}
-        rating={{ r: { address: r.address, buys24h: r.buys24h, sells24h: r.sells24h, volume24h: r.volume24h, marketCap: r.marketCap, change: r.change, socials: r.socials, paidProfile: r.paidProfile, boosts: r.boosts, cto: r.cto }, aiOn: runner && meta.aiEnabled, field: buzzField(meta.runners), themeCount: r.theme !== 'other' ? meta.runners.filter((x) => x.theme === r.theme && x.address !== r.address).length : 0, heat: narratives[0]?.heat || null }}
+        rating={{ r: { launchpad: r.launchpad, ageHours: r.ageHours, typeName: t.name, address: r.address, buys24h: r.buys24h, sells24h: r.sells24h, volume24h: r.volume24h, marketCap: r.marketCap, change: r.change, socials: r.socials, paidProfile: r.paidProfile, boosts: r.boosts, cto: r.cto }, aiOn: runner && meta.aiEnabled, field: buzzField(meta.runners), themeCount: r.theme !== 'other' ? meta.runners.filter((x) => x.theme === r.theme && x.address !== r.address).length : 0, heat: narratives[0]?.heat || null }}
         tabs={[
           {
             id: 'stats',

@@ -1,10 +1,12 @@
-// The mark: three bars of falling length, a leaderboard and speed lines in one.
+// The mark: a radar sweep with one blip, the coin it just picked up.
 export default function Mark({ size = 28, ink = 'currentColor' }) {
   return (
     <svg width={size} height={size} viewBox="0 0 28 28" aria-hidden="true">
-      <rect x="3" y="5" width="22" height="4.5" rx="2.25" fill={ink} />
-      <rect x="3" y="11.75" width="15.5" height="4.5" rx="2.25" fill={ink} opacity=".72" />
-      <rect x="3" y="18.5" width="9" height="4.5" rx="2.25" fill={ink} opacity=".45" />
+      <circle cx="14" cy="14" r="11.5" fill="none" stroke={ink} strokeWidth="2.2" />
+      <circle cx="14" cy="14" r="6" fill="none" stroke={ink} strokeWidth="1.8" opacity=".45" />
+      <path d="M14 14 L14 2.5 A11.5 11.5 0 0 1 24.6 9.6 Z" fill={ink} opacity=".28" />
+      <path d="M14 14 L24.6 9.6" stroke={ink} strokeWidth="2.2" strokeLinecap="round" />
+      <circle cx="19.2" cy="6.9" r="2.1" fill={ink} />
     </svg>
   );
 }

@@ -95,6 +95,15 @@ export default function RatingTab({ r, active, aiOn, field, themeCount, heat }) 
             {rating.verdict && <p className="rt-verdict">{rating.verdict}</p>}
           </>
         )}
+        {(r.launchpad || r.ageHours != null) && (
+          <dl className="rt-facts">
+            {r.launchpad && <div><dt>Launched on</dt><dd>{r.launchpad}</dd></div>}
+            {r.ageHours != null && <div><dt>Age</dt><dd>{r.ageHours < 1 ? `${Math.max(1, Math.round(r.ageHours * 60))} minutes` : r.ageHours < 48 ? `${Math.round(r.ageHours)} hours` : `${Math.round(r.ageHours / 24)} days`}</dd></div>}
+            {r.typeName && <div><dt>Type</dt><dd>{r.typeName}</dd></div>}
+            <div><dt>Story</dt><dd><a href="#story" onClick={(e) => { e.preventDefault(); window.location.hash = 'story'; }}>Read where it came from</a></dd></div>
+            <div><dt>On X</dt><dd>{r.socials?.x ? <a href={r.socials.x} target="_blank" rel="noopener noreferrer nofollow">{r.socials.x.replace(/^https?:\/\/(www\.)?(x|twitter)\.com\//, '@').replace(/\/.*$/, '')}</a> : 'No account listed'}</dd></div>
+          </dl>
+        )}
       </section>
 
       <section className="rt-card">
