@@ -6,7 +6,7 @@ const ago = (at) => {
 
 // Crypto headlines from the major outlets: titles link out to the original story.
 export default function Headlines({ items }) {
-  if (!items.length) return <p className="wire-empty">Headlines from the major crypto outlets show up here. None came through on this refresh.</p>;
+  if (!items.length) return <p className="wire-empty">No headlines came through on this refresh.</p>;
   return (
     <ol className="heads">
       {items.map((h) => (

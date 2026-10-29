@@ -19,6 +19,12 @@ export default function CoinImg({ src, name, symbol, color = '#8A93A0', size = 3
     if (img && img.complete && img.naturalWidth === 0) fail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage]);
+  // A load that hangs (a dead host) moves on to the next option after a few seconds.
+  useEffect(() => {
+    if (stage === 2) return;
+    const t = setTimeout(() => { const img = ref.current; if (!img || !img.complete || img.naturalWidth === 0) fail(); }, stage === 0 ? 6000 : 4000);
+    return () => clearTimeout(t);
+  }, [stage]);
   const broken = stage === 2;
   const style = { width: size, height: size, '--c': color };
   if (broken) {

@@ -7,7 +7,7 @@ import LeadCard from '@/components/LeadCard';
 import NewRunners from '@/components/NewRunners';
 import CountUp from '@/components/CountUp';
 import Trending from '@/components/Trending';
-import { Rising, Steady, Cooling, Pen } from '@/components/Icons';
+import { Rising, Steady, Cooling } from '@/components/Icons';
 import Wire from '@/components/Wire';
 import Headlines from '@/components/Headlines';
 import Widget from '@/components/Widget';
@@ -47,8 +47,8 @@ export default async function Home() {
   const lead = byAddr.get(meta.top) || runners[0];
   const [chart, wire, headlines] = await Promise.all([
     lead.pairAddress ? getCandles(lead.pairAddress, { timeframe: 'minute', aggregate: 15, limit: 96, revalidate: 300 }) : [],
-    getWire(8).catch(() => []),
-    getHeadlines(6).catch(() => []),
+    getWire(30).catch(() => []),
+    getHeadlines(16).catch(() => []),
   ]);
 
   const named = stats.themes.filter((t) => t.id !== 'other');
@@ -97,6 +97,43 @@ export default async function Home() {
           <Board runners={runners} themes={stats.themes} />
         </Widget>
 
+
+        {wire.length > 0 ? (
+          <Widget id="latest" title="The wire" className="wg-wire wg-fill">
+            <Wire events={wire.map((e) => ({ ...e, image: byAddr.get(e.address)?.image || e.image }))} />
+          </Widget>
+        ) : (
+          <Widget id="latest" title="Biggest moves today" note="24h" className="wg-wire wg-fill">
+            <ol className="bm">
+              {[...runners].filter((r) => typeof r.change.h24 === 'number').sort((a, b) => b.change.h24 - a.change.h24).slice(0, 24).map((r, i) => (
+                <li key={r.address}>
+                  <Link href={`/coin/${r.address}`}>
+                    <span className="bm-rank">{i + 1}</span>
+                    <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={24} />
+                    <span className="bm-name">{r.name} <span className="muted">${r.symbol}</span></span>
+                    <span className={r.change.h24 >= 0 ? 'up' : 'down'}>{gain(r.change.h24)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </Widget>
+        )}
+      </div>
+
+      <div className="dash-col dash-side">
+        <div className="wg wg-lead">
+          <LeadCard
+            lead={lead}
+            chart={chart}
+            field={runners.map((r) => ({ address: r.address, name: r.name, symbol: r.symbol, image: r.image, type: r.type, why: r.why, url: r.url, socials: { x: r.socials.x }, change: { h1: r.change.h1, h24: r.change.h24 }, marketCap: r.marketCap, volume24h: r.volume24h, liquidity: r.liquidity, ageHours: r.ageHours, top10: r.top10 }))}
+          />
+        </div>
+
+        <Widget title="New runners" note="24h" action="All coins" href="/coins" className="wg-new">
+          <NewRunners coins={newest} />
+        </Widget>
+
+
         <Widget id="narratives" title="Narratives" className="wg-narr">
           <ol className="nl">
             {narratives.map((n, i) => {
@@ -124,24 +161,6 @@ export default async function Home() {
             })}
           </ol>
         </Widget>
-      </div>
-
-      <div className="dash-col dash-side">
-        <div className="wg wg-lead">
-          <LeadCard
-            lead={lead}
-            chart={chart}
-            field={runners.map((r) => ({ address: r.address, name: r.name, symbol: r.symbol, image: r.image, type: r.type, why: r.why, url: r.url, socials: { x: r.socials.x }, change: { h1: r.change.h1, h24: r.change.h24 }, marketCap: r.marketCap, volume24h: r.volume24h, liquidity: r.liquidity, ageHours: r.ageHours, top10: r.top10 }))}
-          />
-        </div>
-
-        <Widget title="New runners" note="24h" action="All coins" href="/coins" className="wg-new">
-          <NewRunners coins={newest} />
-        </Widget>
-
-        <Widget id="latest" title="The wire" className="wg-wire">
-          <Wire events={wire.map((e) => ({ ...e, image: byAddr.get(e.address)?.image || e.image }))} />
-        </Widget>
 
         <Widget title="What's working" className="wg-work">
           {summary ? (
@@ -160,23 +179,12 @@ export default async function Home() {
           )}
         </Widget>
 
-        <Widget title="Crypto headlines" className="wg-news">
-          <Headlines items={headlines} />
-        </Widget>
+        {headlines.length > 0 && (
+          <Widget title="Crypto headlines" className="wg-news wg-fill">
+            <Headlines items={headlines} />
+          </Widget>
+        )}
       </div>
-
-
-
-
-
-
-      <Link href="/write" className="wg wg-write">
-        <span className="wg-write-icon"><Pen width={20} height={20} /></span>
-        <span>
-          <b>Write a narrative for today</b>
-          <span>An original coin idea built on what&apos;s running right now.</span>
-        </span>
-      </Link>
     </div>
   );
 }

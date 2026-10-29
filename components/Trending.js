@@ -42,7 +42,7 @@ export default function Trending({ windows, trending, runners, limit = 10 }) {
 
   const value = (r) => (LIVE_WINDOWS.has(win) ? live[r.address]?.change?.[win] ?? r.change[win] : r.change[win]);
   const list = [...base].sort((a, b) => (value(b) ?? -Infinity) - (value(a) ?? -Infinity)).slice(0, limit);
-  const max = Math.max(1, ...list.map((r) => Math.log10(Math.max(1.0001, 1 + (value(r) || 0) / 100))));
+  const max = Math.max(0.01, ...list.map((r) => Math.log10(Math.max(1.0001, 1 + (value(r) || 0) / 100))));
   const label = windows.find((w) => w.id === win)?.label;
 
   const listRef = useRef(null);
