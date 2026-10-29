@@ -41,8 +41,9 @@ export default async function Home() {
   if (!runners.length) {
     return (
       <section className="wrap empty-state">
+        <AutoRefresh ms={20000} />
         <h1 className="headline">The desk is loading today&apos;s runners.</h1>
-        <p className="dek">Market data didn&apos;t come through on this refresh. The page updates itself every few minutes, so check back shortly.</p>
+        <p className="dek">Market data didn&apos;t come through on this refresh. This page tries again by itself every 20 seconds.</p>
       </section>
     );
   }

@@ -11,6 +11,7 @@ const SECTIONS = [
   ['news', 'The wire and headlines'],
   ['coins', 'Coin pages'],
   ['holders-launch', 'Holders, dev and bundles'],
+  ['rating', 'Narrative rating and Buzz'],
   ['whales', 'Whales and PnL'],
   ['top', 'Top runner and movers'],
   ['types', 'Coin types'],
@@ -63,6 +64,11 @@ export default function Docs() {
           <li><b>Early buyers:</b> wallets that bought in the next five blocks (about two seconds).</li>
         </ul>
         <p>Dev and bundle numbers need Helius&apos; launch-history method; if a plan doesn&apos;t include it, the page says so instead of showing a number. A launch tool or a fresh wallet can make a dev look separate from its bundle, so treat these as signals, not proof.</p>
+
+        <h2 id="rating">Narrative rating and Buzz</h2>
+        <p>The Rating tab on each coin page has two scores.</p>
+        <p><b>Narrative rating</b> (1 to 10) is written with the coin&apos;s story. It scores the idea itself: how original it is, how easy it is to meme and share, how well it fits what&apos;s running today, and whether it has enough behind it to keep people posting. It rates the narrative, not the price.</p>
+        <p><b>Buzz</b> (0 to 100) is worked out live from the numbers: how many trades it&apos;s getting, how much volume compared to its size, its last-hour move, the share of buys, how many wallets hold it, its socials and DexScreener promotion, and how many other runners share its theme. 80+ is on fire, 65+ hot, 45+ warm, 25+ quiet, below that cold.</p>
 
         <h2 id="whales">Whales and PnL</h2>
         <p>The Whales tab on each coin page lists the 20 biggest wallets (liquidity pool left out), with the 1%+ wallets marked. For each one you see:</p>

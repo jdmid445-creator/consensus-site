@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from 'react';
 import WhalesTab from './WhalesTab';
-import { Bars, Whale, People, Page, Pulse } from './Icons';
+import RatingTab from './RatingTab';
+import { Bars, Whale, People, Page, Pulse, Gauge } from './Icons';
 
-const ICONS = { stats: Bars, whales: Whale, holders: People, story: Page, wire: Pulse };
+const ICONS = { stats: Bars, rating: Gauge, whales: Whale, holders: People, story: Page, wire: Pulse };
 
 // The tabs under a coin's chart. Each tab has its own link (#whales etc.) so it can be shared.
 // Panels stay mounted so switching back is instant; the Whales tab only loads while it's open.
-export default function CoinTabs({ address, tabs }) {
+export default function CoinTabs({ address, tabs, rating }) {
   const ids = tabs.map((t) => t.id);
   const [tab, setTab] = useState(ids[0]);
   const bar = useRef(null);
@@ -63,7 +64,7 @@ export default function CoinTabs({ address, tabs }) {
       </div>
       {tabs.map((t) => (
         <div key={t.id} id={`panel-${t.id}`} role="tabpanel" aria-labelledby={`tab-${t.id}`} hidden={tab !== t.id} className="ctab-panel">
-          {t.id === 'whales' ? <WhalesTab address={address} active={tab === 'whales'} /> : t.node}
+          {t.id === 'whales' ? <WhalesTab address={address} active={tab === 'whales'} /> : t.id === 'rating' ? <RatingTab {...rating} active={tab === 'rating'} /> : t.node}
         </div>
       ))}
     </div>

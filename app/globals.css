@@ -740,3 +740,27 @@ p, h1, h2, h3, h4 { margin: 0; }
 }
 @media (max-width: 720px) { .cstats .kv dd { font-size: 19px; } .cstats .kv div { padding: 13px 14px; } }
 .coin-ca { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+
+/* Rating tab */
+.rt { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+.rt-card { display: grid; align-content: start; gap: 16px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
+.rt-head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+.rt-head h2 { margin: 0 0 4px; }
+.rt-big { margin: 0; text-align: right; line-height: 1; flex: none; }
+.rt-big b { font: 600 44px var(--serif); color: var(--navy); }
+.rt-big span { display: block; margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.rt-buzz.rt-on-fire b, .rt-buzz.rt-hot b { color: var(--up); }
+.rt-buzz.rt-cold b { color: var(--muted); }
+.rt-rows { margin: 0; border-top: 1px solid var(--ink); }
+.rt-rows div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(120px, 44%); gap: 14px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.rt-rows dt { font-size: 14.5px; color: var(--ink-2); display: grid; gap: 2px; }
+.rt-rows dt small { font-size: 12.5px; color: var(--muted); }
+.rt-rows dd { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) 30px; gap: 10px; align-items: center; }
+.rt-rows dd b { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.rt-meter, .rt-gauge { display: block; height: 6px; border-radius: 99px; background: var(--wash); overflow: hidden; }
+.rt-meter span, .rt-gauge span { display: block; height: 100%; border-radius: inherit; background: var(--navy); transition: width .6s cubic-bezier(.2,.8,.2,1); }
+.rt-gauge { height: 10px; }
+.rt-gauge span { background: linear-gradient(90deg, #8FA3BF, var(--navy) 60%, var(--up)); }
+.rt-verdict { margin: 0; font: 500 17px/1.5 var(--serif); color: var(--ink); }
+@media (max-width: 900px) { .rt { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 720px) { .rt-card { padding: 18px; } .rt-big b { font-size: 36px; } .rt-rows div { grid-template-columns: minmax(0, 1fr) 42%; } }
