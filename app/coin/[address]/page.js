@@ -17,6 +17,7 @@ import { getCandles } from '@/lib/gecko';
 import { getWire } from '@/lib/wire';
 import { resolveTokens } from '@/lib/dexscreener';
 import { typeById } from '@/lib/types';
+import { logoFor } from '@/lib/lore';
 import { usd, gain, pct, age } from '@/lib/format';
 
 export const revalidate = 180;
@@ -33,11 +34,12 @@ async function findCoin(address) {
   const p = pairs.get(address);
   if (!p) return { meta, r: null };
   const createdAt = p.pairCreatedAt || 0;
+  const image = p.info?.imageUrl || (await logoFor(address).catch(() => ''));
   return {
     meta,
     runner: false,
     r: {
-      address, name: p.baseToken.name, symbol: p.baseToken.symbol, image: p.info?.imageUrl || '', url: p.url, pairAddress: p.pairAddress,
+      address, name: p.baseToken.name, symbol: p.baseToken.symbol, image, url: p.url, pairAddress: p.pairAddress,
       launchpad: p.dexId, marketCap: p.marketCap || p.fdv || 0, liquidity: p.liquidity?.usd || 0, priceUsd: Number(p.priceUsd) || 0,
       change: { h1: p.priceChange?.h1 ?? null, h6: p.priceChange?.h6 ?? null, h24: p.priceChange?.h24 ?? null },
       volume24h: p.volume?.h24 || 0, buys24h: p.txns?.h24?.buys || 0, sells24h: p.txns?.h24?.sells || 0,

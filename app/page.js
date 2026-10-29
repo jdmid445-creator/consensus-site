@@ -133,7 +133,7 @@ export default async function Home() {
             <h2 className="h3">The wire</h2>
             <p className="note">What just happened among the runners</p>
           </div>
-          <Wire events={wire} />
+          <Wire events={wire.map((e) => ({ ...e, image: byAddr.get(e.address)?.image || e.image }))} />
         </div>
         <div className="latest-col">
           <div className="col-head">

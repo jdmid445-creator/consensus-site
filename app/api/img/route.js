@@ -2,7 +2,7 @@
 // blocked, or picky about referrers. Only image responses from known token-image hosts.
 export const runtime = 'edge';
 
-const HOSTS = ['dexscreener.com', 'geckoterminal.com', 'coingecko.com', 'ipfs.io', 'pinata.cloud', 'arweave.net', 'pump.fun', 'irys.xyz', 'nftstorage.link', 'cf-ipfs.com', 'dweb.link', 'moralis.io', 'bonk.fun', 'bags.fm', 'helius-rpc.com', 'imgur.com'];
+const HOSTS = ['dexscreener.com', 'geckoterminal.com', 'coingecko.com', 'ipfs.io', 'pinata.cloud', 'arweave.net', 'pump.fun', 'irys.xyz', 'nftstorage.link', 'cf-ipfs.com', 'dweb.link', 'moralis.io', 'bonk.fun', 'bags.fm', 'helius-rpc.com', 'imgur.com', 'w3s.link', 'ipfs.dweb.link', 'mypinata.cloud', 'pump.mypinata.cloud', 'quicknode-ipfs.com', 'filebase.io', 'twimg.com', 'githubusercontent.com', 'letsbonk.fun', 'raydium.io', 'moonshot.money'];
 const MAX = 3 * 1024 * 1024;
 
 export async function GET(req) {
