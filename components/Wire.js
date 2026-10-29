@@ -15,7 +15,7 @@ export default function Wire({ events }) {
         <li key={e.id} className={`wire-${e.type}`} title={LABEL[e.type] || 'Update'}>
           <time dateTime={new Date(e.at).toISOString()}>{time(e.at)}</time>
           <Link href={`/coin/${e.address}`} className="wire-item">
-            <CoinImg src={e.image} name={e.name} symbol={e.symbol} size={26} />
+            <CoinImg address={e.address} src={e.image} name={e.name} symbol={e.symbol} size={26} />
             <span>
               <span className="wire-text"><b>{e.name}</b> {e.text}</span>
             </span>

@@ -22,7 +22,7 @@ export default function Board({ runners, themes }) {
           return (
             <li key={r.address} style={{ '--i': i, '--c': t?.color }}>
               <Link className="tile" href={`/coin/${r.address}`} aria-label={`${r.name} ($${r.symbol}), ${usd(cap)}, ${gain(v)} in 24 hours, ${r.extra ? 'close behind' : t?.name}`}>
-                <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={56} className="tile-img" />
+                <CoinImg address={r.address} src={r.image} name={r.name} symbol={r.symbol} size={56} className="tile-img" />
                 <span className="tile-sym">${r.symbol}</span>
                 <LiveNumber value={v} format={gain} className={`tile-gain ${v >= 0 ? 'up' : 'down'}`} />
                 <span className="tile-card" aria-hidden="true">

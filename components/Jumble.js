@@ -50,7 +50,7 @@ export default function Jumble({ day, data }) {
         </>
       ) : (
         <div className="jb-done">
-          <CoinImg src={data.coin.image} name={data.coin.name} symbol={data.coin.symbol} size={40} />
+          <CoinImg address={data.coin.address} src={data.coin.image} name={data.coin.name} symbol={data.coin.symbol} size={40} />
           <p><b>{state === 'won' ? `Solved in ${tries}.` : 'The answer:'}</b> <Link href={`/coin/${data.coin.address}`}>{data.coin.name} (${data.coin.symbol})</Link></p>
         </div>
       )}

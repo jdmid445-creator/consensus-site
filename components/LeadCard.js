@@ -88,7 +88,7 @@ export default function LeadCard({ lead: serverLead, chart: serverChart, field }
     <aside className={`lc ${leadAddr !== serverLead.address ? 'lc-new' : ''}`} key={lead.address} aria-labelledby="lc-title" aria-live="polite">
       <h2 id="lc-title" className="sr-only">Leading today</h2>
       <Link className="lc-coin" href={`/coin/${lead.address}`}>
-        <CoinImg src={lead.image} name={lead.name} symbol={lead.symbol} size={52} />
+        <CoinImg address={lead.address} src={lead.image} name={lead.name} symbol={lead.symbol} size={52} />
         <span className="lc-id">
           <strong>{lead.name}</strong>
           <span className="lc-meta">
@@ -126,7 +126,7 @@ export default function LeadCard({ lead: serverLead, chart: serverChart, field }
             return (
               <li key={n.address}>
                 <Link href={`/coin/${n.address}`}>
-                  <CoinImg src={n.image} name={n.name} symbol={n.symbol} size={22} />
+                  <CoinImg address={n.address} src={n.image} name={n.name} symbol={n.symbol} size={22} />
                   <span className="lc-next-name">{n.name}</span>
                   <LiveNumber value={nv} format={gain} className={nv >= 0 ? 'up' : 'down'} />
                 </Link>

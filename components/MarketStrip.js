@@ -24,7 +24,7 @@ export default function MarketStrip({ markets }) {
       const h = live[m.address]?.change?.h24 ?? m.h24;
       return (
         <Link key={`${copy}-${m.id}-${i}`} href={`/coin/${m.address}`} className="mkt" title={`${m.name}: chart and stats`} tabIndex={copy || i >= markets.length ? -1 : 0}>
-          {m.image && <CoinImg src={m.image} name={m.name} symbol={m.id} size={16} />}
+          <CoinImg address={m.address} src={m.image} name={m.name} symbol={m.id} size={16} />
           <b>{m.id}</b> <LiveNumber value={p} format={price} />
           {h != null && <LiveNumber value={h} format={ch} className={h >= 0 ? 'up' : 'down'} />}
         </Link>

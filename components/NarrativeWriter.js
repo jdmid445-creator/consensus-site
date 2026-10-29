@@ -86,7 +86,7 @@ export default function NarrativeWriter({ narratives, enabled }) {
                   <div className="fits">
                     {n.fits.map((f) => (
                       <a key={f.address} href={f.url} target="_blank" rel="noopener noreferrer" className="fit">
-                        <CoinImg src={f.image} name={f.name} symbol={f.symbol} size={22} /> ${f.symbol}
+                        <CoinImg address={f.address} src={f.image} name={f.name} symbol={f.symbol} size={22} /> ${f.symbol}
                       </a>
                     ))}
                   </div>

@@ -87,7 +87,7 @@ export default function RunnersTable({ runners: base, themes }) {
                   <td className="c-rank num muted">{r.rank}</td>
                   <td>
                     <Link className="coin-cell" href={`/coin/${r.address}`}>
-                      <CoinImg src={r.image} name={r.name} symbol={r.symbol} color={t?.color} size={34} />
+                      <CoinImg address={r.address} src={r.image} name={r.name} symbol={r.symbol} color={t?.color} size={34} />
                       <span>
                         <strong>{r.name}</strong>
                         <span className="sub"><TypeBadge id={r.type} /><span className="muted">${r.symbol}</span><span className="age-sm muted num">{age(r.ageHours)} old</span></span>

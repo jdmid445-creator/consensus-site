@@ -73,7 +73,7 @@ export default function Trending({ windows, trending, runners, limit = 10 }) {
               <li key={r.address} data-k={r.address}>
                 <Link href={`/coin/${r.address}`} className="mv-row">
                   <span className="mv-rank">{i + 1}</span>
-                  <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={32} />
+                  <CoinImg address={r.address} src={r.image} name={r.name} symbol={r.symbol} size={32} />
                   <span className="mv-id">
                     <strong>{r.name}</strong>
                     <span className="mv-sub">

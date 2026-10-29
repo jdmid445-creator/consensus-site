@@ -156,7 +156,7 @@ export default async function Home() {
                     <span className="stack">
                       {n.coins.slice(0, 5).map((r) => (
                         <Link key={r.address} href={`/coin/${r.address}`} title={`${r.name} ($${r.symbol})`}>
-                          <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={24} />
+                          <CoinImg address={r.address} src={r.image} name={r.name} symbol={r.symbol} size={24} />
                         </Link>
                       ))}
                     </span>
@@ -179,7 +179,7 @@ export default async function Home() {
                 <li key={r.address}>
                   <Link href={`/coin/${r.address}`}>
                     <span className="bm-rank">{i + 1}</span>
-                    <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={24} />
+                    <CoinImg address={r.address} src={r.image} name={r.name} symbol={r.symbol} size={24} />
                     <span className="bm-name">{r.name} <span className="muted">${r.symbol}</span></span>
                     <span className={r.change.h24 >= 0 ? 'up' : 'down'}>{gain(r.change.h24)}</span>
                   </Link>

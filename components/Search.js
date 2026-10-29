@@ -65,7 +65,7 @@ export default function Search() {
         <div className="search-pop" role="listbox">
           {hits.map((r, k) => (
             <button key={r.address} type="button" role="option" aria-selected={i === k} className="search-hit" onMouseEnter={() => setI(k)} onClick={() => go(`/coin/${r.address}`)}>
-              <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={26} />
+              <CoinImg address={r.address} src={r.image} name={r.name} symbol={r.symbol} size={26} />
               <span><b>{r.name}</b> <span className="muted">${r.symbol}</span></span>
               <span className={r.change.h24 >= 0 ? 'up' : 'down'}>{gain(r.change.h24)}</span>
             </button>

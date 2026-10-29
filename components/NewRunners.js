@@ -18,7 +18,7 @@ export default function NewRunners({ coins }) {
           return (
             <li key={c.address} style={{ '--i': i }}>
               <Link href={`/coin/${c.address}`} className="rail-item">
-                <CoinImg src={c.image} name={c.name} symbol={c.symbol} size={34} />
+                <CoinImg address={c.address} src={c.image} name={c.name} symbol={c.symbol} size={34} />
                 <span className="rail-id">
                   <strong>{c.name}</strong>
                   <span className="rail-sub">

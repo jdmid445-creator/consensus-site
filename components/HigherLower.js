@@ -41,7 +41,7 @@ export default function HigherLower({ day, pairs }) {
   };
   const Card = ({ side, c }) => (
     <button type="button" className={`hl-card ${pick ? (side === right ? 'is-right' : side === pick ? 'is-wrong' : '') : ''}`} onClick={() => choose(side)} disabled={!!pick}>
-      <CoinImg src={c.image} name={c.name} symbol={c.symbol} size={56} />
+      <CoinImg address={c.address} src={c.image} name={c.name} symbol={c.symbol} size={56} />
       <b>{c.name}</b>
       <span className="muted">${c.symbol}</span>
       <span className="hl-cap">{pick ? usd(c.cap) : 'Bigger cap?'}</span>

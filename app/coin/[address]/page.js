@@ -87,7 +87,7 @@ export default async function CoinPage({ params }) {
 
       <header className="ch">
         <div className="ch-id">
-          <CoinImg src={r.image} name={r.name} symbol={r.symbol} size={76} />
+          <CoinImg address={r.address} src={r.image} name={r.name} symbol={r.symbol} size={76} />
           <div>
             <h1>{r.name}</h1>
             <p className="ch-meta">
@@ -140,7 +140,7 @@ export default async function CoinPage({ params }) {
                         {similar.map((s) => (
                           <li key={s.address}>
                             <Link href={`/coin/${s.address}`}>
-                              <CoinImg src={s.image} name={s.name} symbol={s.symbol} size={26} />
+                              <CoinImg address={s.address} src={s.image} name={s.name} symbol={s.symbol} size={26} />
                               <span className="sim-name">{s.name}</span>
                               <span className={s.change.h24 >= 0 ? 'up' : 'down'}>{gain(s.change.h24)}</span>
                             </Link>

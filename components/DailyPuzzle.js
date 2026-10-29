@@ -89,7 +89,7 @@ export default function DailyPuzzle({ day, code, coin, clues }) {
     <div className="pz" id="puzzle" tabIndex={-1}>
       <div className="pz-side">
         <div className="pz-logo" style={{ '--blur': `${blur}px` }}>
-          <CoinImg src={coin.image} name="?" symbol="?" size={88} />
+          <CoinImg address={coin.address} src={coin.image} name="?" symbol="?" size={88} />
         </div>
         <p className="pz-len">{len} letters, {ROWS - guesses.length} {ROWS - guesses.length === 1 ? 'try' : 'tries'} left</p>
         <ol className="pz-clues">

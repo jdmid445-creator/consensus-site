@@ -35,7 +35,7 @@ export default function LogoQuiz({ day, rounds }) {
   return (
     <div className="lq">
       <p className="hl-top"><span>Logo {i + 1} of {rounds.length}</span><span>Score {score}</span></p>
-      <div className="lq-img"><CoinImg src={q.image} name="?" symbol="?" size={96} /></div>
+      <div className="lq-img"><CoinImg address={q.address} src={q.image} name="?" symbol="?" size={96} /></div>
       <div className="lq-opts">
         {q.options.map((o) => (
           <button key={o.id} type="button" className={`lq-opt ${pick ? (o.id === answer ? 'is-right' : o.id === pick ? 'is-wrong' : '') : ''}`} onClick={() => choose(o.id)} disabled={!!pick}>{o.label}</button>
