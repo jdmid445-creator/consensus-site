@@ -147,7 +147,7 @@ export default async function Home() {
       {/* The field */}
       <section className="wrap field-sec" aria-labelledby="field-title" data-reveal="field">
         <div className="field-head">
-          <h2 id="field-title" className="h3">The field</h2>
+          <h2 id="field-title" className="h3">The field <span className="h-note">every runner, with its move over the last 24 hours</span></h2>
           <ul className="legend">
             {stats.themes.map((t) => (
               <li key={t.id} style={{ '--c': t.color }}>

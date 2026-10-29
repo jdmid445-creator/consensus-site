@@ -18,6 +18,7 @@ import { getWire } from '@/lib/wire';
 import { resolveTokens } from '@/lib/dexscreener';
 import { typeById } from '@/lib/types';
 import { logoFor } from '@/lib/lore';
+import { buzzField } from '@/lib/buzz';
 import { usd, gain, pct, age } from '@/lib/format';
 
 export const revalidate = 180;
@@ -109,7 +110,7 @@ export default async function CoinPage({ params }) {
 
       <CoinTabs
         address={address}
-        rating={{ r: { address: r.address, buys24h: r.buys24h, sells24h: r.sells24h, volume24h: r.volume24h, marketCap: r.marketCap, change: r.change, socials: r.socials, paidProfile: r.paidProfile, boosts: r.boosts, cto: r.cto }, aiOn: runner && meta.aiEnabled, themeCount: r.theme !== 'other' ? meta.runners.filter((x) => x.theme === r.theme && x.address !== r.address).length : 0, heat: narratives[0]?.heat || null }}
+        rating={{ r: { address: r.address, buys24h: r.buys24h, sells24h: r.sells24h, volume24h: r.volume24h, marketCap: r.marketCap, change: r.change, socials: r.socials, paidProfile: r.paidProfile, boosts: r.boosts, cto: r.cto }, aiOn: runner && meta.aiEnabled, field: buzzField(meta.runners), themeCount: r.theme !== 'other' ? meta.runners.filter((x) => x.theme === r.theme && x.address !== r.address).length : 0, heat: narratives[0]?.heat || null }}
         tabs={[
           {
             id: 'stats',
@@ -136,7 +137,7 @@ export default async function CoinPage({ params }) {
                     </div>
                   </section>
                   <section className="cstats-box coin-sim">
-                    <h2 className="h3">{similar.length ? `Also in ${themeObj?.name}` : 'Similar coins'}</h2>
+                    <h2 className="h3">{similar.length ? `Also in ${themeObj?.name}` : 'Similar coins'} {similar.length > 0 && <span className="h-note">24h</span>}</h2>
                     {similar.length ? (
                       <ul>
                         {similar.map((s) => (

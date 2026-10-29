@@ -5,6 +5,7 @@ import useLive from './useLive';
 import { buzz } from '@/lib/buzz';
 
 const ROWS = [
+  ['virality', 'Virality on X'],
   ['originality', 'Originality'],
   ['memeability', 'Meme-ability'],
   ['metaFit', 'Fits today’s meta'],
@@ -20,7 +21,7 @@ function Meter({ value, max = 10 }) {
 }
 
 // The Rating tab: our read of the narrative (scored 1-10) and the live Buzz score.
-export default function RatingTab({ r, active, aiOn, themeCount, heat }) {
+export default function RatingTab({ r, active, aiOn, field, themeCount, heat }) {
   const [brief, setBrief] = useState({ status: aiOn ? 'loading' : 'off' });
   const [holders, setHolders] = useState(null);
   const live = useLive(active ? [r.address] : [], 3000);
@@ -59,10 +60,11 @@ export default function RatingTab({ r, active, aiOn, themeCount, heat }) {
       paidProfile: r.paidProfile,
       boosts: r.boosts,
       cto: r.cto,
+      field,
       themeCount,
       heat,
     }),
-    [L, r, holders, themeCount, heat],
+    [L, r, holders, field, themeCount, heat],
   );
 
   const rating = brief.d?.rating;
@@ -72,7 +74,7 @@ export default function RatingTab({ r, active, aiOn, themeCount, heat }) {
         <div className="rt-head">
           <div>
             <h2 className="h3">Narrative rating</h2>
-            <p className="note">How strong the idea behind the coin is, scored 1 to 10.</p>
+            <p className="note">How far the idea can spread and how strong it is, against today&apos;s other runners. A typical runner today is a 6.</p>
           </div>
           {rating && <p className="rt-big"><b>{rating.overall}</b><span>/10</span></p>}
         </div>
@@ -99,7 +101,7 @@ export default function RatingTab({ r, active, aiOn, themeCount, heat }) {
         <div className="rt-head">
           <div>
             <h2 className="h3">Buzz</h2>
-            <p className="note">How much attention it&apos;s getting right now. Updates live.</p>
+            <p className="note">How much attention it&apos;s getting right now compared with today&apos;s other runners. 50 is the middle of the pack. Updates live.</p>
           </div>
           <p className={`rt-big rt-buzz rt-${b.label.toLowerCase().replace(' ', '-')}`}><b>{b.score}</b><span>{b.label}</span></p>
         </div>

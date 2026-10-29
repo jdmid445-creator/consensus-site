@@ -67,8 +67,9 @@ export default function Docs() {
 
         <h2 id="rating">Narrative rating and Buzz</h2>
         <p>The Rating tab on each coin page has two scores.</p>
-        <p><b>Narrative rating</b> (1 to 10) is written with the coin&apos;s story. It scores the idea itself: how original it is, how easy it is to meme and share, how well it fits what&apos;s running today, and whether it has enough behind it to keep people posting. It rates the narrative, not the price.</p>
-        <p><b>Buzz</b> (0 to 100) is worked out live from the numbers: how many trades it&apos;s getting, how much volume compared to its size, its last-hour move, the share of buys, how many wallets hold it, its socials and DexScreener promotion, and how many other runners share its theme. 80+ is on fire, 65+ hot, 45+ warm, 25+ quiet, below that cold.</p>
+        <p><b>Narrative rating</b> (1 to 10) is written with the coin&apos;s story and graded on today&apos;s curve: every coin rated is already one of the day&apos;s top runners, so a typical runner scores 6 and a standout 9 or 10. It scores virality on X (a shareable image or joke, a hook on a trending person or event, an active account, the size of the crowd), meme-ability, originality, fit with today&apos;s meta and staying power, with virality and meme-ability counting most. It rates the narrative, not the price.</p>
+        <p><b>Buzz</b> (0 to 100) is worked out live and ranked against today&apos;s other runners, so 50 is the middle of the pack. It uses trades, volume against size, the last-hour move and buy share (each ranked against the field), plus holders, socials and DexScreener promotion, and how many other runners share its theme. 75+ is on fire, 60+ hot, 40+ warm, 25+ quiet, below that cold.</p>
+        <p>Neither score reads posts on X directly: that needs the X API. Virality is judged from the coin itself and its numbers.</p>
 
         <h2 id="whales">Whales and PnL</h2>
         <p>The Whales tab on each coin page lists the 20 biggest wallets (liquidity pool left out), with the 1%+ wallets marked. For each one you see:</p>

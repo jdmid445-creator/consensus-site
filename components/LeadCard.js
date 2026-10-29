@@ -99,7 +99,7 @@ export default function LeadCard({ lead: serverLead, chart: serverChart, field }
         </span>
         <span className="lc-gain">
           <LiveNumber value={v} format={gain} className={v >= 0 ? 'up' : 'down'} />
-          <span className="lc-gain-cap">Leads today</span>
+          <span className="lc-gain-cap">24h, #1 today</span>
         </span>
       </Link>
       {lead.why && <p className="lc-why">{lead.why}</p>}
@@ -121,7 +121,8 @@ export default function LeadCard({ lead: serverLead, chart: serverChart, field }
       </div>
 
       {next.length > 0 && (
-        <ol className="lc-next" start={2} aria-label="Next behind it">
+        <ol className="lc-next" start={2} aria-label="Next behind it, by 24-hour gain">
+          <li className="lc-next-title" aria-hidden="true">Next behind it, 24h</li>
           {next.map((n) => {
             const nv = n.h24;
             return (

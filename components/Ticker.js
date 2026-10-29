@@ -22,9 +22,12 @@ export default function Ticker({ runners }) {
   const seconds = Math.max(40, runners.length * 3.2);
   return (
     <div className="tape" aria-label="Live 24-hour moves for every runner">
-      <div className="tp-track" style={{ '--dur': `${seconds}s` }}>
-        <div className="tp-run">{items}</div>
-        <div className="tp-run" aria-hidden="true">{items}</div>
+      <span className="tp-label">24h</span>
+      <div className="tp-view">
+        <div className="tp-track" style={{ '--dur': `${seconds}s` }}>
+          <div className="tp-run">{items}</div>
+          <div className="tp-run" aria-hidden="true">{items}</div>
+        </div>
       </div>
     </div>
   );
