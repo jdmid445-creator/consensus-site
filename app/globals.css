@@ -1406,11 +1406,11 @@ body::before {
   .ftr { flex-direction: column; }
 }
 
-/* ================= News-desk layout: General Sans throughout ================= */
+/* ================= News-desk layout: Supreme throughout ================= */
 :root {
-  --sans: 'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --serif: 'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --display: 'General Sans', system-ui, sans-serif;
+  --sans: 'Supreme', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Supreme', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Supreme', system-ui, sans-serif;
 }
 body { font-family: var(--sans); }
 .headline, .page-head h1, .coinpage .ch h1, .brand, .lc-id strong, .cs-head, .rt-big b, .hl-score b, .wh-sum dd { font-family: var(--display); font-variation-settings: 'wdth' 100; }
@@ -1521,15 +1521,14 @@ body { font-family: var(--sans); }
 .board-app { gap: 18px !important; }
 .row-1 > .wg-today .today-stats div { padding-bottom: 0; }
 
-/* ===== General Sans (Fontshare), self-hosted ===== */
-@font-face { font-family: 'General Sans'; font-weight: 400; font-display: swap; src: url(/fonts/general-sans-400.woff2) format('woff2'); }
-@font-face { font-family: 'General Sans'; font-weight: 500; font-display: swap; src: url(/fonts/general-sans-500.woff2) format('woff2'); }
-@font-face { font-family: 'General Sans'; font-weight: 600; font-display: swap; src: url(/fonts/general-sans-600.woff2) format('woff2'); }
-@font-face { font-family: 'General Sans'; font-weight: 700; font-display: swap; src: url(/fonts/general-sans-700.woff2) format('woff2'); }
+/* ===== Supreme (Fontshare), self-hosted ===== */
+@font-face { font-family: 'Supreme'; font-weight: 400; font-display: swap; src: url(/fonts/supreme-400.woff2) format('woff2'); }
+@font-face { font-family: 'Supreme'; font-weight: 500; font-display: swap; src: url(/fonts/supreme-500.woff2) format('woff2'); }
+@font-face { font-family: 'Supreme'; font-weight: 600 800; font-display: swap; src: url(/fonts/supreme-700.woff2) format('woff2'); }
 :root {
-  --sans: 'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
-  --serif: 'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
-  --display: 'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+  --sans: 'Supreme', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+  --serif: 'Supreme', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+  --display: 'Supreme', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
 }
 body, button, input, textarea, select { font-family: var(--sans); }
 .headline { font-weight: 700 !important; letter-spacing: -0.03em !important; }
@@ -1539,3 +1538,5 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .row-1 > .wg-today .today-pads { margin-bottom: auto; }
 .row-1 > .wg-today .today-stats { margin-top: 0 !important; }
 .headline { font-weight: 600 !important; letter-spacing: -0.025em !important; }
+
+.headline { font-weight: 700 !important; }

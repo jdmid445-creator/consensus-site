@@ -21,8 +21,8 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="preload" href="/fonts/general-sans-500.woff2" as="font" type="font/woff2" crossOrigin="" />
-        <link rel="preload" href="/fonts/general-sans-600.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preload" href="/fonts/supreme-500.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preload" href="/fonts/supreme-700.woff2" as="font" type="font/woff2" crossOrigin="" />
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>
       <body>
