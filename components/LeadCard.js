@@ -76,7 +76,6 @@ export default function LeadCard({ lead, next, chart }) {
       <div className="lc-actions">
         <Link className="btn btn-ink btn-sm" href={`/coin/${lead.address}`}>Read the story</Link>
         <a className="btn btn-quiet btn-sm" href={lead.url} target="_blank" rel="noopener noreferrer">Chart <Out width={15} height={15} /></a>
-        <a className="btn btn-quiet btn-sm" href={`https://gmgn.ai/sol/token/${lead.address}`} target="_blank" rel="noopener noreferrer">GMGN</a>
         {lead.socials.x && <a className="btn btn-quiet btn-sm btn-icon" href={lead.socials.x} target="_blank" rel="noopener noreferrer nofollow" aria-label={`${lead.name} on X`}><XLogo /></a>}
       </div>
 

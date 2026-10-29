@@ -103,7 +103,7 @@ export default function RunnersTable({ runners: base, themes }) {
                   <td className="hide-md muted">{r.launchpad}</td>
                   <td className="c-links hide-sm">
                     <span className="links">
-                      {r.socials.x && <a href={r.socials.x} target="_blank" rel="noopener noreferrer nofollow" aria-label={`${r.name} on X`}><XLogo /></a>}
+                      {r.socials.x ? <a href={r.socials.x} target="_blank" rel="noopener noreferrer nofollow" aria-label={`${r.name} on X`}><XLogo /></a> : <span className="links-gap" aria-hidden="true" />}
                       <a href={`https://gmgn.ai/sol/token/${r.address}`} target="_blank" rel="noopener noreferrer" aria-label={`${r.name} on GMGN`}>GMGN</a>
                       <a href={r.url} target="_blank" rel="noopener noreferrer" aria-label={`${r.name} on DexScreener`}><Out /></a>
                     </span>

@@ -56,7 +56,14 @@ export default function NarrativeWriter({ narratives, enabled }) {
       <article className={`sheet ${loading ? 'is-loading' : ''}`} aria-live="polite" aria-busy={loading}>
         {!n && (
           <div className="sheet-empty">
-            <p>Pick a narrative or leave it on the strongest one, then write. You get a name, ticker, the lore, why it fits today, a logo direction and a first post.</p>
+            <p className="sheet-empty-lead">Your coin idea shows up here.</p>
+            <dl>
+              <div><dt>Name and ticker</dt><dd>Original, never a live ticker</dd></div>
+              <div><dt>The lore</dt><dd>A few short paragraphs</dd></div>
+              <div><dt>Why it fits today</dt><dd>The runners it sits next to</dd></div>
+              <div><dt>Logo direction</dt><dd>Readable as a small avatar</dd></div>
+              <div><dt>First post</dt><dd>No ticker or CA in it</dd></div>
+            </dl>
           </div>
         )}
         {n && (
