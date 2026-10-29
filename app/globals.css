@@ -1517,3 +1517,6 @@ body { font-family: var(--sans); }
 /* headline card: content stays together; only the stats row drops to the bottom */
 .row-1 > .wg-today .today-mix { margin-top: 4px !important; padding-top: 0 !important; }
 .row-1 > .wg-today .today-stats { margin-top: auto !important; }
+/* tighter space between front-page sections */
+.board-app { gap: 18px !important; }
+.row-1 > .wg-today .today-stats div { padding-bottom: 0; }
