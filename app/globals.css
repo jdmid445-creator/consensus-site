@@ -1510,3 +1510,7 @@ body { font-family: var(--sans); }
 /* rows that wrap (the Games page) need space between lines */
 .board-app .row { row-gap: 36px; }
 .board-app .row-games > .wg-game { padding-bottom: 8px; }
+/* footer sits at the bottom of the screen on short pages */
+.app { display: flex !important; flex-direction: column; min-height: 100vh; }
+.app > main { flex: 1; }
+.ftr { margin-top: 48px; width: 100%; }
