@@ -18,6 +18,7 @@ import { getWire } from '@/lib/wire';
 import { getHeadlines } from '@/lib/news';
 import { getMeta, WINDOWS } from '@/lib/meta';
 import { share, gain } from '@/lib/format';
+import { pickLeader, liveField } from '@/lib/leader';
 
 export const revalidate = 30;
 export const maxDuration = 60; // room for the AI read when it refreshes
@@ -46,7 +47,9 @@ export default async function Home() {
     );
   }
 
-  const lead = byAddr.get(meta.top) || runners[0];
+  // Pick #1 on live numbers so the page opens on the same coin the leader card settles on.
+  const liveRunners = await liveField(runners).catch(() => runners);
+  const lead = byAddr.get(pickLeader(liveRunners)?.address) || byAddr.get(meta.top) || runners[0];
   const [chart, wire, headlines] = await Promise.all([
     lead.pairAddress ? getCandles(lead.pairAddress, { timeframe: 'minute', aggregate: 15, limit: 96, revalidate: 300 }) : [],
     getWire(20).catch(() => []),
@@ -97,7 +100,7 @@ export default async function Home() {
       <div className="fp-top">
         <article className="fp-lead" aria-labelledby="today-title">
           <h1 id="today-title" className="fp-head">{headline}</h1>
-          <p className="fp-dek"><LeadLine initial={{ address: lead.address, name: lead.name, symbol: lead.symbol, h24: lead.change.h24 }} />{dek}</p>
+          <p className="fp-dek"><LeadLine initial={{ address: lead.address, name: lead.name, symbol: lead.symbol, h24: liveRunners.find((r) => r.address === lead.address)?.change?.h24 ?? lead.change.h24 }} />{dek}</p>
           <div className="fp-art">
             <LeadCard
               lead={lead}
