@@ -5,6 +5,7 @@ import Ago from '@/components/Ago';
 import AutoRefresh from '@/components/AutoRefresh';
 import LeadCard from '@/components/LeadCard';
 import LeadLine from '@/components/LeadLine';
+import RailStories from '@/components/RailStories';
 import NewRunners from '@/components/NewRunners';
 import CountUp from '@/components/CountUp';
 import Trending from '@/components/Trending';
@@ -109,20 +110,7 @@ export default async function Home() {
         <aside className="fp-rail" aria-label="Also moving today">
           <section className="fp-sec">
             <h2 className="fp-h">Also running hot</h2>
-            <ol className="fp-stories">
-              {biggest.filter((r) => r.address !== lead.address).slice(0, 4).map((r) => (
-                <li key={r.address}>
-                  <Link href={`/coin/${r.address}`}>
-                    <span className="fp-story-top">
-                      <CoinImg address={r.address} src={r.image} name={r.name} symbol={r.symbol} size={28} />
-                      <b>{r.name}</b>
-                      <span className={r.change.h24 >= 0 ? 'up' : 'down'}>{gain(r.change.h24)}</span>
-                    </span>
-                    {r.why && <span className="fp-story-why">{r.why}</span>}
-                  </Link>
-                </li>
-              ))}
-            </ol>
+            <RailStories coins={biggest.slice(0, 10).map((r) => ({ address: r.address, name: r.name, symbol: r.symbol, image: r.image, why: r.why, h24: r.change.h24 }))} />
           </section>
           <section className="fp-sec">
             <h2 className="fp-h">Where the money is</h2>

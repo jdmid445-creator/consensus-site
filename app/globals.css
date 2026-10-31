@@ -1760,3 +1760,4 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .fp-figs b { margin-right: 0; }
 .fp-figs > span { white-space: nowrap; }
 @media (max-width: 760px) { .fp-figs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; } }
+.fp-story-top .live-num { font-weight: 700; font-size: 15px; }
