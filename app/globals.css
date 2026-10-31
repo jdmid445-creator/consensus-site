@@ -1761,3 +1761,8 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .fp-figs > span { white-space: nowrap; }
 @media (max-width: 760px) { .fp-figs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; } }
 .fp-story-top .live-num { font-weight: 700; font-size: 15px; }
+
+/* Top on X: one shared bottom rule under both columns, no stray lines above it. */
+.row-x { padding-bottom: 0; border-bottom: 1px solid var(--line-2); }
+.x-more { border-top: 0; padding: 18px 0 22px; }
+.x-side > .wg:last-child { padding-bottom: 22px; }

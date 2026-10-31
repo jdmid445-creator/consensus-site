@@ -1,0 +1,15 @@
+name: Keep the X feeds fresh
+# Hits the site every 15 minutes so Top on X and the celebrity check refresh even when
+# nobody has the page open.
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -fsSL -m 50 -o /dev/null -w "%{http_code}\n" https://metatracker.fun/api/x/live || true
+          sleep 55
+          curl -fsSL -m 50 -o /dev/null -w "%{http_code}\n" https://metatracker.fun/api/x/live || true
