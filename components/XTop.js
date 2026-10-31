@@ -155,7 +155,7 @@ export default function XTop({ initial }) {
 
   return (
     <div className="row row-x">
-      <Widget id="x-top" title="Top 25" note="today, ET" className="wg-xfeed">
+      <Widget id="x-top" title="Top 25" note="last 24 hours" className="wg-xfeed">
         <div className="x-bar">
           <div className="seg seg-sm x-seg" role="tablist">
             {LANES.map(([id, label]) => (
@@ -172,7 +172,7 @@ export default function XTop({ initial }) {
             {full.map((p, i) => <Row key={p.id} p={p} now={now} flash={flash.has(p.id)} hidden={!more && i >= FIRST} />)}
           </ol>
         ) : (
-          <p className="muted x-empty">Gathering today&apos;s top posts. They show up here within a couple of minutes.</p>
+          <p className="muted x-empty">Gathering the top posts. They show up here within a couple of minutes.</p>
         )}
         {full.length > FIRST && (
           <div className="x-more">

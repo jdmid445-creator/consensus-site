@@ -16,7 +16,7 @@ export default async function XPage() {
     <div className="board-app">
       <header className="page-head">
         <h1>Top on X today</h1>
-        <p className="muted">The 25 biggest posts of the day about meme coins and memes, ranked by likes, reposts and quotes. It checks X for new ones every 15 minutes.</p>
+        <p className="muted">The 25 biggest posts of the last 24 hours about meme coins and memes, ranked by likes, reposts and quotes. It checks X for new ones every 15 minutes.</p>
       </header>
       <XTop initial={{ ...(data || { lists: { all: [], coin: [], meme: [] }, named: [], every: 900 }), celebs }} />
     </div>
