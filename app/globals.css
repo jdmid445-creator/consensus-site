@@ -1766,3 +1766,12 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .row-x { padding-bottom: 0; border-bottom: 1px solid var(--line-2); }
 .x-more { border-top: 0; padding: 18px 0 22px; }
 .x-side > .wg:last-child { padding-bottom: 22px; }
+/* Front page top uses the same 12-column grid as every row below it, so the column edges line up all the way down. */
+.fp-top { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 36px; }
+.fp-lead { grid-column: span 8; padding-right: 0; border-right: 0; }
+.fp-rail { grid-column: span 4; padding-left: 0; position: relative; }
+.fp-rail::before { content: ''; position: absolute; left: -18px; top: 0; bottom: 0; width: 1px; background: var(--line); }
+@media (max-width: 1100px) {
+  .fp-lead, .fp-rail { grid-column: 1 / -1; }
+  .fp-rail::before { display: none; }
+}
