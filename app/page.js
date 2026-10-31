@@ -80,50 +80,73 @@ export default async function Home() {
     <div className="board-app">
       <AutoRefresh ms={30000} />
 
-      {/* Row 1: today's read + the leader */}
-      <div className="row row-1">
-        <section className="wg wg-today" aria-labelledby="today-title">
-          <p className="dateline">
-            <span>{today()}</span>
-            <Ago at={meta.updatedAt} />
-          </p>
-          <h1 id="today-title" className="headline">{headline}</h1>
-          <p className="dek"><LeadLine initial={{ address: lead.address, name: lead.name, symbol: lead.symbol, h24: lead.change.h24 }} />{dek}</p>
-          <div className="today-mix">
-            <p className="today-label">Where the market cap is{(() => { const big = [...runners].sort((a, b) => b.marketCap - a.marketCap)[0]; const sh = big && stats.totalCap ? big.marketCap / stats.totalCap : 0; return sh >= 0.4 ? <span className="today-note"> · {big.name} alone is {share(sh)} of it</span> : null; })()}</p>
+      {/* Edition line: the date, freshness and the day's numbers, like a paper's folio. */}
+      <div className="fp-edition">
+        <span className="fp-date">{today()}</span>
+        <Ago at={meta.updatedAt} />
+        <span className="fp-figs">
+          <span><b><CountUp value={stats.count} kind="int" /></b> runners</span>
+          <span><b><CountUp value={stats.totalCap} kind="usd" /></b> combined cap</span>
+          <span><b><CountUp value={stats.medianAgeHours} kind="age" /></b> median age</span>
+          <span><b><CountUp value={stats.buyShare} kind="share" /></b> buys</span>
+        </span>
+      </div>
+
+      {/* Front page: the lead story with the #1 as its picture, and a rail of what else is moving. */}
+      <div className="fp-top">
+        <article className="fp-lead" aria-labelledby="today-title">
+          <h1 id="today-title" className="fp-head">{headline}</h1>
+          <p className="fp-dek"><LeadLine initial={{ address: lead.address, name: lead.name, symbol: lead.symbol, h24: lead.change.h24 }} />{dek}</p>
+          <div className="fp-art">
+            <LeadCard
+              lead={lead}
+              chart={chart}
+              field={runners.map((r) => ({ address: r.address, name: r.name, symbol: r.symbol, image: r.image, type: r.type, why: r.why, url: r.url, socials: { x: r.socials.x }, change: { h1: r.change.h1, h24: r.change.h24 }, marketCap: r.marketCap, volume24h: r.volume24h, liquidity: r.liquidity, ageHours: r.ageHours, top10: r.top10 }))}
+            />
+          </div>
+        </article>
+
+        <aside className="fp-rail" aria-label="Also moving today">
+          <section className="fp-sec">
+            <h2 className="fp-h">Also running hot</h2>
+            <ol className="fp-stories">
+              {biggest.filter((r) => r.address !== lead.address).slice(0, 4).map((r) => (
+                <li key={r.address}>
+                  <Link href={`/coin/${r.address}`}>
+                    <span className="fp-story-top">
+                      <CoinImg address={r.address} src={r.image} name={r.name} symbol={r.symbol} size={28} />
+                      <b>{r.name}</b>
+                      <span className={r.change.h24 >= 0 ? 'up' : 'down'}>{gain(r.change.h24)}</span>
+                    </span>
+                    {r.why && <span className="fp-story-why">{r.why}</span>}
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </section>
+          <section className="fp-sec">
+            <h2 className="fp-h">Where the money is</h2>
+            {(() => { const big = [...runners].sort((a, b) => b.marketCap - a.marketCap)[0]; const sh = big && stats.totalCap ? big.marketCap / stats.totalCap : 0; return sh >= 0.4 ? <p className="fp-note">{big.name} alone is {share(sh)} of it.</p> : null; })()}
             <div className="mix" aria-label="Share of market cap by theme">
               {stats.themes.map((t, i) => (
                 <span key={t.id} className="mix-seg" style={{ '--c': t.color, '--i': i, flexGrow: Math.max(t.shareCap, 0.012) }} title={`${t.name}: ${share(t.shareCap)} of market cap`} />
               ))}
             </div>
-            <ul className="today-legend">
-              {stats.themes.slice(0, 6).map((t) => (
+            <ul className="fp-legend">
+              {stats.themes.slice(0, 4).map((t) => (
                 <li key={t.id} style={{ '--c': t.color }}><i aria-hidden="true" />{t.name}<b>{share(t.shareCap)}</b></li>
               ))}
             </ul>
-          </div>
-          <div className="today-pads">
-            <p className="today-label">Launched on</p>
-            <ul>
-              {stats.launchpads.slice(0, 4).map((l) => (
+          </section>
+          <section className="fp-sec">
+            <h2 className="fp-h">Launched on</h2>
+            <ul className="fp-pads">
+              {stats.launchpads.slice(0, 3).map((l) => (
                 <li key={l.name}><span>{l.name}</span><span className="today-pad-bar"><span style={{ width: `${Math.round(l.share * 100)}%` }} /></span><b>{share(l.share)}</b></li>
               ))}
             </ul>
-          </div>
-          <div className="today-stats">
-            <div><span>Runners</span><b><CountUp value={stats.count} kind="int" /></b></div>
-            <div><span>Combined cap</span><b><CountUp value={stats.totalCap} kind="usd" /></b></div>
-            <div><span>Median age</span><b><CountUp value={stats.medianAgeHours} kind="age" /></b></div>
-            <div><span>Buys</span><b><CountUp value={stats.buyShare} kind="share" /></b></div>
-          </div>
-        </section>
-        <div className="wg wg-lead">
-          <LeadCard
-            lead={lead}
-            chart={chart}
-            field={runners.map((r) => ({ address: r.address, name: r.name, symbol: r.symbol, image: r.image, type: r.type, why: r.why, url: r.url, socials: { x: r.socials.x }, change: { h1: r.change.h1, h24: r.change.h24 }, marketCap: r.marketCap, volume24h: r.volume24h, liquidity: r.liquidity, ageHours: r.ageHours, top10: r.top10 }))}
-          />
-        </div>
+          </section>
+        </aside>
       </div>
 
       {/* Row 2: movers + new runners, six rows each */}

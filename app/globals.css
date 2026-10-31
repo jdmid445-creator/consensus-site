@@ -1687,3 +1687,76 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .dek .lead-link { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
 .dek .lead-link:hover { text-decoration-color: var(--accent); }
 .dek b.up, .dek b.down { font-weight: 600; }
+
+/* ===== Front page, news layout ===== */
+.brand { position: relative; top: -2px; }
+
+.fp-edition { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 18px; padding: 4px 0 12px; border-bottom: 3px double var(--line-2); font-size: 13.5px; color: var(--muted); }
+.fp-date { color: var(--ink); font-weight: 600; }
+.fp-figs { margin-left: auto; display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.fp-figs b { color: var(--ink); font-weight: 600; margin-right: 4px; }
+
+.fp-top { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 0; border-bottom: 1px solid var(--line-2); padding-bottom: 28px; margin-top: -4px; }
+.fp-lead { padding-right: 36px; border-right: 1px solid var(--line); display: flex; flex-direction: column; }
+.fp-rail { padding-left: 32px; display: flex; flex-direction: column; }
+.fp-head { font-size: clamp(36px, 3.6vw, 54px); font-weight: 750; letter-spacing: -0.04em; line-height: 1.02; max-width: 22ch; color: var(--ink); text-wrap: balance; }
+.fp-dek { margin-top: 16px; font-size: 18px; line-height: 1.55; color: var(--ink-2); max-width: 66ch; text-wrap: pretty; }
+.fp-dek .lead-link { color: var(--ink); font-weight: 600; }
+
+/* The #1 as the lead picture: wide, no box. */
+.fp-art { margin-top: 26px; flex: 1; display: flex; }
+.fp-art .lc { flex: 1; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: none; padding: 22px 0 0; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "coin coin" "why why" "chart chart" "rows actions"; column-gap: 32px; row-gap: 16px; animation: none; }
+.fp-art .lc-coin { grid-area: coin; }
+.fp-art .lc-why { grid-area: why; margin: 0; }
+.fp-art .lc-chart { grid-area: chart; }
+.fp-art .lc-chart svg { height: 210px; }
+.fp-art .lc-rows { grid-area: rows; grid-template-columns: repeat(3, auto); justify-content: start; gap: 0 28px; align-self: end; }
+.fp-art .lc-rows div { flex-direction: column; gap: 2px; border-top: 0; padding: 0; }
+.fp-art .lc-rows dt { font-size: 12.5px; }
+.fp-art .lc-rows dd { font-size: 17px; }
+.fp-art .lc-actions { grid-area: actions; justify-content: flex-end; align-self: end; }
+.fp-art .lc-next { display: none; }
+
+/* Right rail: short stories, then the two charts. */
+.fp-sec { padding: 18px 0 20px; border-top: 1px solid var(--line); }
+.fp-sec:first-child { border-top: 0; padding-top: 2px; }
+.fp-h { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 12px; }
+.fp-stories { list-style: none; margin: 0; padding: 0; }
+.fp-stories li + li { border-top: 1px solid var(--line); }
+.fp-stories a { display: grid; gap: 6px; padding: 12px 0; color: inherit; text-decoration: none; }
+.fp-stories li:first-child a { padding-top: 0; }
+.fp-story-top { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.fp-story-top b { font-size: 15.5px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fp-story-top .up, .fp-story-top .down { font-weight: 700; font-size: 15px; }
+.fp-story-why { font-size: 13.5px; line-height: 1.45; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.fp-stories a:hover b { color: var(--accent); }
+.fp-note { font-size: 13.5px; color: var(--muted); margin: -4px 0 10px; }
+.fp-legend { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; font-size: 13.5px; color: var(--ink-2); }
+.fp-legend li { display: flex; align-items: center; gap: 8px; }
+.fp-legend i { width: 9px; height: 9px; border-radius: 2px; background: var(--c); flex: none; }
+.fp-legend b { margin-left: auto; color: var(--ink); font-weight: 600; }
+.fp-pads { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.fp-pads li { display: grid; grid-template-columns: 92px minmax(0, 1fr) 42px; gap: 12px; align-items: center; font-size: 13.5px; color: var(--ink-2); }
+.fp-pads b { text-align: right; color: var(--ink); font-weight: 600; }
+.fp-rail .fp-sec:last-child { flex: 1; }
+
+@media (max-width: 1100px) {
+  .fp-top { grid-template-columns: 1fr; }
+  .fp-lead { padding-right: 0; border-right: 0; }
+  .fp-rail { padding-left: 0; margin-top: 24px; border-top: 1px solid var(--line-2); padding-top: 18px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 28px; }
+  .fp-sec, .fp-sec:first-child { border-top: 0; padding-top: 0; }
+}
+@media (max-width: 760px) {
+  .fp-figs { margin-left: 0; width: 100%; }
+  .fp-rail { grid-template-columns: 1fr; }
+  .fp-sec { border-top: 1px solid var(--line) !important; padding-top: 16px !important; }
+  .fp-sec:first-child { border-top: 0 !important; padding-top: 0 !important; }
+  .fp-art .lc { grid-template-columns: 1fr; grid-template-areas: "coin" "why" "chart" "rows" "actions"; }
+  .fp-art .lc-actions { justify-content: flex-start; }
+  .fp-art .lc-chart svg { height: 150px; }
+  .fp-head { font-size: 32px; }
+  .fp-dek { font-size: 16.5px; }
+}
+.fp-figs b { margin-right: 0; }
+.fp-figs > span { white-space: nowrap; }
+@media (max-width: 760px) { .fp-figs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; } }
