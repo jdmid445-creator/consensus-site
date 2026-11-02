@@ -1775,3 +1775,18 @@ body, button, input, textarea, select { font-family: var(--sans); }
   .fp-lead, .fp-rail { grid-column: 1 / -1; }
   .fp-rail::before { display: none; }
 }
+
+/* The token's CA: header (phones too), footer, docs. */
+.ftr-ca { display: inline-flex; align-items: center; gap: 6px; padding: 0; border: 0; background: none; font: inherit; color: var(--ink-2); cursor: pointer; }
+.ftr-ca:hover { color: var(--accent); }
+.ftr-ca svg { width: 13px; height: 13px; }
+.docs-ca { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.docs-ca code { font-family: var(--sans); font-size: 14px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; word-break: break-all; }
+@media (max-width: 760px) {
+  .hdr-tools .hdr-ca { display: inline-flex; flex: none; padding-left: 10px; padding-right: 10px; }
+  .hdr-ca span { display: none; }
+  .hdr-ca::after { content: 'CA'; }
+  .hdr-tools .search { min-width: 0; }
+  .hdr-tools .search input { min-width: 0; width: 100%; }
+  .ftr-links { flex-wrap: wrap; gap: 12px 18px; }
+}

@@ -3,11 +3,13 @@ import { site, runnerRules } from '@/lib/site';
 import { THEMES } from '@/lib/themes';
 import { TYPES } from '@/lib/types';
 import { TypeIcon } from '@/components/TypeBadge';
+import CopyText from '@/components/CopyText';
 
 export const metadata = { title: 'Docs' };
 
 const SECTIONS = [
   ['overview', 'Overview'],
+  ...(site.ca ? [['token', `$${site.ticker}`]] : []),
   ['topx', 'Top on X'],
   ['news', 'The wire and headlines'],
   ['coins', 'Coin pages'],
@@ -45,6 +47,16 @@ export default function Docs() {
         <h1 id="overview">Overview</h1>
         <p>{site.name} reads the last {runnerRules.count} Solana memecoin runners and tells you what the meta is: which narratives are running, what the runners have in common, and what&apos;s losing steam. Everything is on the front page and nothing needs a wallet.</p>
         <p>Every number on the site comes straight from market data at the time of the update. The only writing that comes from AI is the read itself (headline, narratives, working and losing steam) and the narratives you ask the writer for.</p>
+
+        {site.ca && (
+          <>
+            <h2 id="token">${site.ticker}</h2>
+            <p>${site.ticker} is the {site.name} token on Solana. Contract address:</p>
+            <p className="docs-ca"><code>{site.ca}</code> <CopyText text={site.ca} label="Copy" /></p>
+            <p><a href={site.links.dexscreener} target="_blank" rel="noopener noreferrer">Chart on DexScreener</a> · <a href={site.links.pump} target="_blank" rel="noopener noreferrer">pump.fun</a> · <a href={site.links.x} target="_blank" rel="noopener noreferrer">@{site.links.x.split('/').pop()} on X</a></p>
+            <p>Only trust this address. {site.name} will never DM you a different one.</p>
+          </>
+        )}
 
         <h2 id="topx">Top on X</h2>
         <p>Top on X is the day&apos;s 25 biggest posts on X about meme coins and memes, ranked by likes, plus reposts and quotes counted three times, plus replies. It looks at three things: posts naming today&apos;s runners, posts about meme coins in general (pump.fun, the trenches, the big Solana memes), and viral memes that could turn into tomorrow&apos;s narratives. Only English posts from the last 24 hours count, so the list never resets to empty at midnight.</p>

@@ -36,7 +36,7 @@ export default function AppNav({ name, ca, ticker, x, xFeed = false, children })
           </nav>
           <div className="hdr-tools">
             {children}
-            {ca && <CopyText text={ca} label={ticker ? `${ticker} CA` : 'CA'} />}
+            {ca && <CopyText text={ca} label={ticker ? `$${ticker} CA` : 'CA'} className="btn btn-quiet btn-sm hdr-ca" />}
             {x && <a href={x} target="_blank" rel="noopener noreferrer" className="hdr-x" aria-label={`${name} on X`}><XLogo /></a>}
           </div>
         </div>

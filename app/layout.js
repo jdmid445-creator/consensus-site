@@ -6,6 +6,7 @@ import { getMarkets } from '@/lib/markets';
 import Reveal from '@/components/Reveal';
 import { site } from '@/lib/site';
 import { XLogo } from '@/components/Icons';
+import CopyText from '@/components/CopyText';
 import { xTopEnabled } from '@/lib/xtop';
 
 export const metadata = {
@@ -38,6 +39,9 @@ export default async function RootLayout({ children }) {
           <footer className="ftr">
             <span>{site.name}. Data from DexScreener, GeckoTerminal and Helius. Not financial advice.</span>
             <span className="ftr-links">
+              {site.ca && <CopyText text={site.ca} label={`$${site.ticker} CA: ${site.ca.slice(0, 4)}…${site.ca.slice(-4)}`} className="ftr-ca" />}
+              {site.links.dexscreener && <a href={site.links.dexscreener} target="_blank" rel="noopener noreferrer">DexScreener</a>}
+              {site.links.pump && <a href={site.links.pump} target="_blank" rel="noopener noreferrer">pump.fun</a>}
               <a href={site.links.x} target="_blank" rel="noopener noreferrer"><XLogo width={13} height={13} /> @{site.links.x.split('/').pop()}</a>
               <a href="/docs">Docs</a>
             </span>
