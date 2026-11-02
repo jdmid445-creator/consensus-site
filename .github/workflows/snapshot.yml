@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
+          set +e
           mkdir out && cd out
           curl -s -o /dev/null -w "home %{http_code} %{time_total}\n" -m 60 -L https://metatracker.fun/ > health.txt || true
           curl -s -o /dev/null -w "docs %{http_code} %{time_total}\n" -m 60 -L https://metatracker.fun/docs >> health.txt || true
@@ -15,7 +16,10 @@ jobs:
           curl -s -m 60 -L https://metatracker.fun/api/meta -o meta.json || true
           python3 - <<'PY'
           import json, urllib.request
-          m = json.load(open('meta.json'))
+          try:
+              m = json.load(open('meta.json'))
+          except Exception as e:
+              open('meta-error.txt','w').write(open('meta.json').read()[:3000] if __import__('os').path.exists('meta.json') else str(e)); raise SystemExit(0)
           rs = m['runners']
           out = []
           for i in range(0, len(rs), 30):
@@ -23,6 +27,7 @@ jobs:
               out += json.load(urllib.request.urlopen(url, timeout=30))
           json.dump(out, open('dex.json', 'w'))
           PY
+          head -c 400 meta.json > meta-head.txt
           for a in $(python3 -c "import json;print(' '.join(r['address'] for r in json.load(open('meta.json'))['runners']))"); do curl -s -m 20 -L "https://metatracker.fun/api/spark?a=$a" -o "spark-$a.json" || true; done
       - run: |
           cd out
