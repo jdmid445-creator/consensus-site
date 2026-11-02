@@ -1784,8 +1784,6 @@ body, button, input, textarea, select { font-family: var(--sans); }
 .docs-ca code { font-family: var(--sans); font-size: 14px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; word-break: break-all; }
 @media (max-width: 760px) {
   .hdr-tools .hdr-ca { display: inline-flex; flex: none; padding-left: 10px; padding-right: 10px; }
-  .hdr-ca span { display: none; }
-  .hdr-ca::after { content: 'CA'; }
   .hdr-tools .search { min-width: 0; }
   .hdr-tools .search input { min-width: 0; width: 100%; }
   .ftr-links { flex-wrap: wrap; gap: 12px 18px; }
