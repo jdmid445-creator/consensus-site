@@ -33,6 +33,11 @@ jobs:
           for a in $(python3 -c "import json;print(' '.join(r['address'] for r in json.load(open('meta.json'))['runners']))"); do curl -s -m 20 -L "https://metatracker.fun/api/spark?a=$a" -o "spark-$a.json" || true; done
       - run: |
           cd out
+          for a in SCGBBnSwnekytGFHgyeHHxPMiN7xDxsWFGg9JgFSTNK 8s4bNqEztH1JP7mkU747uMr7AckCQdiV47FDqYnDpump; do
+            curl -s -m 60 -L "https://metatracker.fun/api/brief?a=$a" -o "brief-$a.json" || true
+            curl -s -m 60 -L "https://metatracker.fun/api/onchain?a=$a" -o "onchain-$a.json" || true
+            curl -s -m 60 -L "https://metatracker.fun/api/whales?a=$a" -o "whales-$a.json" || true
+          done
           git init -q && git checkout -q -b snapshots
           git config user.name snapshot-bot && git config user.email bot@users.noreply.github.com
           git add -A && git commit -qm "snapshot $(date -u +%FT%TZ)"
