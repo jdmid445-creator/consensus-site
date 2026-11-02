@@ -28,6 +28,8 @@ jobs:
           json.dump(out, open('dex.json', 'w'))
           PY
           head -c 400 meta.json > meta-head.txt
+          mkdir -p logos
+          python3 -c "import json;m=json.load(open('meta.json'));[print(r['address'], r.get('image') or '') for r in m['runners']+m.get('alsoRunning',[])]" | while read a u; do [ -n "$u" ] && curl -s -m 20 -L -A 'Mozilla/5.0' "$(echo $u | sed 's/format=auto/format=png/')" -o "logos/$a.img"; done
           for a in $(python3 -c "import json;print(' '.join(r['address'] for r in json.load(open('meta.json'))['runners']))"); do curl -s -m 20 -L "https://metatracker.fun/api/spark?a=$a" -o "spark-$a.json" || true; done
       - run: |
           cd out
