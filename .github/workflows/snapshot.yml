@@ -1,0 +1,32 @@
+name: Data snapshot
+# Manual: saves the live runner data (and site health) to the "snapshots" branch.
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  snap:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          mkdir out && cd out
+          curl -s -o /dev/null -w "home %{http_code} %{time_total}\n" -m 60 -L https://metatracker.fun/ > health.txt || true
+          curl -s -o /dev/null -w "docs %{http_code} %{time_total}\n" -m 60 -L https://metatracker.fun/docs >> health.txt || true
+          curl -s -o /dev/null -w "x %{http_code} %{time_total}\n" -m 60 -L https://metatracker.fun/x >> health.txt || true
+          curl -s -m 60 -L https://metatracker.fun/api/meta -o meta.json || true
+          python3 - <<'PY'
+          import json, urllib.request
+          m = json.load(open('meta.json'))
+          rs = m['runners']
+          out = []
+          for i in range(0, len(rs), 30):
+              url = 'https://api.dexscreener.com/tokens/v1/solana/' + ','.join(r['address'] for r in rs[i:i+30])
+              out += json.load(urllib.request.urlopen(url, timeout=30))
+          json.dump(out, open('dex.json', 'w'))
+          PY
+          for a in $(python3 -c "import json;print(' '.join(r['address'] for r in json.load(open('meta.json'))['runners']))"); do curl -s -m 20 -L "https://metatracker.fun/api/spark?a=$a" -o "spark-$a.json" || true; done
+      - run: |
+          cd out
+          git init -q && git checkout -q -b snapshots
+          git config user.name snapshot-bot && git config user.email bot@users.noreply.github.com
+          git add -A && git commit -qm "snapshot $(date -u +%FT%TZ)"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" snapshots
